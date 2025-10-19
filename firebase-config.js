@@ -21,5 +21,6 @@ function getFirebaseConfig() {
     
     return config;
 }
+
 // Export the configuration
 window.getFirebaseConfig = getFirebaseConfig;
