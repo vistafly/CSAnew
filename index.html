@@ -2080,7 +2080,178 @@ window.manualStartCounters = function() {
     
 })();
 </script>
+<!-- Contact Form Script (add this after the parallax script) -->
+<script>
+// Contact Form Functionality
+document.addEventListener('DOMContentLoaded', () => {
+    const educatorRole = document.getElementById('educatorRole');
+    const formFields = document.getElementById('formFields');
+    const nonEducatorMessage = document.getElementById('nonEducatorMessage');
+    const contactForm = document.getElementById('contactForm');
 
+    // Educator role selection
+    if (educatorRole) {
+        educatorRole.addEventListener('change', (e) => {
+            const value = e.target.value;
+            
+            if (value === 'yes') {
+                if (formFields) formFields.classList.add('active');
+                if (nonEducatorMessage) nonEducatorMessage.classList.remove('active');
+            } else if (value === 'no') {
+                if (formFields) formFields.classList.remove('active');
+                if (nonEducatorMessage) nonEducatorMessage.classList.add('active');
+            } else {
+                if (formFields) formFields.classList.remove('active');
+                if (nonEducatorMessage) nonEducatorMessage.classList.remove('active');
+            }
+        });
+    }
+
+    // Form validation
+    function validateForm() {
+        const requiredFields = [
+            'firstName',
+            'lastName', 
+            'email',
+            'school',
+            'position'
+        ];
+        
+        let isValid = true;
+        const errors = [];
+        
+        // Check if educator role is selected
+        if (!educatorRole || educatorRole.value !== 'yes') {
+            showNotification('Please confirm you are an educator to access the form.', 'error');
+            return false;
+        }
+        
+        // Validate required fields
+        requiredFields.forEach(fieldName => {
+            const field = document.getElementById(fieldName);
+            if (field) {
+                const value = field.value.trim();
+                
+                if (!value) {
+                    field.style.borderColor = '#f44336';
+                    errors.push(`${field.previousElementSibling.textContent.replace(' *', '')} is required`);
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '#e0e0e0';
+                }
+            }
+        });
+        
+        // Validate email format
+        const emailField = document.getElementById('email');
+        if (emailField) {
+            const emailValue = emailField.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (emailValue && !emailRegex.test(emailValue)) {
+                emailField.style.borderColor = '#f44336';
+                errors.push('Please enter a valid email address');
+                isValid = false;
+            }
+        }
+        
+        // Show validation errors
+        if (!isValid) {
+            showNotification(errors[0], 'error');
+        }
+        
+        return isValid;
+    }
+
+    // Form submission
+    if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                return;
+            }
+            
+            // Get form data
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Show loading state
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Simulate form submission (replace with actual API call)
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Show success message
+                showNotification('Thank you! We\'ll contact you within 24 hours to discuss your school\'s needs.');
+                
+                // Reset form
+                contactForm.reset();
+                if (formFields) formFields.classList.remove('active');
+                if (nonEducatorMessage) nonEducatorMessage.classList.remove('active');
+                
+                // Clear any error styling
+                document.querySelectorAll('input, select, textarea').forEach(field => {
+                    field.style.borderColor = '#e0e0e0';
+                });
+                
+            } catch (error) {
+                showNotification('There was an error sending your message. Please try again.', 'error');
+            } finally {
+                // Reset button state
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    }
+
+    // Real-time form field validation
+    document.querySelectorAll('input, select, textarea').forEach(field => {
+        field.addEventListener('blur', () => {
+            if (field.hasAttribute('required') && !field.value.trim()) {
+                field.style.borderColor = '#f44336';
+            } else if (field.type === 'email' && field.value.trim()) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                field.style.borderColor = emailRegex.test(field.value.trim()) ? '#e0e0e0' : '#f44336';
+            } else {
+                field.style.borderColor = '#e0e0e0';
+            }
+        });
+        
+        field.addEventListener('input', () => {
+            if (field.style.borderColor === 'rgb(244, 67, 54)') {
+                field.style.borderColor = '#e0e0e0';
+            }
+        });
+    });
+
+    // Set initial states
+    if (formFields) formFields.classList.remove('active');
+    if (nonEducatorMessage) nonEducatorMessage.classList.remove('active');
+});
+
+// Notification function (if not already defined)
+if (typeof showNotification === 'undefined') {
+    function showNotification(message, type = 'success') {
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+        
+        if (notificationText) notificationText.textContent = message;
+        if (notification) {
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+    }
+}
+</script>
 
 </body>
 </html>
