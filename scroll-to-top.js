@@ -13,9 +13,13 @@
             behavior: 'instant'
         });
         
-        // Also set the document scroll position directly
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
+        // Also set the document scroll position directly - with null checks
+        if (document.documentElement) {
+            document.documentElement.scrollTop = 0;
+        }
+        if (document.body) {
+            document.body.scrollTop = 0;
+        }
     }
     
     // Multiple triggers to ensure it works in all scenarios
@@ -85,14 +89,27 @@
             scroll-behavior: auto !important;
         }
     `;
-    document.head.appendChild(style);
+    
+    // Wait for head to exist before appending style
+    function addStyle() {
+        if (document.head) {
+            document.head.appendChild(style);
+        } else {
+            setTimeout(addStyle, 10);
+        }
+    }
+    addStyle();
     
     // Remove the override after initial load
     window.addEventListener('load', function() {
         setTimeout(() => {
-            style.remove();
+            if (style && style.parentNode) {
+                style.remove();
+            }
             // Restore smooth scrolling
-            document.documentElement.style.scrollBehavior = 'smooth';
+            if (document.documentElement) {
+                document.documentElement.style.scrollBehavior = 'smooth';
+            }
         }, 200);
     });
     

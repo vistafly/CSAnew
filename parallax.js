@@ -1,6 +1,4 @@
-// MINIMAL PARALLAX ANIMATION - FIXED JITTER ISSUE
-// Copy this entire code and paste it into a NEW FILE called "parallax.js"
-// Then add <script src="parallax.js"></script> before the closing </body> tag in your HTML
+// parallax.js
 
 (function() {
     'use strict';
@@ -85,7 +83,7 @@
         }
         
         function applyParallax() {
-            const scrollY = window.pageYOffset;
+            const scrollY = window.pageYOffset || (document.documentElement ? document.documentElement.scrollTop : 0);
             const windowHeight = window.innerHeight;
             
             // Don't do anything if we're navigating home
@@ -240,14 +238,26 @@
         console.log('Parallax animation setup complete');
     }
     
+    // Wait for elements to exist before initializing
+    function waitForElementsAndInit() {
+        const hero = document.getElementById('home');
+        const programs = document.getElementById('programs');
+        
+        if (hero && programs) {
+            startParallax();
+        } else {
+            setTimeout(waitForElementsAndInit, 100);
+        }
+    }
+    
     // Initialize when DOM is ready
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', startParallax);
+        document.addEventListener('DOMContentLoaded', waitForElementsAndInit);
     } else {
-        startParallax();
+        waitForElementsAndInit();
     }
     
     // Backup initialization
-    setTimeout(startParallax, 1000);
+    setTimeout(waitForElementsAndInit, 1000);
     
 })();

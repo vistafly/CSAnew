@@ -17,9 +17,15 @@
     // Ultra-fast scroll prevention
     function preventScrolling() {
         originalScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-        document.documentElement.classList.add('loading-active');
-        document.body.classList.add('loading-active');
-        document.body.style.top = `-${originalScrollPosition}px`;
+        
+        // Safely add classes and styles
+        if (document.documentElement) {
+            document.documentElement.classList.add('loading-active');
+        }
+        if (document.body) {
+            document.body.classList.add('loading-active');
+            document.body.style.top = `-${originalScrollPosition}px`;
+        }
         
         if ('scrollRestoration' in history) {
             history.scrollRestoration = 'manual';
@@ -31,9 +37,14 @@
     }
     
     function allowScrolling() {
-        document.documentElement.classList.remove('loading-active');
-        document.body.classList.remove('loading-active');
-        document.body.style.top = '';
+        if (document.documentElement) {
+            document.documentElement.classList.remove('loading-active');
+        }
+        if (document.body) {
+            document.body.classList.remove('loading-active');
+            document.body.style.top = '';
+        }
+        
         window.scrollTo(0, originalScrollPosition);
         
         if ('scrollRestoration' in history) {
@@ -60,7 +71,7 @@
         }
     }
     
-    // PRECISE HERO POSITIONING - from original code
+    // PRECISE HERO POSITIONING
     function getHeroPosition() {
         const actualHeroLogo = document.querySelector('.hero-logo');
         if (actualHeroLogo) {
@@ -209,7 +220,7 @@
         if (loaderHeroLogo) {
             const heroPos = getHeroPosition();
             
-            // Apply the perfect positioning and scaling from original code
+            // Apply the perfect positioning and scaling
             loaderHeroLogo.style.top = heroPos.top + 'px';
             loaderHeroLogo.style.left = heroPos.left + 'px';
             loaderHeroLogo.style.transform = 'translate(-50%, -50%) scale(1.03)';
@@ -225,7 +236,7 @@
                 loader.classList.add('fade-out');
                 
                 setTimeout(() => {
-                    if (loader.parentNode) {
+                    if (loader && loader.parentNode) {
                         loader.parentNode.removeChild(loader);
                     }
                     allowScrolling();
@@ -301,15 +312,21 @@
         testEl.style.willChange = 'transform, opacity';
     }
     
-    // Initialize immediately
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
+    // Wait for body to exist before initializing
+    function waitForBodyAndInit() {
+        if (document.body) {
             preloadEffects();
             initializeUltraFast();
-        });
+        } else {
+            setTimeout(waitForBodyAndInit, 10);
+        }
+    }
+    
+    // Initialize when ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', waitForBodyAndInit);
     } else {
-        preloadEffects();
-        initializeUltraFast();
+        waitForBodyAndInit();
     }
     
     // Emergency bailout - much shorter
@@ -317,7 +334,7 @@
         if (!isComplete) {
             completeLoadingInstant();
         }
-    }, 4000); // Reduced from 10000ms
+    }, 4000);
     
     // Handle visibility
     document.addEventListener('visibilitychange', () => {

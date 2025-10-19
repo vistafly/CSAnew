@@ -1,3 +1,4 @@
+// script.js 
 // Firebase Configuration and Initialization
 let firebaseConfig = {};
 let auth = null;
