@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSA - Community Sports & Arts | Elementary School Programs</title>
+    <meta name="description" content="Professional sports and music programs for elementary schools. Expert instruction in athletics, dance, choir, and percussion.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+(function() {
+    'use strict';
+    
+    // Immediate scroll to top - prevents scroll restoration
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    
+    // Handle browser back/forward and reload
+    window.addEventListener('pageshow', function(event) {
+        window.scrollTo(0, 0);
+    });
+    
+    // Override scroll restoration
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+    
+})();
+</script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+   <!-- Loading Screen -->
+<div class="loader" id="loader">
+    <div class="loader-hero-logo" id="loaderHeroLogo">
+        <!-- Multi-Color Progress Ring with Overflow Effects -->
+        <div class="progress-container">
+            <svg class="progress-ring" width="360" height="360" viewBox="0 0 360 360">
+                <defs>
+                    <linearGradient id="exactColors" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#B0202A"/>
+                        <stop offset="20%" style="stop-color:#813F96"/>
+                        <stop offset="40%" style="stop-color:#3BB44B"/>
+                        <stop offset="60%" style="stop-color:#FFB70B"/>
+                        <stop offset="80%" style="stop-color:#C9592B"/>
+                        <stop offset="100%" style="stop-color:#0C78B9"/>
+                    </linearGradient>
+                    <filter id="overflowGlow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+                        <feGaussianBlur stdDeviation="15" result="bigBlur"/>
+                        <feGaussianBlur stdDeviation="25" result="hugeBlur"/>
+                        <feMerge>
+                            <feMergeNode in="hugeBlur"/>
+                            <feMergeNode in="bigBlur"/>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+                    <filter id="whiteEmissive" x="-100%" y="-100%" width="300%" height="300%">
+                        <feGaussianBlur stdDeviation="12" result="whiteBlur1"/>
+                        <feGaussianBlur stdDeviation="25" result="whiteBlur2"/>
+                        <feGaussianBlur stdDeviation="40" result="whiteBlur3"/>
+                        <feMerge>
+                            <feMergeNode in="whiteBlur3"/>
+                            <feMergeNode in="whiteBlur2"/>
+                            <feMergeNode in="whiteBlur1"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+                </defs>
+                <circle class="progress-track" 
+                        cx="180" cy="180" r="150"
+                        fill="none"
+                        stroke="rgba(255,255,255,0.05)"
+                        stroke-width="2"/>
+                <circle class="progress-bar" 
+                        cx="180" cy="180" r="150"
+                        fill="none"
+                        stroke="url(#exactColors)"
+                        stroke-width="5"
+                        stroke-linecap="round"
+                        filter="url(#overflowGlow)"/>
+            </svg>
+        </div>
+        
+        <!-- Logo Container -->
+        <div class="logo-container">
+            <img src="images/logo.png" alt="CSA Logo" class="loader-logo-image">
+            <div class="loader-logo-fallback">CSA</div>
+        </div>
+        
+        <!-- Company Name Text -->
+        <div class="company-name-text">CSA Entertainment</div>
+    </div>
+</div>
+    <!-- Header -->
+<header class="header" id="header">
+    <nav class="nav">
+        
+        </div>
+        
+        <ul class="nav-menu" id="navMenu">
+            <li class="nav-item">
+                <a href="#home" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+                <a href="#programs" class="nav-link">Programs</a>
+            </li>
+            <li class="nav-item">
+                <a href="#about" class="nav-link">About</a>
+            </li>
+            <li class="nav-item">
+                <a href="#gallery" class="nav-link">Gallery</a>
+            </li>
+            <li class="nav-item">
+                <a href="#testimonials" class="nav-link">Testimonials</a>
+            </li>
+        </ul>
+        
+        <div class="nav-right">
+            <div class="nav-auth-section">
+                <!-- Authentication buttons -->
+                <div class="auth-buttons" id="authButtons">
+                    <button class="btn btn-auth" id="loginBtn">Login</button>
+                </div>
+                <div class="user-info hidden" id="userInfo">
+                    <span class="user-name" id="userName"></span>
+                    <button class="btn btn-secondary" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+            
+            <button class="nav-toggle" id="navToggle">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </nav>
+</header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-background">
+            <video class="hero-video" autoplay muted loop playsinline>
+                <source src="videos/herobackground.mp4" type="video/mp4">
+            </video>
+            <div class="hero-overlay"></div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="hero-logo">
+                <img src="images/logo.png" alt="CSA Logo" class="hero-logo-image">
+                <div class="hero-logo-fallback">CSA</div>
+            </div>
+            
+            <div class="hero-text-container">
+    <h1 class="hero-title">CSA Entertainment</h1>
+    <p class="hero-subtitle">Serving Fresno, Kermen, Kings Canyon, Selma, Unified School Districts</p>
+</div>
+            
+            <div class="hero-actions">
+                <a href="#programs" class="btn btn-primary">Programs </a>
+                <a href="#contact" class="btn btn-secondary">Contact Us</a>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator">
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section class="programs" id="programs">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Programs</h2>
+                <p class="section-subtitle">Comprehensive curricula designed specifically for elementary schools</p>
+            </div>
+            
+            <div class="programs-grid">
+                <div class="program-card" data-program="sports">
+                    <div class="program-image">
+                        <img src="images/programs/.jpg" alt="Sports Program" loading="lazy">
+                        <div class="program-overlay">
+                            <div class="program-icon">⚽</div>
+                        </div>
+                    </div>
+                    <div class="program-content">
+                        <h3 class="program-title">Sports Programs</h3>
+                        <p class="program-description">Comprehensive athletic development focusing on fundamental movement skills, teamwork, and physical fitness for all ability levels.</p>
+                        <ul class="program-features">
+                            <li>Age-appropriate skill development</li>
+                            <li>Team building activities</li>
+                            <li>Fitness and coordination</li>
+                            <li>Inclusive participation</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="program-card" data-program="acoustic-guitar">
+                    <div class="program-image">
+                        <img src="images/programs/acoustic-guitar-program.jpg" alt="Acoustic Guitar Program" loading="lazy">
+                        <div class="program-overlay">
+                            <div class="program-icon">🎸</div>
+                        </div>
+                    </div>
+                    <div class="program-content">
+                        <h3 class="program-title">Acoustic Guitar</h3>
+                        <p class="program-description">Traditional acoustic guitar instruction focusing on fingerpicking, strumming patterns, and folk/classical techniques.</p>
+                        <ul class="program-features">
+                            <li>Fingerpicking techniques</li>
+                            <li>Chord progressions</li>
+                            <li>Strumming patterns</li>
+                            <li>Folk and classical styles</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="program-card" data-program="electric-guitar">
+                    <div class="program-image">
+                        <img src="images/programs/electric-guitar-program.jpg" alt="Electric Guitar Program" loading="lazy">
+                        <div class="program-overlay">
+                            <div class="program-icon">⚡</div>
+                        </div>
+                    </div>
+                    <div class="program-content">
+                        <h3 class="program-title">Electric Guitar</h3>
+                        <p class="program-description">Electric guitar fundamentals including amplifier use, effects, and modern playing techniques for rock and contemporary music.</p>
+                        <ul class="program-features">
+                            <li>Power chords and riffs</li>
+                            <li>Amplifier techniques</li>
+                            <li>Lead guitar basics</li>
+                            <li>Contemporary styles</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="program-card" data-program="dance">
+                    <div class="program-image">
+                        <img src="images/programs/2.jpg" alt="Dance Program" loading="lazy">
+                        <div class="program-overlay">
+                            <div class="program-icon">💃</div>
+                        </div>
+                    </div>
+                    <div class="program-content">
+                        <h3 class="program-title">Dance Programs</h3>
+                        <p class="program-description">Creative movement and dance instruction that develops coordination, rhythm, self-expression, and cultural awareness.</p>
+                        <ul class="program-features">
+                            <li>Multiple dance styles</li>
+                            <li>Creative expression</li>
+                            <li>Coordination development</li>
+                            <li>Performance opportunities</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="program-card" data-program="choir">
+                    <div class="program-image">
+                        <img src="images/programs/choir-program.jpg" alt="Choir Program" loading="lazy">
+                        <div class="program-overlay">
+                            <div class="program-icon">🎵</div>
+                        </div>
+                    </div>
+                    <div class="program-content">
+                        <h3 class="program-title">Choir Programs</h3>
+                        <p class="program-description">Professional vocal instruction that builds confidence, musical literacy, and ensemble skills through engaging repertoire.</p>
+                        <ul class="program-features">
+                            <li>Vocal technique training</li>
+                            <li>Music theory basics</li>
+                            <li>Ensemble singing</li>
+                            <li>Concert performances</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="program-card" data-program="percussion">
+                    <div class="program-image">
+                        <img src="images/programs/percussion-program.jpg" alt="Percussion Program" loading="lazy">
+                        <div class="program-overlay">
+                            <div class="program-icon">🥁</div>
+                        </div>
+                    </div>
+                    <div class="program-content">
+                        <h3 class="program-title">Percussion Programs</h3>
+                        <p class="program-description">Dynamic rhythm instruction using professional instruments to develop timing, coordination, and ensemble skills.</p>
+                        <ul class="program-features">
+                            <li>Rhythm and timing</li>
+                            <li>Instrument technique</li>
+                            <li>Ensemble performance</li>
+                            <li>Cultural exploration</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="program-card" data-program="dj">
+                    <div class="program-image">
+                        <img src="images/programs/2.jpg" alt="DJ Introduction Program" loading="lazy">
+                        <div class="program-overlay">
+                            <div class="program-icon">🎧</div>
+                        </div>
+                    </div>
+                    <div class="program-content">
+                        <h3 class="program-title">DJ Introduction</h3>
+                        <p class="program-description">Introduction to modern music production and DJ skills, teaching beat matching, mixing techniques, and digital music technology.</p>
+                        <ul class="program-features">
+                            <li>Beat matching basics</li>
+                            <li>Digital music software</li>
+                            <li>Mixing techniques</li>
+                            <li>Music appreciation</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="program-card" data-program="bass-guitar">
+                    <div class="program-image">
+                        <img src="images/programs/1.jpg" alt="Bass Guitar Program" loading="lazy">
+                        <div class="program-overlay">
+                            <div class="program-icon">🎸</div>
+                        </div>
+                    </div>
+                    <div class="program-content">
+                        <h3 class="program-title">Bass Guitar</h3>
+                        <p class="program-description">Foundation bass guitar skills focusing on rhythm, groove, and the essential role of bass in ensemble playing.</p>
+                        <ul class="program-features">
+                            <li>Rhythm and timing</li>
+                            <li>Groove fundamentals</li>
+                            <li>Ensemble playing</li>
+                            <li>Music theory basics</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="program-card" data-program="keyboard">
+                    <div class="program-image">
+                        <img src="images/programs/keyboard-program.jpg" alt="Keyboard Program" loading="lazy">
+                        <div class="program-overlay">
+                            <div class="program-icon">🎹</div>
+                        </div>
+                    </div>
+                    <div class="program-content">
+                        <h3 class="program-title">Keyboard & Piano</h3>
+                        <p class="program-description">Foundation piano and keyboard skills development, including proper technique, music theory, and creative composition.</p>
+                        <ul class="program-features">
+                            <li>Proper hand positioning</li>
+                            <li>Scale and chord work</li>
+                            <li>Music composition</li>
+                            <li>Performance preparation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery" id="gallery">
+        <div class="container">
+            <!-- Authentication Required Message -->
+            <div class="auth-required" id="authRequired">
+                <div class="auth-card">
+                    <div class="auth-icon">🔒</div>
+                    <h3>Authenticad Parent Login</h3>
+                    <p>Your school will provide you with login credentials to see your little one ROCKING THE STAGE !</p>
+                    <button class="btn btn-primary" id="galleryLoginBtn">Sign In to View Gallery</button>
+                </div>
+            </div>
+            
+            <!-- Gallery Content (Hidden by default) -->
+            <div class="gallery-content hidden" id="galleryContent">
+                <!-- Gallery Filters -->
+                <div class="gallery-filters">
+                    <div class="filter-group">
+                        <label for="programFilter">Program:</label>
+                        <select id="programFilter" class="filter-select">
+                            <option value="all">All Programs</option>
+                            <option value="sports">Sports</option>
+                            <option value="dance">Dance</option>
+                            <option value="choir">Choir</option>
+                            <option value="percussion">Percussion</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="locationFilter">Location:</label>
+                        <select id="locationFilter" class="filter-select">
+                            <option value="all">All Locations</option>
+                            <option value="oakwood">Oakwood Elementary</option>
+                            <option value="riverside">Riverside School</option>
+                            <option value="maple-grove">Maple Grove Academy</option>
+                            <option value="sunset">Sunset Elementary</option>
+                            <option value="cedar-hills">Cedar Hills School</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="dateFilter">Date:</label>
+                        <select id="dateFilter" class="filter-select">
+                            <option value="all">All Dates</option>
+                            <option value="2024-fall">Fall 2024</option>
+                            <option value="2024-summer">Summer 2024</option>
+                            <option value="2024-spring">Spring 2024</option>
+                            <option value="2023-fall">Fall 2023</option>
+                        </select>
+                    </div>
+                    
+                    <button class="filter-reset" id="filterReset">Reset Filters</button>
+                </div>
+                
+                <!-- Gallery Grid -->
+                <div class="gallery-grid" id="galleryGrid">
+                    <!-- Sports Program Photos -->
+                    <div class="gallery-item" data-program="sports" data-location="oakwood" data-date="2024-fall">
+                        <img src="images/gallery/5.jpg" alt="Sports Program at Oakwood Elementary" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="gallery-info">
+                                <h4>Sports Program</h4>
+                                <p>Oakwood Elementary • Fall 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-program="sports" data-location="riverside" data-date="2024-summer">
+                        <img src="images/gallery/6.jpg" alt="Sports Program at Riverside School" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="gallery-info">
+                                <h4>Sports Program</h4>
+                                <p>Riverside School • Summer 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-program="sports" data-location="maple-grove" data-date="2024-spring">
+                        <img src="images/gallery/sports-maple-spring2024-1.jpg" alt="Sports Program at Maple Grove" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="gallery-info">
+                                <h4>Sports Program</h4>
+                                <p>Maple Grove Academy • Spring 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Dance Program Photos -->
+                    <div class="gallery-item" data-program="dance" data-location="sunset" data-date="2024-fall">
+                        <img src="images/gallery/dance-sunset-fall2024-1.jpg" alt="Dance Program at Sunset Elementary" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="gallery-info">
+                                <h4>Dance Program</h4>
+                                <p>Sunset Elementary • Fall 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-program="dance" data-location="cedar-hills" data-date="2024-summer">
+                        <img src="images/gallery/dance-cedar-summer2024-1.jpg" alt="Dance Program at Cedar Hills" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="gallery-info">
+                                <h4>Dance Program</h4>
+                                <p>Cedar Hills School • Summer 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-program="dance" data-location="oakwood" data-date="2024-spring">
+                        <img src="images/gallery/dance-oakwood-spring2024-1.jpg" alt="Dance Program at Oakwood Elementary" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="gallery-info">
+                                <h4>Dance Program</h4>
+                                <p>Oakwood Elementary • Spring 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Choir Program Photos -->
+                    <div class="gallery-item" data-program="choir" data-location="riverside" data-date="2024-fall">
+                        <img src="images/gallery/choir-riverside-fall2024-1.jpg" alt="Choir Program at Riverside School" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="gallery-info">
+                                <h4>Choir Program</h4>
+                                <p>Riverside School • Fall 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-program="choir" data-location="maple-grove" data-date="2024-summer">
+                        <img src="images/gallery/choir-maple-summer2024-1.jpg" alt="Choir Program at Maple Grove" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="gallery-info">
+                                <h4>Choir Program</h4>
+                                <p>Maple Grove Academy • Summer 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-program="choir" data-location="sunset" data-date="2023-fall">
+                        <img src="images/gallery/choir-sunset-fall2023-1.jpg" alt="Choir Program at Sunset Elementary" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="gallery-info">
+                                <h4>Choir Program</h4>
+                                <p>Sunset Elementary • Fall 2023</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Percussion Program Photos -->
+                    <div class="gallery-item" data-program="percussion" data-location="cedar-hills" data-date="2024-fall">
+                        <img src="images/gallery/percussion-cedar-fall2024-1.jpg" alt="Percussion Program at Cedar Hills" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="gallery-info">
+                                <h4>Percussion Program</h4>
+                                <p>Cedar Hills School • Fall 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-program="percussion" data-location="oakwood" data-date="2024-summer">
+                        <img src="images/gallery/percussion-oakwood-summer2024-1.jpg" alt="Percussion Program at Oakwood Elementary" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="gallery-info">
+                                <h4>Percussion Program</h4>
+                                <p>Oakwood Elementary • Summer 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-program="percussion" data-location="riverside" data-date="2024-spring">
+                        <img src="images/gallery/percussion-riverside-spring2024-1.jpg" alt="Percussion Program at Riverside School" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="gallery-info">
+                                <h4>Percussion Program</h4>
+                                <p>Riverside School • Spring 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mixed Program Photos -->
+                    <div class="gallery-item" data-program="sports" data-location="sunset" data-date="2024-summer">
+                        <img src="images/gallery/sports-sunset-summer2024-2.jpg" alt="Sports Program at Sunset Elementary" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="gallery-info">
+                                <h4>Sports Program</h4>
+                                <p>Sunset Elementary • Summer 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-program="dance" data-location="riverside" data-date="2023-fall">
+                        <img src="images/gallery/dance-riverside-fall2023-1.jpg" alt="Dance Program at Riverside School" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="gallery-info">
+                                <h4>Dance Program</h4>
+                                <p>Riverside School • Fall 2023</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-program="choir" data-location="cedar-hills" data-date="2024-spring">
+                        <img src="images/gallery/choir-cedar-spring2024-1.jpg" alt="Choir Program at Cedar Hills" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="gallery-info">
+                                <h4>Choir Program</h4>
+                                <p>Cedar Hills School • Spring 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-program="percussion" data-location="maple-grove" data-date="2023-fall">
+                        <img src="images/gallery/percussion-maple-fall2023-1.jpg" alt="Percussion Program at Maple Grove" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="gallery-info">
+                                <h4>Percussion Program</h4>
+                                <p>Maple Grove Academy • Fall 2023</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Gallery Stats -->
+                <div class="gallery-stats">
+                    <div class="stats-item">
+                        <span class="stats-number" id="totalPhotos">16</span>
+                        <span class="stats-label">Total Photos</span>
+                    </div>
+                    <div class="stats-item">
+                        <span class="stats-number" id="filteredPhotos">16</span>
+                        <span class="stats-label">Showing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Sign In to CSA Gallery</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="login-form" id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full" id="loginSubmit">Sign In</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal-overlay" id="registerModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Create CSA Account</h3>
+                <button class="modal-close" id="registerModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="register-form" id="registerForm">
+                    <div class="form-group">
+                        <label for="registerName">Full Name</label>
+                        <input type="text" id="registerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email Address</label>
+                        <input type="email" id="registerEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+                </form>
+                
+                <div class="auth-links">
+                    <p>Already have an account? <a href="#" id="showLogin">Sign in here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <!-- About/Stats Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 class="section-title">Why Schools Choose CSA</h2>
+                    <p class="about-description">
+                        For over a decade, we've partnered with elementary schools to deliver exceptional sports and music programs. Our experienced instructors, proven curricula, and comprehensive support make implementation seamless for administrators and rewarding for students.
+                    </p>
+                    <div class="about-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">✓</div>
+                            <div class="feature-text">
+                                <h4>Expert Instructors</h4>
+                                <p>Certified professionals with elementary education experience</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">✓</div>
+                            <div class="feature-text">
+                                <h4>Proven Curriculum</h4>
+                                <p>Evidence-based programs aligned with educational standards</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">✓</div>
+                            <div class="feature-text">
+                                <h4>Full Support</h4>
+                                <p>Complete implementation and ongoing program management</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" data-count="2500">0</div>
+                        <div class="stat-label">Students Served</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-count="85">0</div>
+                        <div class="stat-label">School Partners</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-count="12">0</div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-count="97">0</div>
+                        <div class="stat-label">% Satisfaction</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">What Educators Say</h2>
+                <p class="section-subtitle">Hear from school leaders who have transformed their programs with CSA</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p class="testimonial-text">
+                            "CSA's programs have completely transformed our approach to PE and music education. Student engagement is at an all-time high, and we've seen measurable improvements in both academic performance and school culture."
+                        </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="images/testimonial-1.jpg" alt="Sarah Martinez" loading="lazy">
+                        </div>
+                        <div class="author-info">
+                            <h4 class="author-name">Sarah Martinez</h4>
+                            <p class="author-title">Principal, Oakwood Elementary</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p class="testimonial-text">
+                            "The quality of instruction and curriculum is exceptional. Our teachers appreciate the professional development opportunities, and parents consistently praise the program's impact on their children."
+                        </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="images/testimonial-2.jpg" alt="Michael Chen" loading="lazy">
+                        </div>
+                        <div class="author-info">
+                            <h4 class="author-name">Michael Chen</h4>
+                            <p class="author-title">PE Coordinator, Riverside District</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p class="testimonial-text">
+                            "Implementation was seamless, and the ongoing support is outstanding. CSA makes it easy for administrators to provide high-quality programs without the typical headaches of program management."
+                        </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="images/testimonial-3.jpg" alt="Jennifer Walsh" loading="lazy">
+                        </div>
+                        <div class="author-info">
+                            <h4 class="author-name">Jennifer Walsh</h4>
+                            <p class="author-title">Assistant Principal, Maple Grove</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h2 class="section-title">Ready to Get Started?</h2>
+                    <p class="contact-description">
+                        Join the growing community of schools providing exceptional sports and music programs. Contact us to learn how CSA can enhance your educational offerings.
+                    </p>
+                    
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">📞</div>
+                            <div class="contact-text">
+                                <h4>Phone</h4>
+                                <p>(555) 123-4567</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">✉️</div>
+                            <div class="contact-text">
+                                <h4>Email</h4>
+                                <p>info@csaprograms.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">🌍</div>
+                            <div class="contact-text">
+                                <h4>Service Area</h4>
+                                <p>Nationwide Elementary Schools</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form-container">
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-header">
+                            <h3>Request Information</h3>
+                            <p>Tell us about your school's needs</p>
+                        </div>
+                        
+                        <div class="educator-check">
+                            <label for="educatorRole">Are you an educator or administrator?</label>
+                            <select id="educatorRole" name="educatorRole" required>
+                                <option value="">Please select</option>
+                                <option value="yes">Yes, I work in education</option>
+                                <option value="no">No, I do not work in education</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-fields" id="formFields">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName">First Name *</label>
+                                    <input type="text" id="firstName" name="firstName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name *</label>
+                                    <input type="text" id="lastName" name="lastName" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="email">Email Address *</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" name="phone">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="school">School/District Name *</label>
+                                    <input type="text" id="school" name="school" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="position">Your Position *</label>
+                                    <select id="position" name="position" required>
+                                        <option value="">Select position</option>
+                                        <option value="principal">Principal</option>
+                                        <option value="assistant-principal">Assistant Principal</option>
+                                        <option value="pe-coordinator">PE Coordinator</option>
+                                        <option value="music-coordinator">Music Coordinator</option>
+                                        <option value="program-director">Program Director</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="programs">Programs of Interest</label>
+                                <select id="programs" name="programs">
+                                    <option value="">Select programs</option>
+                                    <option value="sports">Sports Programs</option>
+                                    <option value="dance">Dance Programs</option>
+                                    <option value="choir">Choir Programs</option>
+                                    <option value="percussion">Percussion Programs</option>
+                                    <option value="multiple">Multiple Programs</option>
+                                    <option value="all">All Programs</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" name="message" rows="4" placeholder="Tell us about your school's goals and how we can help..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-full">Send Message</button>
+                        </div>
+                        
+                        <div class="non-educator-message" id="nonEducatorMessage">
+                            <div class="message-content">
+                                <h4>Thank You for Your Interest!</h4>
+                                <p>Our programs are designed specifically for elementary schools and educational institutions. If you're a parent interested in these programs, please contact your child's school administration to inquire about partnering with CSA.</p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+   <div class="logo">
+       <img src="images/logo.png" alt="CSA Logo" class="logo-image">
+   </div>
+</div>
+                
+                <div class="footer-section">
+                    <h4>Programs</h4>
+                    <ul class="footer-links">
+                        <li><a href="#programs">Sports Programs</a></li>
+                        <li><a href="#programs">Dance Programs</a></li>
+                        <li><a href="#programs">Choir Programs</a></li>
+                        <li><a href="#programs">Percussion Programs</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>For Schools</h4>
+                    <ul class="footer-links">
+                        <li><a href="#about">Why Choose CSA</a></li>
+                        <li><a href="#testimonials">Success Stories</a></li>
+                        <li><a href="#contact">Get Started</a></li>
+                        <li><a href="#contact">Schedule Demo</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="footer-links">
+                        <li>Phone: (555) 123-4567</li>
+                        <li>Email: info@csaprograms.com</li>
+                        <li>Serving Schools Nationwide</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Community Sports & Arts. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div class="notification-content">
+            <span class="notification-text" id="notificationText"></span>
+            <button class="notification-close" id="notificationClose">&times;</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="loader.js"></script>
+<script type="module" src="main.js"></script>
+<script src="parallax.js"></script>
+<script src="scroll-to-top.js"></script>
+
+
+
+</body>
+</html>
