@@ -970,9 +970,616 @@
     </div>
 
     <!-- Scripts -->
-<script src="./loader.js"></script>
-<script type="module" src="./main.js"></script>
-<script src="./parallax.js"></script>
+<!-- Loader Script -->
+<script>
+// ULTRA-OPTIMIZED BUTTERY SMOOTH LOADER - MAXIMUM PERFORMANCE WITH PERFECT POSITIONING
+(function() {
+    'use strict';
+    
+    let progressValue = 0;
+    let targetProgress = 0;
+    let animationId;
+    let hasStarted = false;
+    let isComplete = false;
+    let originalScrollPosition = 0;
+    
+    // High-performance variables
+    let lastFrameTime = 0;
+    let progressBar, progressRing, companyText, progressContainer;
+    const circumference = 2 * Math.PI * 150;
+    
+    // Ultra-fast scroll prevention
+    function preventScrolling() {
+        originalScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Safely add classes and styles
+        if (document.documentElement) {
+            document.documentElement.classList.add('loading-active');
+        }
+        if (document.body) {
+            document.body.classList.add('loading-active');
+            document.body.style.top = `-${originalScrollPosition}px`;
+        }
+        
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        
+        document.addEventListener('wheel', preventScroll, { passive: false });
+        document.addEventListener('touchmove', preventScroll, { passive: false });
+        document.addEventListener('keydown', preventScrollKeys, { passive: false });
+    }
+    
+    function allowScrolling() {
+        if (document.documentElement) {
+            document.documentElement.classList.remove('loading-active');
+        }
+        if (document.body) {
+            document.body.classList.remove('loading-active');
+            document.body.style.top = '';
+        }
+        
+        window.scrollTo(0, originalScrollPosition);
+        
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'auto';
+        }
+        
+        document.removeEventListener('wheel', preventScroll);
+        document.removeEventListener('touchmove', preventScroll);
+        document.removeEventListener('keydown', preventScrollKeys);
+    }
+    
+    function preventScroll(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
+    
+    function preventScrollKeys(e) {
+        const scrollKeys = [32, 33, 34, 35, 36, 37, 38, 39, 40];
+        if (scrollKeys.includes(e.keyCode)) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+    }
+    
+    // PRECISE HERO POSITIONING
+    function getHeroPosition() {
+        const actualHeroLogo = document.querySelector('.hero-logo');
+        if (actualHeroLogo) {
+            const rect = actualHeroLogo.getBoundingClientRect();
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            return {
+                top: rect.top + scrollTop + (rect.height / 2),
+                left: rect.left + (rect.width / 2)
+            };
+        }
+        return {
+            top: window.innerHeight / 2,
+            left: window.innerWidth / 2
+        };
+    }
+    
+    // LIGHTNING-FAST progress animation with 60fps smoothness
+    function updateProgressInstant(newTarget) {
+        targetProgress = newTarget;
+        
+        if (!animationId) {
+            animationId = requestAnimationFrame(ultraSmoothProgress);
+        }
+    }
+    
+    function ultraSmoothProgress(currentTime) {
+        if (currentTime - lastFrameTime < 16.67) { // 60fps cap
+            animationId = requestAnimationFrame(ultraSmoothProgress);
+            return;
+        }
+        lastFrameTime = currentTime;
+        
+        // ULTRA-FAST interpolation - catches up in 8 frames max
+        const diff = targetProgress - progressValue;
+        const speed = Math.abs(diff) > 20 ? 0.25 : 0.15; // Faster for big jumps
+        
+        progressValue += diff * speed;
+        
+        // Lightning-fast progress bar update
+        if (progressBar) {
+            const offset = circumference - (progressValue / 100) * circumference;
+            progressBar.style.strokeDashoffset = offset;
+        }
+        
+        // Continue animation if not at target
+        if (Math.abs(diff) > 0.1) {
+            animationId = requestAnimationFrame(ultraSmoothProgress);
+        } else {
+            progressValue = targetProgress;
+            animationId = null;
+            
+            // Trigger emissive instantly at 100%
+            if (targetProgress >= 100) {
+                triggerEmissiveInstant();
+            }
+        }
+    }
+    
+    // Create dynamic lightning success effect
+    function createSuccessLightning() {
+        const lightning = document.createElement('div');
+        lightning.className = 'success-lightning';
+        lightning.innerHTML = `
+            <div class="lightning-flash"></div>
+            <div class="lightning-particles"></div>
+            <div class="success-pulse"></div>
+        `;
+        if (progressContainer) {
+            progressContainer.appendChild(lightning);
+            setTimeout(() => lightning.classList.add('active'), 50);
+        }
+        return lightning;
+    }
+    
+    // INSTANT emissive state activation with success effects
+    function triggerEmissiveInstant() {
+        if (!progressBar || !progressContainer) return;
+        
+        // Immediate emissive activation
+        progressBar.classList.add('emissive', 'success-mode');
+        progressContainer.classList.add('emissive', 'success-active');
+        
+        // Add success ring animation
+        if (progressRing) {
+            progressRing.classList.remove('animating');
+            progressRing.classList.add('success-complete');
+        }
+        
+        // Create lightning effect
+        const lightning = createSuccessLightning();
+        
+        // Fast text reveal - starts immediately
+        if (companyText) {
+            companyText.style.animation = 'ultraFastReveal 600ms cubic-bezier(0.19, 1, 0.22, 1) forwards';
+            companyText.style.opacity = '1';
+            
+            // Quick glow activation
+            setTimeout(() => {
+                companyText.classList.add('glow-active');
+            }, 200);
+        }
+        
+        // Fast exit sequence - much shorter duration
+        setTimeout(() => {
+            startFastExit();
+            // Clean up lightning effect
+            if (lightning && lightning.parentNode) {
+                lightning.parentNode.removeChild(lightning);
+            }
+        }, 1500); // Reduced from 2800ms
+    }
+    
+    // LIGHTNING-FAST exit sequence with perfect positioning
+    function startFastExit() {
+        // Instant text fade
+        if (companyText) {
+            companyText.classList.remove('glow-active');
+            companyText.style.animation = 'ultraFastExit 400ms cubic-bezier(0.19, 1, 0.22, 1) forwards';
+        }
+        
+        // Instant progress fade
+        setTimeout(() => {
+            if (progressBar && progressContainer) {
+                progressBar.style.transition = 'opacity 300ms cubic-bezier(0.19, 1, 0.22, 1)';
+                progressContainer.style.transition = 'opacity 300ms cubic-bezier(0.19, 1, 0.22, 1)';
+                progressBar.style.opacity = '0';
+                progressContainer.style.opacity = '0';
+            }
+        }, 100);
+        
+        // Fast completion
+        setTimeout(() => {
+            completeLoadingInstant();
+        }, 300);
+    }
+    
+    // INSTANT completion with precise hero positioning
+    function completeLoadingInstant() {
+        if (isComplete) return;
+        isComplete = true;
+        
+        const loader = document.getElementById('loader');
+        const loaderHeroLogo = document.getElementById('loaderHeroLogo');
+        
+        // PERFECT POSITIONING - Get hero position and apply precise scaling
+        if (loaderHeroLogo) {
+            const heroPos = getHeroPosition();
+            
+            // Apply the perfect positioning and scaling
+            loaderHeroLogo.style.top = heroPos.top + 'px';
+            loaderHeroLogo.style.left = heroPos.left + 'px';
+            loaderHeroLogo.style.transform = 'translate(-50%, -50%) scale(1.03)';
+            loaderHeroLogo.style.transition = 'all 300ms cubic-bezier(0.19, 1, 0.22, 1)';
+            loaderHeroLogo.classList.add('success-transition');
+            loaderHeroLogo.classList.add('move-to-position');
+        }
+        
+        // Instant final fade
+        setTimeout(() => {
+            if (loader) {
+                loader.style.transition = 'opacity 600ms cubic-bezier(0.19, 1, 0.22, 1)';
+                loader.classList.add('fade-out');
+                
+                setTimeout(() => {
+                    if (loader && loader.parentNode) {
+                        loader.parentNode.removeChild(loader);
+                    }
+                    allowScrolling();
+                }, 600);
+            }
+        }, 150);
+    }
+    
+    // OPTIMIZED initialization - cache elements immediately
+    function initializeUltraFast() {
+        preventScrolling();
+        
+        // Cache all elements for performance
+        progressBar = document.querySelector('.progress-bar');
+        progressRing = document.querySelector('.progress-ring');
+        companyText = document.querySelector('.company-name-text');
+        progressContainer = document.querySelector('.progress-container');
+        const loaderHeroLogo = document.getElementById('loaderHeroLogo');
+        
+        // Setup progress bar for maximum performance
+        if (progressBar) {
+            progressBar.style.strokeDasharray = circumference;
+            progressBar.style.strokeDashoffset = circumference;
+            progressBar.style.willChange = 'stroke-dashoffset';
+        }
+        
+        // Instant logo appearance
+        if (loaderHeroLogo) {
+            setTimeout(() => {
+                loaderHeroLogo.style.transition = 'all 400ms cubic-bezier(0.19, 1, 0.22, 1)';
+                loaderHeroLogo.classList.add('animate-in');
+            }, 100);
+        }
+        
+        // Start progress ring animation immediately
+        if (progressRing) {
+            hasStarted = true;
+            progressRing.classList.add('animating');
+            
+            // Add vibrant mode for color cycling
+            if (progressBar) {
+                progressBar.classList.add('vibrant-mode');
+            }
+        }
+        
+        // Show company text during progress - faster timing
+        setTimeout(() => {
+            if (companyText) {
+                companyText.style.animation = 'dramaticReveal 1.8s ease-out forwards';
+            }
+        }, 300);
+        
+        // AGGRESSIVE loading sequence - much faster progression
+        const fastSteps = [
+            { progress: 25, delay: 200 },
+            { progress: 50, delay: 400 },
+            { progress: 75, delay: 600 },
+            { progress: 95, delay: 800 },
+            { progress: 100, delay: 1000 }
+        ];
+        
+        fastSteps.forEach(step => {
+            setTimeout(() => {
+                updateProgressInstant(step.progress);
+            }, step.delay);
+        });
+    }
+    
+    // Wait for body to exist before initializing
+    function waitForBodyAndInit() {
+        if (document.body) {
+            initializeUltraFast();
+        } else {
+            setTimeout(waitForBodyAndInit, 10);
+        }
+    }
+    
+    // Initialize when ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', waitForBodyAndInit);
+    } else {
+        waitForBodyAndInit();
+    }
+    
+    // Emergency bailout
+    setTimeout(() => {
+        if (!isComplete) {
+            completeLoadingInstant();
+        }
+    }, 4000);
+    
+    // Handle visibility
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden && !isComplete) {
+            setTimeout(completeLoadingInstant, 50);
+        }
+    });
+    
+})();
+</script>
+
+<!-- Main Script (keep as module) -->
+<script type="module" src="main.js"></script>
+
+<!-- Parallax Script -->
+<script>
+// parallax.js
+(function() {
+    'use strict';
+    
+    let stickyApplied = false;
+    let isNavigatingHome = false;
+    
+    function startParallax() {
+        console.log('Starting parallax animation...');
+        
+        const hero = document.getElementById('home');
+        const programs = document.getElementById('programs');
+        
+        if (!hero) {
+            console.error('Hero section with ID "home" not found');
+            return;
+        }
+        
+        if (!programs) {
+            console.error('Programs section with ID "programs" not found');
+            return;
+        }
+        
+        console.log('Elements found, setting up parallax...');
+        
+        // Set initial hero positioning - start as sticky to prevent jitter
+        hero.style.position = 'sticky';
+        hero.style.top = '0';
+        hero.style.zIndex = '1';
+        stickyApplied = true;
+        
+        // Ensure programs section overlays properly
+        programs.style.position = 'relative';
+        programs.style.zIndex = '10';
+        programs.style.backgroundColor = '#f8f9fa';
+        programs.style.borderRadius = '24px 24px 0 0';
+        programs.style.boxShadow = '0 -20px 40px rgba(0, 0, 0, 0.1)';
+        programs.style.marginTop = '-1px';
+        
+        // Ensure all sections after programs are visible
+        const sectionsAfterPrograms = ['gallery', 'about', 'testimonials', 'contact'];
+        sectionsAfterPrograms.forEach(sectionId => {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.style.position = 'relative';
+                section.style.zIndex = '10';
+            }
+        });
+        
+        const footer = document.querySelector('.footer');
+        if (footer) {
+            footer.style.position = 'relative';
+            footer.style.zIndex = '10';
+        }
+        
+        function resetHeroToNormal() {
+            hero.style.position = 'relative';
+            hero.style.top = '';
+            hero.style.zIndex = '';
+            stickyApplied = false;
+            
+            // Reset all parallax effects
+            const elementsToReset = [
+                hero.querySelector('.hero-content'),
+                hero.querySelector('.hero-video'),
+                hero.querySelector('.hero-logo'),
+                hero.querySelector('.hero-actions'),
+                hero.querySelector('.hero-text-container'),
+                hero.querySelector('.scroll-indicator'),
+                hero.querySelector('.hero-overlay')
+            ];
+            
+            elementsToReset.forEach(element => {
+                if (element) {
+                    element.style.opacity = '';
+                    element.style.transform = '';
+                    element.style.filter = '';
+                    element.style.backgroundColor = '';
+                    element.style.transition = '';
+                }
+            });
+        }
+        
+        function applyParallax() {
+            const scrollY = window.pageYOffset || (document.documentElement ? document.documentElement.scrollTop : 0);
+            const windowHeight = window.innerHeight;
+            
+            // Don't do anything if we're navigating home
+            if (isNavigatingHome) {
+                return;
+            }
+            
+            // Only reset to relative when at the very top (prevents jitter)
+            if (scrollY <= 2 && stickyApplied) {
+                hero.style.position = 'relative';
+                hero.style.top = '';
+                stickyApplied = false;
+                console.log('At top - reset to relative positioning');
+                return;
+            }
+            
+            // Apply sticky positioning when scrolling (but prevent re-applying if already sticky)
+            if (scrollY > 2 && !stickyApplied) {
+                hero.style.position = 'sticky';
+                hero.style.top = '0';
+                hero.style.zIndex = '1';
+                stickyApplied = true;
+                console.log('Sticky positioning applied at scroll:', scrollY);
+            }
+            
+            // Apply parallax effects only if sticky is active and we have some scroll
+            if (stickyApplied && scrollY > 10) {
+                const startTrigger = windowHeight * 0.1;
+                const endTrigger = windowHeight * 1.2;
+                const progress = Math.max(0, Math.min(1, (scrollY - startTrigger) / (endTrigger - startTrigger)));
+                const easedProgress = easeOutCubic(progress);
+                
+                if (progress > 0) {
+                    // Apply effects to all hero elements - NO MOVEMENT, only fade and scale
+                    const heroContent = hero.querySelector('.hero-content');
+                    const heroVideo = hero.querySelector('.hero-video');
+                    const heroLogo = hero.querySelector('.hero-logo');
+                    const heroActions = hero.querySelector('.hero-actions');
+                    const heroTextContainer = hero.querySelector('.hero-text-container');
+                    const scrollIndicator = hero.querySelector('.scroll-indicator');
+                    const heroOverlay = hero.querySelector('.hero-overlay');
+                    
+                    if (heroContent) {
+                        // Don't apply opacity to preserve child backdrop-filter effects
+                        const scale = 1 - (easedProgress * 0.02);
+                        heroContent.style.transform = `scale(${scale})`;
+                        heroContent.style.transition = 'none';
+                    }
+                    
+                    if (heroVideo) {
+                        const scale = 1 + (easedProgress * 0.03);
+                        const opacity = 1 - (easedProgress * 0.3);
+                        heroVideo.style.transform = `scale(${scale})`;
+                        heroVideo.style.opacity = opacity;
+                        heroVideo.style.transition = 'none';
+                    }
+                    
+                    if (heroLogo) {
+                        const opacity = 1 - easedProgress;
+                        const scale = 1 - (easedProgress * 0.03);
+                        heroLogo.style.opacity = opacity;
+                        heroLogo.style.transform = `scale(${scale})`;
+                        heroLogo.style.transition = 'none';
+                    }
+                    
+                    if (heroActions) {
+                        const opacity = 1 - easedProgress;
+                        const scale = 1 - (easedProgress * 0.02);
+                        heroActions.style.opacity = opacity;
+                        heroActions.style.transform = `scale(${scale})`;
+                        heroActions.style.transition = 'none';
+                    }
+                    
+                    if (heroTextContainer) {
+                        // Don't apply opacity to preserve backdrop-filter blur effect
+                        const scale = 1 - (easedProgress * 0.01);
+                        heroTextContainer.style.transform = `scale(${scale})`;
+                        heroTextContainer.style.transition = 'none';
+                    }
+                    
+                    if (scrollIndicator) {
+                        const opacity = 1 - (easedProgress * 1.5);
+                        const scale = 1 - (easedProgress * 0.05);
+                        scrollIndicator.style.opacity = Math.max(0, opacity);
+                        scrollIndicator.style.transform = `translateX(-50%) scale(${scale})`;
+                        scrollIndicator.style.transition = 'none';
+                    }
+                    
+                    if (heroOverlay) {
+                        const overlayOpacity = 0.5 + (easedProgress * 0.3);
+                        heroOverlay.style.backgroundColor = `rgba(0, 0, 0, ${overlayOpacity})`;
+                        heroOverlay.style.transition = 'none';
+                    }
+                }
+            }
+        }
+        
+        function easeOutCubic(t) {
+            return 1 - Math.pow(1 - t, 3);
+        }
+        
+        let ticking = false;
+        
+        function onScroll() {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    applyParallax();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+        
+        window.addEventListener('scroll', onScroll, { passive: true });
+        
+        // Handle Home navigation specially
+        document.addEventListener('click', (e) => {
+            const navLink = e.target.closest('a[href^="#"]');
+            if (navLink) {
+                const targetId = navLink.getAttribute('href');
+                
+                if (targetId === '#home') {
+                    console.log('Home navigation clicked');
+                    isNavigatingHome = true;
+                    
+                    // Immediately reset everything
+                    resetHeroToNormal();
+                    
+                    // Override the smooth scroll behavior for home
+                    e.preventDefault();
+                    
+                    // Scroll to top immediately
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Re-enable parallax after scroll completes
+                    setTimeout(() => {
+                        isNavigatingHome = false;
+                        console.log('Home navigation complete - parallax re-enabled');
+                        // Force immediate check
+                        applyParallax();
+                    }, 1000);
+                }
+            }
+        });
+        
+        // Initial call
+        applyParallax();
+        
+        console.log('Parallax animation setup complete');
+    }
+    
+    // Wait for elements to exist before initializing
+    function waitForElementsAndInit() {
+        const hero = document.getElementById('home');
+        const programs = document.getElementById('programs');
+        
+        if (hero && programs) {
+            startParallax();
+        } else {
+            setTimeout(waitForElementsAndInit, 100);
+        }
+    }
+    
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', waitForElementsAndInit);
+    } else {
+        waitForElementsAndInit();
+    }
+    
+    // Backup initialization
+    setTimeout(waitForElementsAndInit, 1000);
+    
+})();
+</script>
 
 
 </body>
