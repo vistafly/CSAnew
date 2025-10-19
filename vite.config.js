@@ -1,18 +1,23 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  // Vite automatically loads .env files and exposes VITE_ prefixed variables
-  // No additional configuration needed for environment variables
+  // Set base path for GitHub Pages (replace 'your-repo-name' with actual repo name)
+  base: '/your-repo-name/',
   
-  // Optional: Configure the development server
   server: {
     port: 3000,
-    open: true // Automatically open browser
+    open: true
   },
   
-  // Optional: Configure build output
   build: {
     outDir: 'dist',
-    sourcemap: true
+    sourcemap: true,
+    // Ensure proper asset handling
+    assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      }
+    }
   }
 })
