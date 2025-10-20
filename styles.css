@@ -1112,8 +1112,8 @@ body.loading .hero-logo {
 
 
 .hero-logo {
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: auto;
     margin: 0 auto 24px;
     position: relative;
     border-radius: 50%;
@@ -1124,11 +1124,11 @@ body.loading .hero-logo {
 
 /* Hero Logo Fix */
 .hero-logo-image {
-    width: 103%;
-    height: 108%;
+    width: 102%;
+    height: auto;
     object-fit: none;      /* No fitting constraints */
     object-position: center;
-    transform: scale(2.5); /* Scale up by 20% */
+    transform: scale(2.4); /* Scale up by 20% */
     display: none;
 }
 
@@ -1154,6 +1154,8 @@ body.loading .hero-logo {
 @media (max-width: 768px) {
     .hero-logo {
         margin-bottom: 1.4rem;
+        width: 270px;
+        height: auto;
     }
     }
 /* Hide fallback only when image successfully loads */

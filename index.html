@@ -2538,7 +2538,7 @@ if (typeof showNotification === 'undefined') {
             video.style.width = '100vw';
             video.style.height = '100vh';
             video.style.transform = 'none';
-            video.style.zIndex = isActive ? '1' : '-1';
+            video.style.zIndex = isActive ? '1' : '0';
         } else {
             video.style.position = 'absolute';
             video.style.top = '50%';
@@ -2606,8 +2606,9 @@ if (typeof showNotification === 'undefined') {
                 applyVideoStyles(video, video.classList.contains('active'));
             });
             
-            video.addEventListener('error', () => {
-                console.warn(`Video error for ${videoFile}`);
+            // Enhanced error handling for mobile
+            video.addEventListener('error', (e) => {
+                console.warn(`Video error for ${videoFile}:`, e);
                 setTimeout(() => {
                     if (video.classList.contains('active')) {
                         video.load();
@@ -2615,6 +2616,24 @@ if (typeof showNotification === 'undefined') {
                     }
                 }, 1000);
             });
+            
+            // Mobile-specific play monitoring
+            if (isMobile()) {
+                video.addEventListener('pause', () => {
+                    if (video.classList.contains('active') && !isProcessingSwitch) {
+                        setTimeout(() => {
+                            video.play().catch(() => {});
+                        }, 100);
+                    }
+                });
+                
+                video.addEventListener('stalled', () => {
+                    if (video.classList.contains('active')) {
+                        video.load();
+                        video.play().catch(() => {});
+                    }
+                });
+            }
         });
         
         // Start first video
@@ -2673,7 +2692,7 @@ if (typeof showNotification === 'undefined') {
             } else {
                 // Mobile: Add visual indication that buttons are disabled
                 indicator.style.pointerEvents = 'none';
-                indicator.style.opacity = index === currentVideoIndex ? '1' : '0.4';
+                indicator.style.cursor = 'default';
             }
             
             videoControls.appendChild(indicator);
@@ -2730,11 +2749,6 @@ if (typeof showNotification === 'undefined') {
             videos.forEach((video, index) => {
                 applyVideoStyles(video, index === currentVideoIndex);
             });
-            
-            // Re-create indicators if mobile status changed
-            if (validVideos.length > 1) {
-                createIndicators();
-            }
         });
         
         window.addEventListener('orientationchange', () => {
@@ -2742,11 +2756,6 @@ if (typeof showNotification === 'undefined') {
                 videos.forEach((video, index) => {
                     applyVideoStyles(video, index === currentVideoIndex);
                 });
-                
-                // Re-create indicators after orientation change
-                if (validVideos.length > 1) {
-                    createIndicators();
-                }
             }, 100);
         });
         
@@ -2887,11 +2896,7 @@ if (typeof showNotification === 'undefined') {
                 indicator.style.transform = 'scale(1)';
             } else {
                 indicator.classList.remove('active');
-                if (isMobile()) {
-                    indicator.style.opacity = '0.4'; // More faded on mobile to show they're disabled
-                } else {
-                    indicator.style.opacity = '0.6';
-                }
+                indicator.style.opacity = isMobile() ? '0.4' : '0.6';
                 indicator.style.transform = 'scale(1)';
             }
         });
