@@ -2772,17 +2772,17 @@ if (typeof showNotification === 'undefined') {
         clearTimeout(autoPlayTimer);
         autoPlayTimer = setTimeout(() => {
             if (!isPaused) {
-                queueVideoSwitch((currentVideoIndex + 1) % validVideos.length);
+                queueVideoSwitch((currentVideoIndex + 1) % validVideos.length, true); // Mark as auto-play
             }
         }, CONFIG.videoDuration);
     }
     
     // QUEUE SYSTEM - Prevents all glitches by processing switches one at a time
-    function queueVideoSwitch(newIndex) {
+    function queueVideoSwitch(newIndex, isAutoPlay = false) {
         if (newIndex === currentVideoIndex || newIndex >= validVideos.length || newIndex < 0) return;
         
         // Block manual switches on mobile (only allow auto-play)
-        if (isMobile() && !isPaused) {
+        if (isMobile() && !isAutoPlay) {
             return;
         }
         
