@@ -2818,6 +2818,144 @@ if (typeof showNotification === 'undefined') {
     init();
     
 })();
+// Mobile Video Position Fix - Add this after your video cycling script
+(function() {
+    'use strict';
+    
+    function isMobile() {
+        return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+    
+    function fixMobileVideoPosition() {
+        const videos = document.querySelectorAll('.hero-video');
+        const hero = document.querySelector('.hero');
+        
+        if (isMobile()) {
+            // Fix video positioning on mobile
+            videos.forEach(video => {
+                video.style.position = 'fixed';
+                video.style.top = '0';
+                video.style.left = '0';
+                video.style.transform = 'none';
+                video.style.width = '100vw';
+                video.style.height = '100vh';
+                video.style.zIndex = '-1';
+                video.style.objectFit = 'cover';
+            });
+            
+            // Ensure hero doesn't interfere
+            if (hero) {
+                hero.style.position = 'relative';
+                hero.style.zIndex = '1';
+            }
+            
+            // Force repaint to fix disappearing elements
+            const contact = document.querySelector('.contact');
+            const footer = document.querySelector('.footer');
+            
+            if (contact) {
+                contact.style.transform = 'translateZ(0)';
+                contact.style.isolation = 'isolate';
+            }
+            
+            if (footer) {
+                footer.style.transform = 'translateZ(0)';
+                footer.style.isolation = 'isolate';
+            }
+            
+        } else {
+            // Desktop behavior - allow controlled bleed through
+            videos.forEach(video => {
+                video.style.position = 'absolute';
+                video.style.top = '50%';
+                video.style.left = '50%';
+                video.style.transform = 'translate(-50%, -50%)';
+                video.style.width = 'auto';
+                video.style.height = 'auto';
+                video.style.minWidth = '100%';
+                video.style.minHeight = '100%';
+                video.style.zIndex = '1';
+            });
+            
+            if (hero) {
+                hero.style.position = 'sticky';
+                hero.style.zIndex = '1';
+            }
+        }
+    }
+    
+    // Fix video positioning when videos are created
+    function observeVideoChanges() {
+        const videoContainer = document.getElementById('videoContainer');
+        if (!videoContainer) return;
+        
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'childList') {
+                    mutation.addedNodes.forEach((node) => {
+                        if (node.nodeType === 1 && (node.tagName === 'VIDEO' || node.classList.contains('hero-video'))) {
+                            setTimeout(fixMobileVideoPosition, 100);
+                        }
+                    });
+                }
+            });
+        });
+        
+        observer.observe(videoContainer, {
+            childList: true,
+            subtree: true
+        });
+    }
+    
+    // Initialize fixes
+    function initMobileFixes() {
+        fixMobileVideoPosition();
+        observeVideoChanges();
+        
+        // Fix on resize
+        window.addEventListener('resize', () => {
+            setTimeout(fixMobileVideoPosition, 100);
+        });
+        
+        // Fix on orientation change
+        window.addEventListener('orientationchange', () => {
+            setTimeout(fixMobileVideoPosition, 500);
+        });
+        
+        // Periodic fix for mobile issues
+        if (isMobile()) {
+            setInterval(() => {
+                const contact = document.querySelector('.contact');
+                const footer = document.querySelector('.footer');
+                
+                // Check if elements are disappearing and force visibility
+                if (contact && contact.style.display === 'none') {
+                    contact.style.display = 'block';
+                    contact.style.visibility = 'visible';
+                }
+                
+                if (footer && footer.style.display === 'none') {
+                    footer.style.display = 'block';
+                    footer.style.visibility = 'visible';
+                }
+            }, 1000);
+        }
+    }
+    
+    // Wait for video system to initialize
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(initMobileFixes, 500);
+        });
+    } else {
+        setTimeout(initMobileFixes, 500);
+    }
+    
+    // Backup initialization
+    setTimeout(initMobileFixes, 2000);
+    
+})();
 </script>
+
 </body>
 </html>

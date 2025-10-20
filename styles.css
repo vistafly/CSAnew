@@ -2162,7 +2162,160 @@ body.loading .hero-logo {
     color: #856404;
     line-height: 1.6;
 }
+/* Video Bleed Through Fix - Controlled Video Background */
 
+/* Make footer semi-transparent to show video intentionally */
+.footer {
+    background: rgb(24, 24, 24) !important; /* Semi-transparent dark background */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    position: relative;
+    z-index: 5; /* Lower than contact but higher than video */
+}
+
+/* Keep contact section solid */
+.contact {
+    background-color: #f8f9fa !important;
+    position: relative;
+    z-index: 10; /* Above video and footer */
+    margin-bottom: 0; /* Remove gap between contact and footer */
+}
+
+/* Ensure proper video containment */
+.hero {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    z-index: 1; /* Lowest - video shows through footer but not contact */
+}
+
+.video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.hero-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    z-index: 1;
+}
+
+/* Fix mobile issues specifically */
+@media (max-width: 768px) {
+    
+    /* Prevent video position bugs on mobile */
+    .hero-video {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        object-fit: cover;
+        z-index: -1 !important; /* Behind everything on mobile */
+    }
+    
+    /* Ensure hero section doesn't interfere on mobile */
+    .hero {
+        position: relative !important;
+        height: 100vh;
+        z-index: 1;
+    }
+    
+    /* Make all content sections solid on mobile */
+    .programs,
+    .about,
+    .gallery,
+    .testimonials,
+    .contact {
+        background-color: #fff !important;
+        position: relative;
+        z-index: 10;
+    }
+    
+    /* Footer stays semi-transparent on mobile too */
+    .footer {
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        position: relative;
+        z-index: 8;
+    }
+    
+    /* Prevent contact form from being affected */
+    .contact-form,
+    .contact-info {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 12px;
+        padding: 20px;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+    
+    /* Fix footer text readability */
+    .footer-content {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .footer h4,
+    .footer p,
+    .footer a,
+    .footer li {
+        color: #ffffff !important;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    }
+}
+
+/* Desktop - allow controlled bleed through */
+@media (min-width: 769px) {
+    
+    /* Footer shows video background */
+    .footer {
+        background: rgba(44, 62, 80, 0) !important;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+    }
+    
+    /* Contact section stays solid */
+    .contact {
+        background: #f8f9fa !important;
+        box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
+    }
+    
+    /* Enhance footer text readability */
+    .footer-content {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .footer h4,
+    .footer-links li,
+    .footer-bottom p {
+        color: #ffffff;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+    }
+    
+    .footer-links a {
+        color: rgba(255,255,255,0.9);
+        text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+    }
+    
+    .footer-links a:hover {
+        color: #ffffff;
+    }
+}
 /* Improved Footer Styling */
 .footer {
     color: white;
