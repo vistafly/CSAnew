@@ -1896,7 +1896,6 @@ window.manualStartCounters = function() {
         programs.style.backgroundColor = '#f8f9fa';
         programs.style.borderRadius = '24px 24px 0 0';
         programs.style.boxShadow = '0 -20px 40px rgba(0, 0, 0, 0.1)';
-        programs.style.marginTop = '-1px';
         
         // Ensure all sections after programs are visible
         const sectionsAfterPrograms = ['gallery', 'about', 'testimonials', 'contact'];
@@ -2403,7 +2402,6 @@ if (typeof showNotification === 'undefined') {
 <script>
 // Improved video cycling script with better responsiveness and debouncing
 // GLITCH-FREE SMOOTH VIDEO CONTROLLER - Keeps fade effects, eliminates all glitches
-// Mobile interactions disabled while keeping buttons visible
 (function() {
     'use strict';
     
@@ -2420,9 +2418,7 @@ if (typeof showNotification === 'undefined') {
         videoDuration: 8000,
         fadeTransitionTime: 1200,
         autoPlay: true,
-        preloadNext: true,
-        failureCheckInterval: 2000, // Check every 2 seconds for failures
-        maxRetries: 3
+        preloadNext: true
     };
     
     let currentVideoIndex = 0;
@@ -2436,10 +2432,6 @@ if (typeof showNotification === 'undefined') {
     let isInitialized = false;
     let switchQueue = [];
     let isProcessingSwitch = false;
-    let failureCheckTimer = null;
-    let retryCount = 0;
-    let lastActiveTime = Date.now();
-    let isPreloading = true;
     
     function isMobile() {
         return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -2453,9 +2445,6 @@ if (typeof showNotification === 'undefined') {
         
         if (!videoContainer) return;
         
-        // Show loading state
-        showLoadingState();
-        
         testVideoFiles().then(() => {
             if (validVideos.length === 0) {
                 createFallbackVideo();
@@ -2463,73 +2452,18 @@ if (typeof showNotification === 'undefined') {
             }
             
             videoContainer.innerHTML = '';
+            createVideoElements();
             
-            // Preload all videos first
-            preloadAllVideos().then(() => {
-                createVideoElements();
-                
-                if (validVideos.length > 1) {
-                    createIndicators();
-                    setupEventListeners();
-                    startVideoCycle();
-                    startFailureMonitoring();
-                } else {
-                    if (videoControls) videoControls.style.display = 'none';
-                }
-                
-                isInitialized = true;
-                isPreloading = false;
-                hideLoadingState();
-            });
+            if (validVideos.length > 1) {
+                createIndicators();
+                setupEventListeners();
+                startVideoCycle();
+            } else {
+                if (videoControls) videoControls.style.display = 'none';
+            }
+            
+            isInitialized = true;
         });
-    }
-    
-    function showLoadingState() {
-        if (videoContainer) {
-            videoContainer.innerHTML = '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 18px; z-index: 1000;">Loading videos...</div>';
-        }
-    }
-    
-    function hideLoadingState() {
-        const loader = videoContainer?.querySelector('div');
-        if (loader && loader.textContent === 'Loading videos...') {
-            loader.remove();
-        }
-    }
-    
-    async function preloadAllVideos() {
-        console.log('Preloading all videos...');
-        const preloadPromises = validVideos.map((videoFile, index) => {
-            return new Promise((resolve) => {
-                const video = document.createElement('video');
-                video.preload = 'auto';
-                video.muted = true;
-                video.playsInline = true;
-                
-                const timeout = setTimeout(() => {
-                    console.log(`Preload timeout for video ${index}`);
-                    resolve();
-                }, 5000);
-                
-                video.addEventListener('canplaythrough', () => {
-                    clearTimeout(timeout);
-                    console.log(`✓ Preloaded video ${index}: ${videoFile}`);
-                    resolve();
-                });
-                
-                video.addEventListener('error', () => {
-                    clearTimeout(timeout);
-                    console.log(`✗ Preload failed for video ${index}: ${videoFile}`);
-                    resolve();
-                });
-                
-                video.src = videoFile;
-                video.load();
-            });
-        });
-        
-        await Promise.all(preloadPromises);
-        console.log('All videos preloaded');
     }
     
     async function testVideoFiles() {
@@ -2602,7 +2536,7 @@ if (typeof showNotification === 'undefined') {
             video.style.width = '100vw';
             video.style.height = '100vh';
             video.style.transform = 'none';
-            video.style.zIndex = isActive ? '1' : '0';
+            video.style.zIndex = isActive ? '1' : '-1';
         } else {
             video.style.position = 'absolute';
             video.style.top = '50%';
@@ -2670,61 +2604,14 @@ if (typeof showNotification === 'undefined') {
                 applyVideoStyles(video, video.classList.contains('active'));
             });
             
-            // Enhanced error handling for mobile
-            video.addEventListener('error', (e) => {
-                console.warn(`Video error for ${videoFile}:`, e);
+            video.addEventListener('error', () => {
+                console.warn(`Video error for ${videoFile}`);
                 setTimeout(() => {
                     if (video.classList.contains('active')) {
                         video.load();
                         video.play().catch(() => {});
                     }
                 }, 1000);
-            });
-            
-            // Mobile-specific play monitoring
-            if (isMobile()) {
-                video.addEventListener('pause', () => {
-                    if (video.classList.contains('active') && !isProcessingSwitch) {
-                        console.log(`Video ${index} paused unexpectedly on mobile`);
-                        setTimeout(() => {
-                            if (video.classList.contains('active')) {
-                                video.play().catch(() => {
-                                    console.log(`Failed to restart paused video ${index}`);
-                                    handleVideoFailure('paused');
-                                });
-                            }
-                        }, 100);
-                    }
-                });
-                
-                video.addEventListener('stalled', () => {
-                    if (video.classList.contains('active')) {
-                        console.log(`Video ${index} stalled on mobile`);
-                        video.load();
-                        video.play().catch(() => {
-                            handleVideoFailure('stuck');
-                        });
-                    }
-                });
-                
-                video.addEventListener('waiting', () => {
-                    if (video.classList.contains('active')) {
-                        console.log(`Video ${index} waiting/buffering on mobile`);
-                    }
-                });
-            }
-            
-            // Track video activity
-            video.addEventListener('timeupdate', () => {
-                if (video.classList.contains('active')) {
-                    lastActiveTime = Date.now();
-                }
-            });
-            
-            video.addEventListener('playing', () => {
-                if (video.classList.contains('active')) {
-                    lastActiveTime = Date.now();
-                }
             });
         });
         
@@ -2758,16 +2645,21 @@ if (typeof showNotification === 'undefined') {
             indicator.className = 'video-indicator';
             if (index === 0) indicator.classList.add('active');
             
-            // Only add interaction handlers for desktop
+            // Queue-based click handler - no glitches possible
+            indicator.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                queueVideoSwitch(index);
+            });
+            
+            // Touch optimization
+            indicator.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                queueVideoSwitch(index);
+            }, { passive: false });
+            
+            // Hover effects for desktop
             if (!isMobile()) {
-                // Queue-based click handler - no glitches possible
-                indicator.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    queueVideoSwitch(index);
-                });
-                
-                // Hover effects for desktop
                 indicator.addEventListener('mouseenter', () => {
                     if (index !== currentVideoIndex && !isProcessingSwitch) {
                         indicator.style.transform = 'scale(1.1)';
@@ -2781,10 +2673,6 @@ if (typeof showNotification === 'undefined') {
                         indicator.style.opacity = '0.6';
                     }
                 });
-            } else {
-                // Mobile: Add visual indication that buttons are disabled
-                indicator.style.pointerEvents = 'none';
-                indicator.style.cursor = 'default';
             }
             
             videoControls.appendChild(indicator);
@@ -2793,27 +2681,25 @@ if (typeof showNotification === 'undefined') {
     }
     
     function setupEventListeners() {
-        // Keyboard controls with queue system - DESKTOP ONLY
-        if (!isMobile()) {
-            document.addEventListener('keydown', (e) => {
-                if (e.target.tagName.toLowerCase() === 'input') return;
-                
-                switch(e.key) {
-                    case 'ArrowRight':
-                        e.preventDefault();
-                        queueVideoSwitch((currentVideoIndex + 1) % validVideos.length);
-                        break;
-                    case 'ArrowLeft':
-                        e.preventDefault();
-                        queueVideoSwitch((currentVideoIndex - 1 + validVideos.length) % validVideos.length);
-                        break;
-                    case ' ':
-                        e.preventDefault();
-                        toggleAutoPlay();
-                        break;
-                }
-            });
-        }
+        // Keyboard controls with queue system
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName.toLowerCase() === 'input') return;
+            
+            switch(e.key) {
+                case 'ArrowRight':
+                    e.preventDefault();
+                    queueVideoSwitch((currentVideoIndex + 1) % validVideos.length);
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    queueVideoSwitch((currentVideoIndex - 1 + validVideos.length) % validVideos.length);
+                    break;
+                case ' ':
+                    e.preventDefault();
+                    toggleAutoPlay();
+                    break;
+            }
+        });
         
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
@@ -2851,142 +2737,8 @@ if (typeof showNotification === 'undefined') {
             }, 100);
         });
         
-        // Process switch queue continuously - more frequent on mobile
-        const queueInterval = isMobile() ? 8 : 16; // 120fps vs 60fps
-        setInterval(processSwitchQueue, queueInterval);
-    }
-    
-    // FAILURE MONITORING SYSTEM
-    function startFailureMonitoring() {
-        if (failureCheckTimer) {
-            clearInterval(failureCheckTimer);
-        }
-        
-        failureCheckTimer = setInterval(() => {
-            checkForFailures();
-        }, CONFIG.failureCheckInterval);
-        
-        console.log('Failure monitoring started');
-    }
-    
-    function checkForFailures() {
-        if (isPreloading || isPaused) return;
-        
-        const activeVideo = videos[currentVideoIndex];
-        if (!activeVideo) return;
-        
-        const now = Date.now();
-        const timeSinceLastActivity = now - lastActiveTime;
-        
-        // Check if video is paused unexpectedly
-        if (activeVideo.paused && !isProcessingSwitch) {
-            console.warn(`Video ${currentVideoIndex} is paused unexpectedly`);
-            handleVideoFailure('paused');
-            return;
-        }
-        
-        // Check if video is stuck (no activity for too long)
-        if (timeSinceLastActivity > CONFIG.videoDuration + 2000) {
-            console.warn(`Video ${currentVideoIndex} appears stuck - no activity for ${timeSinceLastActivity}ms`);
-            handleVideoFailure('stuck');
-            return;
-        }
-        
-        // Check if video duration is suspicious
-        if (activeVideo.currentTime > 0 && activeVideo.duration > 0) {
-            if (activeVideo.currentTime >= activeVideo.duration - 0.1 && !isProcessingSwitch) {
-                console.warn(`Video ${currentVideoIndex} reached end but no transition scheduled`);
-                handleVideoFailure('ended');
-                return;
-            }
-        }
-        
-        // Update activity timestamp if video is playing normally
-        if (!activeVideo.paused && activeVideo.currentTime > 0) {
-            lastActiveTime = now;
-        }
-    }
-    
-    function handleVideoFailure(reason) {
-        console.log(`Handling video failure: ${reason}, retry count: ${retryCount}`);
-        
-        if (retryCount >= CONFIG.maxRetries) {
-            console.log('Max retries reached, performing full reset');
-            performFullReset();
-            return;
-        }
-        
-        retryCount++;
-        
-        const activeVideo = videos[currentVideoIndex];
-        
-        if (reason === 'paused' || reason === 'stuck') {
-            // Try to restart current video
-            activeVideo.currentTime = 0;
-            activeVideo.play().catch(() => {
-                console.log('Play failed, reloading video');
-                activeVideo.load();
-                setTimeout(() => {
-                    activeVideo.play().catch(() => {
-                        // If still failing, move to next video
-                        console.log('Still failing, switching to next video');
-                        const nextIndex = (currentVideoIndex + 1) % validVideos.length;
-                        queueVideoSwitch(nextIndex, true);
-                    });
-                }, 200);
-            });
-        } else if (reason === 'ended') {
-            // Force transition to next video
-            const nextIndex = (currentVideoIndex + 1) % validVideos.length;
-            queueVideoSwitch(nextIndex, true);
-        }
-        
-        lastActiveTime = Date.now();
-    }
-    
-    function performFullReset() {
-        console.log('Performing full system reset');
-        
-        // Stop everything
-        clearTimeout(autoPlayTimer);
-        clearInterval(failureCheckTimer);
-        isProcessingSwitch = false;
-        switchQueue = [];
-        retryCount = 0;
-        
-        // Reset to first video
-        currentVideoIndex = 0;
-        
-        // Stop all videos
-        videos.forEach((video, index) => {
-            video.pause();
-            video.currentTime = 0;
-            video.classList.remove('active');
-            applyVideoStyles(video, false);
-        });
-        
-        // Start fresh with first video
-        const firstVideo = videos[0];
-        firstVideo.classList.add('active');
-        applyVideoStyles(firstVideo, true);
-        firstVideo.load();
-        
-        setTimeout(() => {
-            firstVideo.play().then(() => {
-                console.log('Full reset successful');
-                updateIndicators(0);
-                lastActiveTime = Date.now();
-                
-                // Restart systems
-                if (CONFIG.autoPlay && !isPaused) {
-                    scheduleNextTransition();
-                }
-                startFailureMonitoring();
-            }).catch(() => {
-                console.error('Full reset failed, trying again in 2 seconds');
-                setTimeout(() => performFullReset(), 2000);
-            });
-        }, 100);
+        // Process switch queue continuously
+        setInterval(processSwitchQueue, 16); // 60fps processing
     }
     
     function startVideoCycle() {
@@ -3005,60 +2757,16 @@ if (typeof showNotification === 'undefined') {
         if (isPaused) return;
         
         clearTimeout(autoPlayTimer);
-        
-        // CRITICAL: Calculate next index properly for loop restart
-        const nextIndex = (currentVideoIndex + 1) % validVideos.length;
-        const isLoopRestart = nextIndex === 0 && currentVideoIndex === validVideos.length - 1;
-        
-        // Enhanced mobile scheduling - even more aggressive for loop restart
-        let delay = CONFIG.videoDuration;
-        if (isMobile()) {
-            delay = isLoopRestart ? CONFIG.videoDuration - 500 : CONFIG.videoDuration - 200;
-        }
-        
-        console.log(`Scheduling transition from ${currentVideoIndex} to ${nextIndex} in ${delay}ms ${isLoopRestart ? '(LOOP RESTART)' : ''}`);
-        
         autoPlayTimer = setTimeout(() => {
-            if (!isPaused && !isProcessingSwitch) {
-                if (isLoopRestart) {
-                    console.log('EXECUTING LOOP RESTART');
-                    // Force preload first video before switching
-                    if (videos[0]) {
-                        videos[0].load();
-                        videos[0].currentTime = 0;
-                    }
-                    setTimeout(() => {
-                        queueVideoSwitch(0, true);
-                    }, isMobile() ? 100 : 50);
-                } else {
-                    queueVideoSwitch(nextIndex, true);
-                }
+            if (!isPaused) {
+                queueVideoSwitch((currentVideoIndex + 1) % validVideos.length);
             }
-        }, delay);
+        }, CONFIG.videoDuration);
     }
     
     // QUEUE SYSTEM - Prevents all glitches by processing switches one at a time
-    function queueVideoSwitch(newIndex, isAutoPlay = false) {
-        // CRITICAL FIX: Handle loop restart properly
-        if (newIndex >= validVideos.length) {
-            console.log(`Looping from ${currentVideoIndex} to 0 (was trying to go to ${newIndex})`);
-            newIndex = 0; // Force loop back to start
-        }
-        if (newIndex < 0) {
-            newIndex = validVideos.length - 1; // Loop to end
-        }
-        
-        if (newIndex === currentVideoIndex) {
-            console.log(`Already on video ${newIndex}, skipping`);
-            return;
-        }
-        
-        // Block manual switches on mobile (only allow auto-play)
-        if (isMobile() && !isAutoPlay) {
-            return;
-        }
-        
-        console.log(`Queueing switch: ${currentVideoIndex} -> ${newIndex} (auto: ${isAutoPlay})`);
+    function queueVideoSwitch(newIndex) {
+        if (newIndex === currentVideoIndex || newIndex >= validVideos.length || newIndex < 0) return;
         
         // Always use the latest request (cancel previous queued switches)
         switchQueue = [newIndex];
@@ -3077,7 +2785,6 @@ if (typeof showNotification === 'undefined') {
     function executeVideoSwitch(newIndex) {
         if (newIndex === currentVideoIndex || isProcessingSwitch) return;
         
-        console.log(`Executing switch: ${currentVideoIndex} -> ${newIndex}`);
         isProcessingSwitch = true;
         
         const currentVideo = videos[currentVideoIndex];
@@ -3093,28 +2800,12 @@ if (typeof showNotification === 'undefined') {
         applyVideoStyles(nextVideo, false); // Start hidden
         applyVideoStyles(currentVideo, true); // Keep current visible
         
-        // Prepare next video - force reset to start
+        // Prepare next video
         nextVideo.currentTime = 0;
-        nextVideo.pause();
         
-        // Mobile-specific video preparation
-        if (isMobile()) {
-            // Force load the video on mobile
-            nextVideo.load();
-            
-            // Shorter delay for mobile to prevent freezing
-            setTimeout(() => {
-                const playPromise = nextVideo.play();
-                handleVideoPlayback(playPromise, currentVideo, nextVideo, newIndex);
-            }, 50);
-        } else {
-            // Desktop - immediate playback
-            const playPromise = nextVideo.play();
-            handleVideoPlayback(playPromise, currentVideo, nextVideo, newIndex);
-        }
-    }
-    
-    function handleVideoPlayback(playPromise, currentVideo, nextVideo, newIndex) {
+        // Start next video playing in background
+        const playPromise = nextVideo.play();
+        
         if (playPromise !== undefined) {
             playPromise.then(() => {
                 // Begin smooth fade transition
@@ -3123,115 +2814,50 @@ if (typeof showNotification === 'undefined') {
                 currentVideo.style.opacity = '0';
                 
                 // Complete transition after fade
-                const fadeDelay = isMobile() ? CONFIG.fadeTransitionTime - 200 : CONFIG.fadeTransitionTime;
                 setTimeout(() => {
-                    completeVideoSwitch(currentVideo, nextVideo, newIndex);
-                }, fadeDelay);
+                    // Clean up previous video
+                    currentVideo.classList.remove('active');
+                    currentVideo.pause();
+                    currentVideo.currentTime = 0;
+                    
+                    // Ensure positioning is maintained
+                    applyVideoStyles(currentVideo, false);
+                    applyVideoStyles(nextVideo, true);
+                    
+                    // Update state
+                    currentVideoIndex = newIndex;
+                    isProcessingSwitch = false;
+                    
+                    // Preload next video
+                    if (CONFIG.preloadNext) {
+                        const nextIndex = (newIndex + 1) % validVideos.length;
+                        if (videos[nextIndex] && videos[nextIndex].readyState < 2) {
+                            videos[nextIndex].load();
+                            videos[nextIndex].currentTime = 0;
+                        }
+                    }
+                    
+                    // Schedule next auto-transition
+                    if (CONFIG.autoPlay && !isPaused) {
+                        scheduleNextTransition();
+                    }
+                    
+                }, CONFIG.fadeTransitionTime);
                 
             }).catch((error) => {
                 console.error('Video play error:', error);
-                // Mobile fallback - try again
-                if (isMobile()) {
-                    setTimeout(() => {
-                        nextVideo.play().then(() => {
-                            completeVideoSwitch(currentVideo, nextVideo, newIndex);
-                        }).catch(() => {
-                            // Force reset on repeated failure
-                            forceVideoReset(newIndex);
-                        });
-                    }, 200);
-                } else {
-                    forceVideoReset(currentVideoIndex);
+                // Reset on error
+                isProcessingSwitch = false;
+                nextVideo.classList.remove('active');
+                currentVideo.style.opacity = '1';
+                
+                if (CONFIG.autoPlay && !isPaused) {
+                    scheduleNextTransition();
                 }
             });
         } else {
             // Fallback if play() doesn't return a promise
-            setTimeout(() => {
-                completeVideoSwitch(currentVideo, nextVideo, newIndex);
-            }, 100);
-        }
-    }
-    
-    function completeVideoSwitch(currentVideo, nextVideo, newIndex) {
-        // Clean up previous video
-        currentVideo.classList.remove('active');
-        currentVideo.pause();
-        currentVideo.currentTime = 0;
-        
-        // Ensure positioning is maintained
-        applyVideoStyles(currentVideo, false);
-        applyVideoStyles(nextVideo, true);
-        
-        // Update state
-        currentVideoIndex = newIndex;
-        isProcessingSwitch = false;
-        lastActiveTime = Date.now(); // Update activity timestamp
-        retryCount = 0; // Reset retry counter on successful switch
-        
-        console.log(`Switch completed: now on video ${newIndex}`);
-        
-        // AGGRESSIVE PRELOADING - Load next 2 videos
-        if (CONFIG.preloadNext) {
-            const nextIndex = (newIndex + 1) % validVideos.length;
-            const nextNextIndex = (newIndex + 2) % validVideos.length;
-            
-            // Preload next video
-            if (videos[nextIndex]) {
-                videos[nextIndex].load();
-                videos[nextIndex].currentTime = 0;
-                console.log(`Preloaded next video: ${nextIndex}`);
-            }
-            
-            // Preload video after next (especially important for loop restart)
-            if (videos[nextNextIndex] && nextIndex === validVideos.length - 1) {
-                console.log('Preloading first video for upcoming loop restart');
-                videos[nextNextIndex].load();
-                videos[nextNextIndex].currentTime = 0;
-            }
-        }
-        
-        // Schedule next auto-transition immediately
-        if (CONFIG.autoPlay && !isPaused) {
-            scheduleNextTransition();
-        }
-    }
-    
-    function forceVideoReset(targetIndex) {
-        console.log(`Force reset to video ${targetIndex}`);
-        isProcessingSwitch = false;
-        clearTimeout(autoPlayTimer);
-        
-        // Reset all videos
-        videos.forEach((video, index) => {
-            video.pause();
-            video.currentTime = 0;
-            video.classList.remove('active');
-            applyVideoStyles(video, false);
-        });
-        
-        // Activate target video
-        const targetVideo = videos[targetIndex];
-        targetVideo.classList.add('active');
-        applyVideoStyles(targetVideo, true);
-        targetVideo.currentTime = 0;
-        
-        // Force play
-        targetVideo.play().catch(() => {
-            // If still failing, reload
-            targetVideo.load();
-            setTimeout(() => {
-                targetVideo.play().catch(() => {});
-            }, 100);
-        });
-        
-        currentVideoIndex = targetIndex;
-        updateIndicators(targetIndex);
-        
-        // Restart cycling
-        if (CONFIG.autoPlay && !isPaused) {
-            setTimeout(() => {
-                scheduleNextTransition();
-            }, 500);
+            isProcessingSwitch = false;
         }
     }
     
@@ -3243,7 +2869,7 @@ if (typeof showNotification === 'undefined') {
                 indicator.style.transform = 'scale(1)';
             } else {
                 indicator.classList.remove('active');
-                indicator.style.opacity = isMobile() ? '0.4' : '0.6';
+                indicator.style.opacity = '0.6';
                 indicator.style.transform = 'scale(1)';
             }
         });
@@ -3262,9 +2888,6 @@ if (typeof showNotification === 'undefined') {
     }
     
     function toggleAutoPlay() {
-        // Block toggle on mobile
-        if (isMobile()) return;
-        
         CONFIG.autoPlay = !CONFIG.autoPlay;
         if (CONFIG.autoPlay) {
             resumeAutoPlay();
@@ -3281,29 +2904,24 @@ if (typeof showNotification === 'undefined') {
         clearTimeout(autoPlayTimer);
         
         videos.forEach((video, index) => {
-            video.pause();
-            video.currentTime = 0;
             if (index === currentVideoIndex) {
                 video.classList.add('active');
                 video.style.opacity = '1';
                 applyVideoStyles(video, true);
-                video.play().catch(() => {
-                    video.load();
-                    setTimeout(() => video.play().catch(() => {}), 100);
-                });
+                video.play().catch(() => {});
             } else {
                 video.classList.remove('active');
                 video.style.opacity = '0';
                 applyVideoStyles(video, false);
+                video.pause();
+                video.currentTime = 0;
             }
         });
         
         updateIndicators(currentVideoIndex);
         
         if (CONFIG.autoPlay && !isPaused) {
-            setTimeout(() => {
-                scheduleNextTransition();
-            }, 500);
+            scheduleNextTransition();
         }
     }
     
@@ -3317,87 +2935,147 @@ if (typeof showNotification === 'undefined') {
         }, 100);
     }
     
-    // Public API - Modified to respect mobile restrictions
+    // Public API
     window.VideoCycling = {
-        next: () => {
-            if (!isMobile()) queueVideoSwitch((currentVideoIndex + 1) % validVideos.length);
-        },
-        previous: () => {
-            if (!isMobile()) queueVideoSwitch((currentVideoIndex - 1 + validVideos.length) % validVideos.length);
-        },
-        switchTo: (index) => {
-            if (!isMobile()) queueVideoSwitch(index);
-        },
+        next: () => queueVideoSwitch((currentVideoIndex + 1) % validVideos.length),
+        previous: () => queueVideoSwitch((currentVideoIndex - 1 + validVideos.length) % validVideos.length),
+        switchTo: queueVideoSwitch,
         pause: pauseAutoPlay,
         resume: resumeAutoPlay,
         toggle: toggleAutoPlay,
         reset: forceReset,
         getCurrentIndex: () => currentVideoIndex,
-        isTransitioning: () => isProcessingSwitch,
-        isMobileDevice: isMobile
+        isTransitioning: () => isProcessingSwitch
     };
     
     init();
     
 })();
 // Mobile Video Position Fix - Add this after your video cycling script
+// ENHANCED MOBILE VIDEO POSITION FIX - Compatible with Optimized Video Cycling
 (function() {
     'use strict';
     
+    let isInitialized = false;
+    let lastOrientationTime = 0;
+    let videoObserver = null;
+    let resizeTimeout = null;
+    let videoCyclingReady = false;
+    
+    // Enhanced mobile detection matching the video cycling system
     function isMobile() {
-        return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i;
+        return window.innerWidth <= 768 || 
+               mobileRegex.test(userAgent) || 
+               ('ontouchstart' in window) ||
+               (navigator.maxTouchPoints > 0);
+    }
+    
+    // Wait for video cycling system to be ready
+    function waitForVideoCycling() {
+        return new Promise((resolve) => {
+            if (window.VideoCycling) {
+                videoCyclingReady = true;
+                resolve(true);
+                return;
+            }
+            
+            let attempts = 0;
+            const checkInterval = setInterval(() => {
+                attempts++;
+                if (window.VideoCycling || attempts > 50) { // 5 second timeout
+                    clearInterval(checkInterval);
+                    videoCyclingReady = !!window.VideoCycling;
+                    resolve(videoCyclingReady);
+                }
+            }, 100);
+        });
     }
     
     function fixMobileVideoPosition() {
         const videos = document.querySelectorAll('.hero-video');
         const hero = document.querySelector('.hero');
+        const videoContainer = document.getElementById('videoContainer');
+        
+        if (!videos.length) return;
+        
+        console.log(`Fixing video positions for ${videos.length} videos on ${isMobile() ? 'mobile' : 'desktop'}`);
         
         if (isMobile()) {
-            // Fix video positioning on mobile
-            videos.forEach(video => {
+            // Mobile-specific positioning with enhanced stability
+            videos.forEach((video, index) => {
+                // Force hardware acceleration
                 video.style.position = 'fixed';
                 video.style.top = '0';
                 video.style.left = '0';
-                video.style.transform = 'none';
+                video.style.transform = 'translateZ(0)'; // Force GPU acceleration
                 video.style.width = '100vw';
                 video.style.height = '100vh';
-                video.style.zIndex = '-1';
                 video.style.objectFit = 'cover';
+                video.style.pointerEvents = 'none'; // Prevent touch interference
+                video.style.backfaceVisibility = 'hidden';
+                video.style.webkitBackfaceVisibility = 'hidden';
+                
+                // Z-index management for cycling
+                if (video.classList.contains('active')) {
+                    video.style.zIndex = '1';
+                } else {
+                    video.style.zIndex = '-1';
+                }
+                
+                // Mobile-specific attributes
+                video.setAttribute('playsinline', 'true');
+                video.setAttribute('webkit-playsinline', 'true');
+                video.muted = true;
             });
             
-            // Ensure hero doesn't interfere
+            // Container positioning for mobile
+            if (videoContainer) {
+                videoContainer.style.position = 'fixed';
+                videoContainer.style.top = '0';
+                videoContainer.style.left = '0';
+                videoContainer.style.width = '100vw';
+                videoContainer.style.height = '100vh';
+                videoContainer.style.zIndex = '0';
+                videoContainer.style.overflow = 'hidden';
+            }
+            
+            // Hero section positioning
             if (hero) {
                 hero.style.position = 'relative';
                 hero.style.zIndex = '1';
+                hero.style.minHeight = '100vh';
+                hero.style.overflow = 'hidden';
             }
             
-            // Force repaint to fix disappearing elements
-            const contact = document.querySelector('.contact');
-            const footer = document.querySelector('.footer');
-            
-            if (contact) {
-                contact.style.transform = 'translateZ(0)';
-                contact.style.isolation = 'isolate';
-            }
-            
-            if (footer) {
-                footer.style.transform = 'translateZ(0)';
-                footer.style.isolation = 'isolate';
-            }
+            // Fix other sections to prevent disappearing
+            fixMobileSectionVisibility();
             
         } else {
-            // Desktop behavior - allow controlled bleed through
+            // Desktop positioning - more refined
             videos.forEach(video => {
                 video.style.position = 'absolute';
                 video.style.top = '50%';
                 video.style.left = '50%';
-                video.style.transform = 'translate(-50%, -50%)';
+                video.style.transform = 'translate3d(-50%, -50%, 0)';
                 video.style.width = 'auto';
                 video.style.height = 'auto';
                 video.style.minWidth = '100%';
                 video.style.minHeight = '100%';
+                video.style.objectFit = 'cover';
                 video.style.zIndex = '1';
+                video.style.backfaceVisibility = 'hidden';
             });
+            
+            if (videoContainer) {
+                videoContainer.style.position = 'absolute';
+                videoContainer.style.top = '0';
+                videoContainer.style.left = '0';
+                videoContainer.style.width = '100%';
+                videoContainer.style.height = '100%';
+                videoContainer.style.overflow = 'hidden';
+            }
             
             if (hero) {
                 hero.style.position = 'sticky';
@@ -3406,75 +3084,254 @@ if (typeof showNotification === 'undefined') {
         }
     }
     
-    // Fix video positioning when videos are created
-    function observeVideoChanges() {
-        const videoContainer = document.getElementById('videoContainer');
-        if (!videoContainer) return;
+    function fixMobileSectionVisibility() {
+        if (!isMobile()) return;
         
-        const observer = new MutationObserver((mutations) => {
+        const sectionsToFix = [
+            '.programs',
+            '.about', 
+            '.gallery',
+            '.testimonials',
+            '.contact',
+            '.footer'
+        ];
+        
+        sectionsToFix.forEach(selector => {
+            const section = document.querySelector(selector);
+            if (section) {
+                section.style.position = 'relative';
+                section.style.zIndex = '10';
+                section.style.transform = 'translateZ(0)';
+                section.style.isolation = 'isolate';
+                section.style.backgroundColor = section.style.backgroundColor || 'inherit';
+                
+                // Force visibility
+                section.style.visibility = 'visible';
+                section.style.display = section.style.display === 'none' ? 'block' : section.style.display;
+            }
+        });
+    }
+    
+    function handleVideoChanges() {
+        const videoContainer = document.getElementById('videoContainer');
+        if (!videoContainer || videoObserver) return;
+        
+        videoObserver = new MutationObserver((mutations) => {
+            let shouldFix = false;
+            
             mutations.forEach((mutation) => {
                 if (mutation.type === 'childList') {
                     mutation.addedNodes.forEach((node) => {
-                        if (node.nodeType === 1 && (node.tagName === 'VIDEO' || node.classList.contains('hero-video'))) {
-                            setTimeout(fixMobileVideoPosition, 100);
+                        if (node.nodeType === 1 && 
+                            (node.tagName === 'VIDEO' || node.classList?.contains('hero-video'))) {
+                            shouldFix = true;
                         }
                     });
                 }
+                
+                // Watch for class changes on existing videos
+                if (mutation.type === 'attributes' && 
+                    mutation.attributeName === 'class' &&
+                    mutation.target.classList?.contains('hero-video')) {
+                    shouldFix = true;
+                }
             });
+            
+            if (shouldFix) {
+                // Debounce the fix to avoid excessive calls
+                setTimeout(fixMobileVideoPosition, 50);
+            }
         });
         
-        observer.observe(videoContainer, {
+        videoObserver.observe(videoContainer, {
             childList: true,
-            subtree: true
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['class', 'style']
         });
     }
     
-    // Initialize fixes
+    function handleResize() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            console.log('Handling resize event');
+            fixMobileVideoPosition();
+            
+            // Re-trigger video cycling positioning if available
+            if (videoCyclingReady && window.VideoCycling && window.VideoCycling.reset) {
+                setTimeout(() => {
+                    // Gentle reset to fix any positioning issues
+                    const currentIndex = window.VideoCycling.getCurrentIndex();
+                    const videos = document.querySelectorAll('.hero-video');
+                    videos.forEach((video, index) => {
+                        if (index === currentIndex) {
+                            video.style.opacity = '1';
+                            video.classList.add('active');
+                        } else {
+                            video.style.opacity = '0';
+                            video.classList.remove('active');
+                        }
+                    });
+                }, 100);
+            }
+        }, 150);
+    }
+    
+    function handleOrientationChange() {
+        lastOrientationTime = Date.now();
+        console.log('Handling orientation change');
+        
+        // Immediate position fix
+        setTimeout(fixMobileVideoPosition, 100);
+        
+        // Secondary fix after orientation settles
+        setTimeout(() => {
+            fixMobileVideoPosition();
+            
+            // Ensure videos are still playing after orientation change
+            if (isMobile()) {
+                const activeVideo = document.querySelector('.hero-video.active');
+                if (activeVideo && activeVideo.paused) {
+                    activeVideo.play().catch(() => {
+                        console.log('Failed to resume video after orientation change');
+                    });
+                }
+            }
+        }, 500);
+        
+        // Final fix for stubborn cases
+        setTimeout(fixMobileVideoPosition, 1000);
+    }
+    
+    function setupPeriodicChecks() {
+        if (!isMobile()) return;
+        
+        // Periodic visibility check for mobile
+        setInterval(() => {
+            const sectionsToCheck = [
+                '.contact',
+                '.footer', 
+                '.programs',
+                '.about'
+            ];
+            
+            sectionsToCheck.forEach(selector => {
+                const section = document.querySelector(selector);
+                if (section) {
+                    // Check if section is visible
+                    const rect = section.getBoundingClientRect();
+                    const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+                    
+                    if (isInViewport && (section.style.display === 'none' || section.style.visibility === 'hidden')) {
+                        console.log(`Restoring visibility for ${selector}`);
+                        section.style.display = 'block';
+                        section.style.visibility = 'visible';
+                    }
+                }
+            });
+            
+            // Check video positioning
+            const videos = document.querySelectorAll('.hero-video');
+            videos.forEach(video => {
+                if (isMobile() && video.style.position !== 'fixed') {
+                    console.log('Correcting video position');
+                    fixMobileVideoPosition();
+                }
+            });
+            
+        }, 2000);
+        
+        // Check for video cycling system health
+        setInterval(() => {
+            if (videoCyclingReady && window.VideoCycling) {
+                const activeVideos = document.querySelectorAll('.hero-video.active');
+                if (activeVideos.length !== 1) {
+                    console.log('Video cycling state inconsistent, fixing...');
+                    fixMobileVideoPosition();
+                }
+            }
+        }, 5000);
+    }
+    
     function initMobileFixes() {
-        fixMobileVideoPosition();
-        observeVideoChanges();
+        if (isInitialized) return;
         
-        // Fix on resize
-        window.addEventListener('resize', () => {
+        console.log('Initializing mobile video fixes');
+        
+        waitForVideoCycling().then(() => {
+            console.log('Video cycling system ready:', videoCyclingReady);
+            
+            // Initial fix
             setTimeout(fixMobileVideoPosition, 100);
-        });
-        
-        // Fix on orientation change
-        window.addEventListener('orientationchange', () => {
-            setTimeout(fixMobileVideoPosition, 500);
-        });
-        
-        // Periodic fix for mobile issues
-        if (isMobile()) {
-            setInterval(() => {
-                const contact = document.querySelector('.contact');
-                const footer = document.querySelector('.footer');
-                
-                // Check if elements are disappearing and force visibility
-                if (contact && contact.style.display === 'none') {
-                    contact.style.display = 'block';
-                    contact.style.visibility = 'visible';
+            
+            // Set up observers and handlers
+            handleVideoChanges();
+            setupPeriodicChecks();
+            
+            // Event listeners
+            window.addEventListener('resize', handleResize, { passive: true });
+            window.addEventListener('orientationchange', handleOrientationChange, { passive: true });
+            
+            // Page visibility handling
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden && isMobile()) {
+                    setTimeout(fixMobileVideoPosition, 300);
                 }
-                
-                if (footer && footer.style.display === 'none') {
-                    footer.style.display = 'block';
-                    footer.style.visibility = 'visible';
+            });
+            
+            // Handle page focus for mobile
+            window.addEventListener('focus', () => {
+                if (isMobile()) {
+                    setTimeout(fixMobileVideoPosition, 200);
                 }
-            }, 1000);
+            });
+            
+            isInitialized = true;
+            console.log('Mobile video fixes initialized successfully');
+        });
+    }
+    
+    // Cleanup function
+    function cleanup() {
+        if (videoObserver) {
+            videoObserver.disconnect();
+            videoObserver = null;
+        }
+        clearTimeout(resizeTimeout);
+        isInitialized = false;
+    }
+    
+    // Initialize when ready
+    function init() {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(initMobileFixes, 300);
+            });
+        } else {
+            setTimeout(initMobileFixes, 300);
         }
     }
     
-    // Wait for video system to initialize
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(initMobileFixes, 500);
-        });
-    } else {
-        setTimeout(initMobileFixes, 500);
-    }
+    // Public API for manual fixes
+    window.MobileVideoFix = {
+        fix: fixMobileVideoPosition,
+        init: initMobileFixes,
+        cleanup: cleanup,
+        isMobile: isMobile
+    };
+    
+    init();
     
     // Backup initialization
-    setTimeout(initMobileFixes, 2000);
+    setTimeout(() => {
+        if (!isInitialized) {
+            console.log('Backup mobile fix initialization');
+            initMobileFixes();
+        }
+    }, 2000);
+    
+    // Emergency cleanup on page unload
+    window.addEventListener('beforeunload', cleanup);
     
 })();
 </script>
