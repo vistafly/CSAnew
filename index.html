@@ -2400,20 +2400,20 @@ if (typeof showNotification === 'undefined') {
     setTimeout(initSectionTracking, 500);
 })();
 </script>
-// Perfect Video Cycling Script - Clean Production Version
 <script>
+// Updated video cycling script - replace your existing script with this
 (function() {
     'use strict';
     
     const CONFIG = {
         videoFiles: [
-            'herobackground.mp4',
-            'video2.mp4',
-            'video3.mp4',
-            'video4.mp4',
-            'video5.mp4',
-            'video6.mp4',
-            'video7.mp4'
+            'videos/herobackground.mp4',  // Added videos/ prefix
+            'videos/video2.mp4',
+            'videos/video3.mp4',
+            'videos/video4.mp4',
+            'videos/video5.mp4',
+            'videos/video6.mp4',
+            'videos/video7.mp4'
         ],
         videoDuration: 8000,
         fadeTransitionTime: 2500,
@@ -2457,132 +2457,131 @@ if (typeof showNotification === 'undefined') {
     }
     
     async function testVideoFiles() {
-    validVideos = [];
-    
-    for (const videoFile of CONFIG.videoFiles) {
-        // Try different path variations for GitHub Pages
-        const pathsToTest = [
-            `videos/${videoFile}`,      // Most common for GitHub Pages
-            `./videos/${videoFile}`,    // Relative path
-            `/CSAnew/videos/${videoFile}`, // Absolute path with repo name
-        ];
+        validVideos = [];
         
-        let isValid = false;
-        for (const path of pathsToTest) {
-            isValid = await testVideoFile(path);
+        for (const videoFile of CONFIG.videoFiles) {
+            const isValid = await testVideoFile(videoFile);
             if (isValid) {
-                validVideos.push(path); // Store the working path, not just filename
-                break;
+                validVideos.push(videoFile);
+                console.log(`✓ Video loaded: ${videoFile}`);
+            } else {
+                console.log(`✗ Video failed: ${videoFile}`);
             }
         }
+        
+        console.log(`Total valid videos: ${validVideos.length}`);
     }
-}
-
-function testVideoFile(url) {
-    return new Promise((resolve) => {
-        const video = document.createElement('video');
-        video.preload = 'metadata';
-        video.muted = true;
-        
-        const timeout = setTimeout(() => {
-            console.log(`Video test failed for: ${url}`);
-            resolve(false);
-        }, 3000);
-        
-        video.onloadedmetadata = () => {
-            console.log(`Video test succeeded for: ${url}`);
-            clearTimeout(timeout);
-            resolve(true);
-        };
-        
-        video.onerror = (e) => {
-            console.log(`Video error for ${url}:`, e);
-            clearTimeout(timeout);
-            resolve(false);
-        };
-        
-        video.src = url;
-        video.load();
-    });
-}
-
-function createVideoElements() {
-    videos = [];
     
-    validVideos.forEach((videoPath, index) => { // videoPath now contains full working path
+    function testVideoFile(url) {
+        return new Promise((resolve) => {
+            const video = document.createElement('video');
+            video.preload = 'metadata';
+            video.muted = true;
+            
+            const timeout = setTimeout(() => {
+                resolve(false);
+            }, 3000);
+            
+            video.onloadedmetadata = () => {
+                clearTimeout(timeout);
+                resolve(true);
+            };
+            
+            video.onerror = () => {
+                clearTimeout(timeout);
+                resolve(false);
+            };
+            
+            video.src = url;
+            video.load();
+        });
+    }
+    
+    function createFallbackVideo() {
         const video = document.createElement('video');
-        video.className = 'hero-video';
+        video.className = 'hero-video active';
+        video.autoplay = true;
         video.muted = true;
+        video.loop = true;
         video.playsInline = true;
-        video.preload = 'auto';
-        video.loop = false;
-        
-        // Perfect positioning
-        video.style.position = 'absolute';
-        video.style.top = '50%';
-        video.style.left = '50%';
-        video.style.transform = 'translate3d(-50%, -50%, 0)';
-        video.style.transformStyle = 'preserve-3d';
-        video.style.willChange = 'opacity';
-        video.style.objectFit = 'cover';
-        video.style.width = '100%';
-        video.style.height = '100%';
-        
-        if (index === 0) {
-            video.classList.add('active');
-            video.autoplay = true;
-        }
         
         const source = document.createElement('source');
-        source.src = videoPath; // Use the full working path
+        source.src = 'videos/herobackground.mp4';  // Updated path
         source.type = 'video/mp4';
         
         video.appendChild(source);
         videoContainer.appendChild(video);
-        videos.push(video);
         
-        // Add error handling
-        video.addEventListener('error', (e) => {
-            console.error(`Video playback error for ${videoPath}:`, e);
-        });
-        
-        // Prevent video from pausing at end
-        video.addEventListener('ended', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const vid = e.target;
-            vid.currentTime = 0;
-            if (vid.classList.contains('active')) {
-                vid.play().catch(() => {});
-            }
-        });
-        
-        // Ensure video doesn't freeze
-        video.addEventListener('timeupdate', () => {
-            if (video.classList.contains('active') && video.paused && !isTransitioning) {
-                video.play().catch(() => {});
-            }
-        });
-        
-        // Fix positioning after load
-        video.addEventListener('loadedmetadata', () => {
-            video.style.transform = 'translate3d(-50%, -50%, 0)';
-            console.log(`Video loaded successfully: ${videoPath}`);
-        });
-    });
+        if (videoControls) videoControls.style.display = 'none';
+        video.play().catch(() => {});
+    }
     
-    // Start first video with error handling
-    if (videos[0]) {
-        videos[0].style.transform = 'translate3d(-50%, -50%, 0)';
+    function createVideoElements() {
+        videos = [];
         
-        const playPromise = videos[0].play();
-        if (playPromise !== undefined) {
-            playPromise
-                .then(() => {
-                    console.log('First video started playing successfully');
-                })
-                .catch((error) => {
-                    console.log('Autoplay failed, will play on user interaction:', error);
+        validVideos.forEach((videoFile, index) => {
+            const video = document.createElement('video');
+            video.className = 'hero-video';
+            video.muted = true;
+            video.playsInline = true;
+            video.preload = 'auto';
+            video.loop = false;
+            
+            // Perfect positioning
+            video.style.position = 'absolute';
+            video.style.top = '50%';
+            video.style.left = '50%';
+            video.style.transform = 'translate3d(-50%, -50%, 0)';
+            video.style.transformStyle = 'preserve-3d';
+            video.style.willChange = 'opacity';
+            video.style.objectFit = 'cover';
+            video.style.width = '100%';
+            video.style.height = '100%';
+            
+            if (index === 0) {
+                video.classList.add('active');
+                video.autoplay = true;
+            }
+            
+            const source = document.createElement('source');
+            source.src = videoFile;  // videoFile now contains full path like 'videos/herobackground.mp4'
+            source.type = 'video/mp4';
+            
+            video.appendChild(source);
+            videoContainer.appendChild(video);
+            videos.push(video);
+            
+            // Prevent video from pausing at end
+            video.addEventListener('ended', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const vid = e.target;
+                vid.currentTime = 0;
+                if (vid.classList.contains('active')) {
+                    vid.play().catch(() => {});
+                }
+            });
+            
+            // Ensure video doesn't freeze
+            video.addEventListener('timeupdate', () => {
+                if (video.classList.contains('active') && video.paused && !isTransitioning) {
+                    video.play().catch(() => {});
+                }
+            });
+            
+            // Fix positioning after load
+            video.addEventListener('loadedmetadata', () => {
+                video.style.transform = 'translate3d(-50%, -50%, 0)';
+            });
+        });
+        
+        // Start first video with error handling
+        if (videos[0]) {
+            videos[0].style.transform = 'translate3d(-50%, -50%, 0)';
+            
+            const playPromise = videos[0].play();
+            if (playPromise !== undefined) {
+                playPromise.catch(() => {
                     const playOnInteraction = () => {
                         videos[0].play().catch(() => {});
                         document.removeEventListener('click', playOnInteraction);
@@ -2593,9 +2592,9 @@ function createVideoElements() {
                     document.addEventListener('touchstart', playOnInteraction);
                     document.addEventListener('keydown', playOnInteraction);
                 });
+            }
         }
     }
-}
     
     function createIndicators() {
         if (!videoControls || validVideos.length <= 1) return;
