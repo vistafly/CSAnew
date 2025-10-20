@@ -2402,6 +2402,7 @@ if (typeof showNotification === 'undefined') {
 </script>
 <script>
 // Improved video cycling script with better responsiveness and debouncing
+// GLITCH-FREE SMOOTH VIDEO CONTROLLER - Keeps fade effects, eliminates all glitches
 (function() {
     'use strict';
     
@@ -2416,10 +2417,9 @@ if (typeof showNotification === 'undefined') {
             'videos/video7.mp4'
         ],
         videoDuration: 8000,
-        fadeTransitionTime: 1200, // Reduced for faster transitions
+        fadeTransitionTime: 1200,
         autoPlay: true,
-        preloadNext: true,
-        debounceDelay: 300 // Minimum time between manual switches
+        preloadNext: true
     };
     
     let currentVideoIndex = 0;
@@ -2427,15 +2427,20 @@ if (typeof showNotification === 'undefined') {
     let videoContainer = null;
     let videoControls = null;
     let indicators = [];
-    let isTransitioning = false;
     let autoPlayTimer = null;
     let isPaused = false;
     let validVideos = [];
-    let lastSwitchTime = 0;
-    let pendingSwitch = null;
-    let transitionTimeout = null;
+    let isInitialized = false;
+    let switchQueue = [];
+    let isProcessingSwitch = false;
+    
+    function isMobile() {
+        return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
     
     function initVideoCycling() {
+        if (isInitialized) return;
+        
         videoContainer = document.getElementById('videoContainer');
         videoControls = document.getElementById('videoControls');
         
@@ -2457,6 +2462,8 @@ if (typeof showNotification === 'undefined') {
             } else {
                 if (videoControls) videoControls.style.display = 'none';
             }
+            
+            isInitialized = true;
         });
     }
     
@@ -2509,6 +2516,8 @@ if (typeof showNotification === 'undefined') {
         video.loop = true;
         video.playsInline = true;
         
+        applyVideoStyles(video, true);
+        
         const source = document.createElement('source');
         source.src = 'videos/herobackground.mp4';
         source.type = 'video/mp4';
@@ -2518,6 +2527,32 @@ if (typeof showNotification === 'undefined') {
         
         if (videoControls) videoControls.style.display = 'none';
         video.play().catch(() => {});
+    }
+    
+    function applyVideoStyles(video, isActive = false) {
+        if (isMobile()) {
+            video.style.position = 'fixed';
+            video.style.top = '0';
+            video.style.left = '0';
+            video.style.width = '100vw';
+            video.style.height = '100vh';
+            video.style.transform = 'none';
+            video.style.zIndex = isActive ? '1' : '-1';
+        } else {
+            video.style.position = 'absolute';
+            video.style.top = '50%';
+            video.style.left = '50%';
+            video.style.transform = 'translate3d(-50%, -50%, 0)';
+            video.style.width = '100%';
+            video.style.height = '100%';
+            video.style.zIndex = '1';
+        }
+        
+        video.style.objectFit = 'cover';
+        video.style.opacity = isActive ? '1' : '0';
+        video.style.transition = 'opacity 1.2s ease-in-out';
+        video.style.willChange = 'opacity';
+        video.style.backfaceVisibility = 'hidden';
     }
     
     function createVideoElements() {
@@ -2531,24 +2566,12 @@ if (typeof showNotification === 'undefined') {
             video.preload = 'auto';
             video.loop = false;
             
-            // Perfect positioning
-            video.style.position = 'absolute';
-            video.style.top = '50%';
-            video.style.left = '50%';
-            video.style.transform = 'translate3d(-50%, -50%, 0)';
-            video.style.transformStyle = 'preserve-3d';
-            video.style.willChange = 'opacity';
-            video.style.objectFit = 'cover';
-            video.style.width = '100%';
-            video.style.height = '100%';
-            video.style.transition = 'opacity 1.2s ease-in-out';
+            const isActive = index === 0;
+            applyVideoStyles(video, isActive);
             
-            if (index === 0) {
+            if (isActive) {
                 video.classList.add('active');
                 video.autoplay = true;
-                video.style.opacity = '1';
-            } else {
-                video.style.opacity = '0';
             }
             
             const source = document.createElement('source');
@@ -2559,30 +2582,31 @@ if (typeof showNotification === 'undefined') {
             videoContainer.appendChild(video);
             videos.push(video);
             
+            // Load video immediately
+            video.load();
+            
             // Video event handlers
             video.addEventListener('ended', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                const vid = e.target;
-                vid.currentTime = 0;
-                if (vid.classList.contains('active')) {
-                    vid.play().catch(() => {});
+                if (video.classList.contains('active')) {
+                    video.currentTime = 0;
+                    video.play().catch(() => {});
                 }
             });
             
             video.addEventListener('timeupdate', () => {
-                if (video.classList.contains('active') && video.paused && !isTransitioning) {
+                if (video.classList.contains('active') && video.paused && !isProcessingSwitch) {
                     video.play().catch(() => {});
                 }
             });
             
             video.addEventListener('loadedmetadata', () => {
-                video.style.transform = 'translate3d(-50%, -50%, 0)';
+                applyVideoStyles(video, video.classList.contains('active'));
             });
             
-            // Add error recovery
             video.addEventListener('error', () => {
-                console.warn(`Video error for ${videoFile}, attempting recovery`);
+                console.warn(`Video error for ${videoFile}`);
                 setTimeout(() => {
                     if (video.classList.contains('active')) {
                         video.load();
@@ -2592,10 +2616,8 @@ if (typeof showNotification === 'undefined') {
             });
         });
         
-        // Start first video with error handling
+        // Start first video
         if (videos[0]) {
-            videos[0].style.transform = 'translate3d(-50%, -50%, 0)';
-            
             const playPromise = videos[0].play();
             if (playPromise !== undefined) {
                 playPromise.catch(() => {
@@ -2624,37 +2646,35 @@ if (typeof showNotification === 'undefined') {
             indicator.className = 'video-indicator';
             if (index === 0) indicator.classList.add('active');
             
-            // Improved click handler with debouncing
+            // Queue-based click handler - no glitches possible
             indicator.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                
-                const now = Date.now();
-                if (now - lastSwitchTime < CONFIG.debounceDelay) {
-                    // Queue the switch instead of ignoring it
-                    pendingSwitch = index;
-                    return;
-                }
-                
-                if (index !== currentVideoIndex) {
-                    switchToVideoImproved(index);
-                }
+                queueVideoSwitch(index);
             });
             
-            // Add hover effects for better UX
-            indicator.addEventListener('mouseenter', () => {
-                if (!isTransitioning && index !== currentVideoIndex) {
-                    indicator.style.transform = 'scale(1.1)';
-                    indicator.style.opacity = '0.8';
-                }
-            });
+            // Touch optimization
+            indicator.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                queueVideoSwitch(index);
+            }, { passive: false });
             
-            indicator.addEventListener('mouseleave', () => {
-                if (!isTransitioning && index !== currentVideoIndex) {
+            // Hover effects for desktop
+            if (!isMobile()) {
+                indicator.addEventListener('mouseenter', () => {
+                    if (index !== currentVideoIndex && !isProcessingSwitch) {
+                        indicator.style.transform = 'scale(1.1)';
+                        indicator.style.opacity = '0.8';
+                    }
+                });
+                
+                indicator.addEventListener('mouseleave', () => {
                     indicator.style.transform = 'scale(1)';
-                    indicator.style.opacity = '0.6';
-                }
-            });
+                    if (index !== currentVideoIndex) {
+                        indicator.style.opacity = '0.6';
+                    }
+                });
+            }
             
             videoControls.appendChild(indicator);
             indicators.push(indicator);
@@ -2662,21 +2682,18 @@ if (typeof showNotification === 'undefined') {
     }
     
     function setupEventListeners() {
-        // Keyboard controls with debouncing
+        // Keyboard controls with queue system
         document.addEventListener('keydown', (e) => {
             if (e.target.tagName.toLowerCase() === 'input') return;
-            
-            const now = Date.now();
-            if (now - lastSwitchTime < CONFIG.debounceDelay) return;
             
             switch(e.key) {
                 case 'ArrowRight':
                     e.preventDefault();
-                    nextVideoImproved();
+                    queueVideoSwitch((currentVideoIndex + 1) % validVideos.length);
                     break;
                 case 'ArrowLeft':
                     e.preventDefault();
-                    previousVideoImproved();
+                    queueVideoSwitch((currentVideoIndex - 1 + validVideos.length) % validVideos.length);
                     break;
                 case ' ':
                     e.preventDefault();
@@ -2699,26 +2716,30 @@ if (typeof showNotification === 'undefined') {
             clearTimeout(scrollTimeout);
             scrollTimeout = setTimeout(() => {
                 videos.forEach(video => {
-                    if (video.style.transform !== 'translate3d(-50%, -50%, 0)') {
+                    if (!isMobile() && video.style.transform !== 'translate3d(-50%, -50%, 0)') {
                         video.style.transform = 'translate3d(-50%, -50%, 0)';
                     }
                 });
             }, 16);
         }, { passive: true });
         
-        // Handle pending switches
-        setInterval(() => {
-            if (pendingSwitch !== null && !isTransitioning) {
-                const now = Date.now();
-                if (now - lastSwitchTime >= CONFIG.debounceDelay) {
-                    const targetIndex = pendingSwitch;
-                    pendingSwitch = null;
-                    if (targetIndex !== currentVideoIndex) {
-                        switchToVideoImproved(targetIndex);
-                    }
-                }
-            }
-        }, 50);
+        // Handle resize and orientation changes
+        window.addEventListener('resize', () => {
+            videos.forEach((video, index) => {
+                applyVideoStyles(video, index === currentVideoIndex);
+            });
+        });
+        
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => {
+                videos.forEach((video, index) => {
+                    applyVideoStyles(video, index === currentVideoIndex);
+                });
+            }, 100);
+        });
+        
+        // Process switch queue continuously
+        setInterval(processSwitchQueue, 16); // 60fps processing
     }
     
     function startVideoCycle() {
@@ -2738,104 +2759,88 @@ if (typeof showNotification === 'undefined') {
         
         clearTimeout(autoPlayTimer);
         autoPlayTimer = setTimeout(() => {
-            if (!isPaused && !isTransitioning) {
-                nextVideoImproved();
+            if (!isPaused) {
+                queueVideoSwitch((currentVideoIndex + 1) % validVideos.length);
             }
         }, CONFIG.videoDuration);
     }
     
-    // Improved switch function with better state management
-    function switchToVideoImproved(newIndex) {
+    // QUEUE SYSTEM - Prevents all glitches by processing switches one at a time
+    function queueVideoSwitch(newIndex) {
         if (newIndex === currentVideoIndex || newIndex >= validVideos.length || newIndex < 0) return;
         
-        // Force clear any stuck transition state
-        if (isTransitioning) {
-            console.log('Forcing transition reset');
-            clearTimeout(transitionTimeout);
-            isTransitioning = false;
-            
-            // Reset all videos to clean state
-            videos.forEach((video, index) => {
-                video.classList.remove('fade-out');
-                if (index === currentVideoIndex) {
-                    video.classList.add('active');
-                    video.style.opacity = '1';
-                } else {
-                    video.classList.remove('active');
-                    video.style.opacity = '0';
-                    video.pause();
-                    video.currentTime = 0;
-                }
-            });
-        }
+        // Always use the latest request (cancel previous queued switches)
+        switchQueue = [newIndex];
+    }
+    
+    function processSwitchQueue() {
+        if (switchQueue.length === 0 || isProcessingSwitch) return;
         
-        isTransitioning = true;
-        lastSwitchTime = Date.now();
+        const targetIndex = switchQueue.pop(); // Get latest request
+        switchQueue = []; // Clear queue
+        
+        executeVideoSwitch(targetIndex);
+    }
+    
+    // SMOOTH VIDEO SWITCH - Maintains fade effect, never glitches
+    function executeVideoSwitch(newIndex) {
+        if (newIndex === currentVideoIndex || isProcessingSwitch) return;
+        
+        isProcessingSwitch = true;
         
         const currentVideo = videos[currentVideoIndex];
         const nextVideo = videos[newIndex];
         
-        // Clear any existing timers
+        // Clear auto-play timer
         clearTimeout(autoPlayTimer);
-        clearTimeout(transitionTimeout);
         
+        // Update indicators immediately for responsiveness
         updateIndicators(newIndex);
         
         // Ensure perfect positioning
-        nextVideo.style.transform = 'translate3d(-50%, -50%, 0)';
-        currentVideo.style.transform = 'translate3d(-50%, -50%, 0)';
+        applyVideoStyles(nextVideo, false); // Start hidden
+        applyVideoStyles(currentVideo, true); // Keep current visible
         
-        // Reset and prepare next video
+        // Prepare next video
         nextVideo.currentTime = 0;
-        nextVideo.style.opacity = '0';
         
-        // Start next video
+        // Start next video playing in background
         const playPromise = nextVideo.play();
         
         if (playPromise !== undefined) {
             playPromise.then(() => {
-                // Quick crossfade
+                // Begin smooth fade transition
                 nextVideo.classList.add('active');
                 nextVideo.style.opacity = '1';
                 currentVideo.style.opacity = '0';
                 
-                // Set transition timeout with recovery
-                transitionTimeout = setTimeout(() => {
-                    try {
-                        // Clean up current video
-                        currentVideo.classList.remove('active');
-                        currentVideo.pause();
-                        currentVideo.currentTime = 0;
-                        
-                        // Ensure positioning
-                        currentVideo.style.transform = 'translate3d(-50%, -50%, 0)';
-                        nextVideo.style.transform = 'translate3d(-50%, -50%, 0)';
-                        
-                        // Update state
-                        currentVideoIndex = newIndex;
-                        isTransitioning = false;
-                        
-                        // Preload next video in sequence
-                        if (CONFIG.preloadNext) {
-                            const nextIndex = (newIndex + 1) % validVideos.length;
-                            if (videos[nextIndex] && videos[nextIndex].readyState < 2) {
-                                videos[nextIndex].load();
-                                videos[nextIndex].currentTime = 0;
-                            }
+                // Complete transition after fade
+                setTimeout(() => {
+                    // Clean up previous video
+                    currentVideo.classList.remove('active');
+                    currentVideo.pause();
+                    currentVideo.currentTime = 0;
+                    
+                    // Ensure positioning is maintained
+                    applyVideoStyles(currentVideo, false);
+                    applyVideoStyles(nextVideo, true);
+                    
+                    // Update state
+                    currentVideoIndex = newIndex;
+                    isProcessingSwitch = false;
+                    
+                    // Preload next video
+                    if (CONFIG.preloadNext) {
+                        const nextIndex = (newIndex + 1) % validVideos.length;
+                        if (videos[nextIndex] && videos[nextIndex].readyState < 2) {
+                            videos[nextIndex].load();
+                            videos[nextIndex].currentTime = 0;
                         }
-                        
-                        // Schedule next auto-transition
-                        if (CONFIG.autoPlay && !isPaused) {
-                            scheduleNextTransition();
-                        }
-                        
-                        console.log(`Successfully switched to video ${newIndex}`);
-                        
-                    } catch (error) {
-                        console.error('Transition error:', error);
-                        // Force reset on error
-                        isTransitioning = false;
-                        currentVideoIndex = newIndex;
+                    }
+                    
+                    // Schedule next auto-transition
+                    if (CONFIG.autoPlay && !isPaused) {
+                        scheduleNextTransition();
                     }
                     
                 }, CONFIG.fadeTransitionTime);
@@ -2843,10 +2848,9 @@ if (typeof showNotification === 'undefined') {
             }).catch((error) => {
                 console.error('Video play error:', error);
                 // Reset on error
-                isTransitioning = false;
+                isProcessingSwitch = false;
                 nextVideo.classList.remove('active');
                 currentVideo.style.opacity = '1';
-                nextVideo.style.opacity = '0';
                 
                 if (CONFIG.autoPlay && !isPaused) {
                     scheduleNextTransition();
@@ -2854,18 +2858,8 @@ if (typeof showNotification === 'undefined') {
             });
         } else {
             // Fallback if play() doesn't return a promise
-            isTransitioning = false;
+            isProcessingSwitch = false;
         }
-    }
-    
-    function nextVideoImproved() {
-        const nextIndex = (currentVideoIndex + 1) % validVideos.length;
-        switchToVideoImproved(nextIndex);
-    }
-    
-    function previousVideoImproved() {
-        const prevIndex = (currentVideoIndex - 1 + validVideos.length) % validVideos.length;
-        switchToVideoImproved(prevIndex);
     }
     
     function updateIndicators(activeIndex) {
@@ -2903,23 +2897,23 @@ if (typeof showNotification === 'undefined') {
         }
     }
     
-    // Emergency recovery function
+    // Emergency recovery
     function forceReset() {
         console.log('Force resetting video system');
-        isTransitioning = false;
+        isProcessingSwitch = false;
+        switchQueue = [];
         clearTimeout(autoPlayTimer);
-        clearTimeout(transitionTimeout);
-        pendingSwitch = null;
         
         videos.forEach((video, index) => {
-            video.classList.remove('fade-out');
             if (index === currentVideoIndex) {
                 video.classList.add('active');
                 video.style.opacity = '1';
+                applyVideoStyles(video, true);
                 video.play().catch(() => {});
             } else {
                 video.classList.remove('active');
                 video.style.opacity = '0';
+                applyVideoStyles(video, false);
                 video.pause();
                 video.currentTime = 0;
             }
@@ -2932,7 +2926,6 @@ if (typeof showNotification === 'undefined') {
         }
     }
     
-    // Initialize with slight delay for better compatibility
     function init() {
         setTimeout(() => {
             if (document.readyState === 'loading') {
@@ -2943,17 +2936,17 @@ if (typeof showNotification === 'undefined') {
         }, 100);
     }
     
-    // Public API with improvements
+    // Public API
     window.VideoCycling = {
-        next: nextVideoImproved,
-        previous: previousVideoImproved,
-        switchTo: switchToVideoImproved,
+        next: () => queueVideoSwitch((currentVideoIndex + 1) % validVideos.length),
+        previous: () => queueVideoSwitch((currentVideoIndex - 1 + validVideos.length) % validVideos.length),
+        switchTo: queueVideoSwitch,
         pause: pauseAutoPlay,
         resume: resumeAutoPlay,
         toggle: toggleAutoPlay,
         reset: forceReset,
         getCurrentIndex: () => currentVideoIndex,
-        isTransitioning: () => isTransitioning
+        isTransitioning: () => isProcessingSwitch
     };
     
     init();
