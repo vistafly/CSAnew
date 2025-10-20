@@ -2759,8 +2759,9 @@ if (typeof showNotification === 'undefined') {
             }, 100);
         });
         
-        // Process switch queue continuously
-        setInterval(processSwitchQueue, 16); // 60fps processing
+        // Process switch queue continuously - more frequent on mobile
+        const queueInterval = isMobile() ? 8 : 16; // 120fps vs 60fps
+        setInterval(processSwitchQueue, queueInterval);
     }
     
     function startVideoCycle() {
@@ -2779,16 +2780,29 @@ if (typeof showNotification === 'undefined') {
         if (isPaused) return;
         
         clearTimeout(autoPlayTimer);
+        
+        // Enhanced mobile scheduling - more aggressive timing
+        const delay = isMobile() ? CONFIG.videoDuration - 200 : CONFIG.videoDuration;
+        
         autoPlayTimer = setTimeout(() => {
-            if (!isPaused) {
-                queueVideoSwitch((currentVideoIndex + 1) % validVideos.length, true); // Mark as auto-play
+            if (!isPaused && !isProcessingSwitch) {
+                const nextIndex = (currentVideoIndex + 1) % validVideos.length;
+                console.log(`Auto-switching: ${currentVideoIndex} -> ${nextIndex}`);
+                queueVideoSwitch(nextIndex, true); // Mark as auto-play
             }
-        }, CONFIG.videoDuration);
+        }, delay);
     }
     
     // QUEUE SYSTEM - Prevents all glitches by processing switches one at a time
     function queueVideoSwitch(newIndex, isAutoPlay = false) {
-        if (newIndex === currentVideoIndex || newIndex >= validVideos.length || newIndex < 0) return;
+        if (newIndex >= validVideos.length) {
+            newIndex = 0; // Force loop back to start
+        }
+        if (newIndex < 0) {
+            newIndex = validVideos.length - 1; // Loop to end
+        }
+        
+        if (newIndex === currentVideoIndex) return;
         
         // Block manual switches on mobile (only allow auto-play)
         if (isMobile() && !isAutoPlay) {
@@ -2812,6 +2826,7 @@ if (typeof showNotification === 'undefined') {
     function executeVideoSwitch(newIndex) {
         if (newIndex === currentVideoIndex || isProcessingSwitch) return;
         
+        console.log(`Executing switch: ${currentVideoIndex} -> ${newIndex}`);
         isProcessingSwitch = true;
         
         const currentVideo = videos[currentVideoIndex];
@@ -2827,12 +2842,28 @@ if (typeof showNotification === 'undefined') {
         applyVideoStyles(nextVideo, false); // Start hidden
         applyVideoStyles(currentVideo, true); // Keep current visible
         
-        // Prepare next video
+        // Prepare next video - force reset to start
         nextVideo.currentTime = 0;
+        nextVideo.pause();
         
-        // Start next video playing in background
-        const playPromise = nextVideo.play();
-        
+        // Mobile-specific video preparation
+        if (isMobile()) {
+            // Force load the video on mobile
+            nextVideo.load();
+            
+            // Shorter delay for mobile to prevent freezing
+            setTimeout(() => {
+                const playPromise = nextVideo.play();
+                handleVideoPlayback(playPromise, currentVideo, nextVideo, newIndex);
+            }, 50);
+        } else {
+            // Desktop - immediate playback
+            const playPromise = nextVideo.play();
+            handleVideoPlayback(playPromise, currentVideo, nextVideo, newIndex);
+        }
+    }
+    
+    function handleVideoPlayback(playPromise, currentVideo, nextVideo, newIndex) {
         if (playPromise !== undefined) {
             playPromise.then(() => {
                 // Begin smooth fade transition
@@ -2841,50 +2872,102 @@ if (typeof showNotification === 'undefined') {
                 currentVideo.style.opacity = '0';
                 
                 // Complete transition after fade
+                const fadeDelay = isMobile() ? CONFIG.fadeTransitionTime - 200 : CONFIG.fadeTransitionTime;
                 setTimeout(() => {
-                    // Clean up previous video
-                    currentVideo.classList.remove('active');
-                    currentVideo.pause();
-                    currentVideo.currentTime = 0;
-                    
-                    // Ensure positioning is maintained
-                    applyVideoStyles(currentVideo, false);
-                    applyVideoStyles(nextVideo, true);
-                    
-                    // Update state
-                    currentVideoIndex = newIndex;
-                    isProcessingSwitch = false;
-                    
-                    // Preload next video
-                    if (CONFIG.preloadNext) {
-                        const nextIndex = (newIndex + 1) % validVideos.length;
-                        if (videos[nextIndex] && videos[nextIndex].readyState < 2) {
-                            videos[nextIndex].load();
-                            videos[nextIndex].currentTime = 0;
-                        }
-                    }
-                    
-                    // Schedule next auto-transition
-                    if (CONFIG.autoPlay && !isPaused) {
-                        scheduleNextTransition();
-                    }
-                    
-                }, CONFIG.fadeTransitionTime);
+                    completeVideoSwitch(currentVideo, nextVideo, newIndex);
+                }, fadeDelay);
                 
             }).catch((error) => {
                 console.error('Video play error:', error);
-                // Reset on error
-                isProcessingSwitch = false;
-                nextVideo.classList.remove('active');
-                currentVideo.style.opacity = '1';
-                
-                if (CONFIG.autoPlay && !isPaused) {
-                    scheduleNextTransition();
+                // Mobile fallback - try again
+                if (isMobile()) {
+                    setTimeout(() => {
+                        nextVideo.play().then(() => {
+                            completeVideoSwitch(currentVideo, nextVideo, newIndex);
+                        }).catch(() => {
+                            // Force reset on repeated failure
+                            forceVideoReset(newIndex);
+                        });
+                    }, 200);
+                } else {
+                    forceVideoReset(currentVideoIndex);
                 }
             });
         } else {
             // Fallback if play() doesn't return a promise
-            isProcessingSwitch = false;
+            setTimeout(() => {
+                completeVideoSwitch(currentVideo, nextVideo, newIndex);
+            }, 100);
+        }
+    }
+    
+    function completeVideoSwitch(currentVideo, nextVideo, newIndex) {
+        // Clean up previous video
+        currentVideo.classList.remove('active');
+        currentVideo.pause();
+        currentVideo.currentTime = 0;
+        
+        // Ensure positioning is maintained
+        applyVideoStyles(currentVideo, false);
+        applyVideoStyles(nextVideo, true);
+        
+        // Update state
+        currentVideoIndex = newIndex;
+        isProcessingSwitch = false;
+        
+        console.log(`Switch completed: now on video ${newIndex}`);
+        
+        // Preload next video immediately
+        if (CONFIG.preloadNext) {
+            const nextIndex = (newIndex + 1) % validVideos.length;
+            if (videos[nextIndex]) {
+                videos[nextIndex].load();
+                videos[nextIndex].currentTime = 0;
+            }
+        }
+        
+        // Schedule next auto-transition immediately
+        if (CONFIG.autoPlay && !isPaused) {
+            scheduleNextTransition();
+        }
+    }
+    
+    function forceVideoReset(targetIndex) {
+        console.log(`Force reset to video ${targetIndex}`);
+        isProcessingSwitch = false;
+        clearTimeout(autoPlayTimer);
+        
+        // Reset all videos
+        videos.forEach((video, index) => {
+            video.pause();
+            video.currentTime = 0;
+            video.classList.remove('active');
+            applyVideoStyles(video, false);
+        });
+        
+        // Activate target video
+        const targetVideo = videos[targetIndex];
+        targetVideo.classList.add('active');
+        applyVideoStyles(targetVideo, true);
+        targetVideo.currentTime = 0;
+        
+        // Force play
+        targetVideo.play().catch(() => {
+            // If still failing, reload
+            targetVideo.load();
+            setTimeout(() => {
+                targetVideo.play().catch(() => {});
+            }, 100);
+        });
+        
+        currentVideoIndex = targetIndex;
+        updateIndicators(targetIndex);
+        
+        // Restart cycling
+        if (CONFIG.autoPlay && !isPaused) {
+            setTimeout(() => {
+                scheduleNextTransition();
+            }, 500);
         }
     }
     
@@ -2934,24 +3017,29 @@ if (typeof showNotification === 'undefined') {
         clearTimeout(autoPlayTimer);
         
         videos.forEach((video, index) => {
+            video.pause();
+            video.currentTime = 0;
             if (index === currentVideoIndex) {
                 video.classList.add('active');
                 video.style.opacity = '1';
                 applyVideoStyles(video, true);
-                video.play().catch(() => {});
+                video.play().catch(() => {
+                    video.load();
+                    setTimeout(() => video.play().catch(() => {}), 100);
+                });
             } else {
                 video.classList.remove('active');
                 video.style.opacity = '0';
                 applyVideoStyles(video, false);
-                video.pause();
-                video.currentTime = 0;
             }
         });
         
         updateIndicators(currentVideoIndex);
         
         if (CONFIG.autoPlay && !isPaused) {
-            scheduleNextTransition();
+            setTimeout(() => {
+                scheduleNextTransition();
+            }, 500);
         }
     }
     
