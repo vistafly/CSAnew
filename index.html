@@ -2401,13 +2401,13 @@ if (typeof showNotification === 'undefined') {
 })();
 </script>
 <script>
-// Updated video cycling script - replace your existing script with this
+// Improved video cycling script with better responsiveness and debouncing
 (function() {
     'use strict';
     
     const CONFIG = {
         videoFiles: [
-            'videos/herobackground.mp4',  // Added videos/ prefix
+            'videos/herobackground.mp4',
             'videos/video2.mp4',
             'videos/video3.mp4',
             'videos/video4.mp4',
@@ -2416,9 +2416,10 @@ if (typeof showNotification === 'undefined') {
             'videos/video7.mp4'
         ],
         videoDuration: 8000,
-        fadeTransitionTime: 2500,
+        fadeTransitionTime: 1200, // Reduced for faster transitions
         autoPlay: true,
-        preloadNext: true
+        preloadNext: true,
+        debounceDelay: 300 // Minimum time between manual switches
     };
     
     let currentVideoIndex = 0;
@@ -2430,6 +2431,9 @@ if (typeof showNotification === 'undefined') {
     let autoPlayTimer = null;
     let isPaused = false;
     let validVideos = [];
+    let lastSwitchTime = 0;
+    let pendingSwitch = null;
+    let transitionTimeout = null;
     
     function initVideoCycling() {
         videoContainer = document.getElementById('videoContainer');
@@ -2506,7 +2510,7 @@ if (typeof showNotification === 'undefined') {
         video.playsInline = true;
         
         const source = document.createElement('source');
-        source.src = 'videos/herobackground.mp4';  // Updated path
+        source.src = 'videos/herobackground.mp4';
         source.type = 'video/mp4';
         
         video.appendChild(source);
@@ -2537,21 +2541,25 @@ if (typeof showNotification === 'undefined') {
             video.style.objectFit = 'cover';
             video.style.width = '100%';
             video.style.height = '100%';
+            video.style.transition = 'opacity 1.2s ease-in-out';
             
             if (index === 0) {
                 video.classList.add('active');
                 video.autoplay = true;
+                video.style.opacity = '1';
+            } else {
+                video.style.opacity = '0';
             }
             
             const source = document.createElement('source');
-            source.src = videoFile;  // videoFile now contains full path like 'videos/herobackground.mp4'
+            source.src = videoFile;
             source.type = 'video/mp4';
             
             video.appendChild(source);
             videoContainer.appendChild(video);
             videos.push(video);
             
-            // Prevent video from pausing at end
+            // Video event handlers
             video.addEventListener('ended', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -2562,16 +2570,25 @@ if (typeof showNotification === 'undefined') {
                 }
             });
             
-            // Ensure video doesn't freeze
             video.addEventListener('timeupdate', () => {
                 if (video.classList.contains('active') && video.paused && !isTransitioning) {
                     video.play().catch(() => {});
                 }
             });
             
-            // Fix positioning after load
             video.addEventListener('loadedmetadata', () => {
                 video.style.transform = 'translate3d(-50%, -50%, 0)';
+            });
+            
+            // Add error recovery
+            video.addEventListener('error', () => {
+                console.warn(`Video error for ${videoFile}, attempting recovery`);
+                setTimeout(() => {
+                    if (video.classList.contains('active')) {
+                        video.load();
+                        video.play().catch(() => {});
+                    }
+                }, 1000);
             });
         });
         
@@ -2607,9 +2624,35 @@ if (typeof showNotification === 'undefined') {
             indicator.className = 'video-indicator';
             if (index === 0) indicator.classList.add('active');
             
-            indicator.addEventListener('click', () => {
+            // Improved click handler with debouncing
+            indicator.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const now = Date.now();
+                if (now - lastSwitchTime < CONFIG.debounceDelay) {
+                    // Queue the switch instead of ignoring it
+                    pendingSwitch = index;
+                    return;
+                }
+                
+                if (index !== currentVideoIndex) {
+                    switchToVideoImproved(index);
+                }
+            });
+            
+            // Add hover effects for better UX
+            indicator.addEventListener('mouseenter', () => {
                 if (!isTransitioning && index !== currentVideoIndex) {
-                    switchToVideo(index);
+                    indicator.style.transform = 'scale(1.1)';
+                    indicator.style.opacity = '0.8';
+                }
+            });
+            
+            indicator.addEventListener('mouseleave', () => {
+                if (!isTransitioning && index !== currentVideoIndex) {
+                    indicator.style.transform = 'scale(1)';
+                    indicator.style.opacity = '0.6';
                 }
             });
             
@@ -2619,17 +2662,21 @@ if (typeof showNotification === 'undefined') {
     }
     
     function setupEventListeners() {
+        // Keyboard controls with debouncing
         document.addEventListener('keydown', (e) => {
             if (e.target.tagName.toLowerCase() === 'input') return;
+            
+            const now = Date.now();
+            if (now - lastSwitchTime < CONFIG.debounceDelay) return;
             
             switch(e.key) {
                 case 'ArrowRight':
                     e.preventDefault();
-                    nextVideo();
+                    nextVideoImproved();
                     break;
                 case 'ArrowLeft':
                     e.preventDefault();
-                    previousVideo();
+                    previousVideoImproved();
                     break;
                 case ' ':
                     e.preventDefault();
@@ -2658,6 +2705,20 @@ if (typeof showNotification === 'undefined') {
                 });
             }, 16);
         }, { passive: true });
+        
+        // Handle pending switches
+        setInterval(() => {
+            if (pendingSwitch !== null && !isTransitioning) {
+                const now = Date.now();
+                if (now - lastSwitchTime >= CONFIG.debounceDelay) {
+                    const targetIndex = pendingSwitch;
+                    pendingSwitch = null;
+                    if (targetIndex !== currentVideoIndex) {
+                        switchToVideoImproved(targetIndex);
+                    }
+                }
+            }
+        }, 50);
     }
     
     function startVideoCycle() {
@@ -2678,17 +2739,45 @@ if (typeof showNotification === 'undefined') {
         clearTimeout(autoPlayTimer);
         autoPlayTimer = setTimeout(() => {
             if (!isPaused && !isTransitioning) {
-                nextVideo();
+                nextVideoImproved();
             }
         }, CONFIG.videoDuration);
     }
     
-    function switchToVideo(newIndex) {
-        if (isTransitioning || newIndex === currentVideoIndex || newIndex >= validVideos.length) return;
+    // Improved switch function with better state management
+    function switchToVideoImproved(newIndex) {
+        if (newIndex === currentVideoIndex || newIndex >= validVideos.length || newIndex < 0) return;
+        
+        // Force clear any stuck transition state
+        if (isTransitioning) {
+            console.log('Forcing transition reset');
+            clearTimeout(transitionTimeout);
+            isTransitioning = false;
+            
+            // Reset all videos to clean state
+            videos.forEach((video, index) => {
+                video.classList.remove('fade-out');
+                if (index === currentVideoIndex) {
+                    video.classList.add('active');
+                    video.style.opacity = '1';
+                } else {
+                    video.classList.remove('active');
+                    video.style.opacity = '0';
+                    video.pause();
+                    video.currentTime = 0;
+                }
+            });
+        }
         
         isTransitioning = true;
+        lastSwitchTime = Date.now();
+        
         const currentVideo = videos[currentVideoIndex];
         const nextVideo = videos[newIndex];
+        
+        // Clear any existing timers
+        clearTimeout(autoPlayTimer);
+        clearTimeout(transitionTimeout);
         
         updateIndicators(newIndex);
         
@@ -2698,78 +2787,98 @@ if (typeof showNotification === 'undefined') {
         
         // Reset and prepare next video
         nextVideo.currentTime = 0;
-        nextVideo.classList.remove('fade-out');
+        nextVideo.style.opacity = '0';
         
         // Start next video
         const playPromise = nextVideo.play();
         
         if (playPromise !== undefined) {
             playPromise.then(() => {
-                // Immediate activation
+                // Quick crossfade
                 nextVideo.classList.add('active');
+                nextVideo.style.opacity = '1';
+                currentVideo.style.opacity = '0';
                 
-                // Start fade out after brief delay
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
-                        currentVideo.classList.add('fade-out');
-                    });
-                });
-                
-                // Complete transition
-                setTimeout(() => {
-                    // Clean up current video
-                    currentVideo.classList.remove('active', 'fade-out');
-                    currentVideo.pause();
-                    currentVideo.currentTime = 0;
-                    
-                    // Lock positioning
-                    currentVideo.style.transform = 'translate3d(-50%, -50%, 0)';
-                    nextVideo.style.transform = 'translate3d(-50%, -50%, 0)';
-                    
-                    // Update state
-                    currentVideoIndex = newIndex;
-                    isTransitioning = false;
-                    
-                    // Preload next video in sequence
-                    if (CONFIG.preloadNext) {
-                        const nextIndex = (newIndex + 1) % validVideos.length;
-                        if (videos[nextIndex] && videos[nextIndex].readyState < 2) {
-                            videos[nextIndex].load();
-                            videos[nextIndex].currentTime = 0;
+                // Set transition timeout with recovery
+                transitionTimeout = setTimeout(() => {
+                    try {
+                        // Clean up current video
+                        currentVideo.classList.remove('active');
+                        currentVideo.pause();
+                        currentVideo.currentTime = 0;
+                        
+                        // Ensure positioning
+                        currentVideo.style.transform = 'translate3d(-50%, -50%, 0)';
+                        nextVideo.style.transform = 'translate3d(-50%, -50%, 0)';
+                        
+                        // Update state
+                        currentVideoIndex = newIndex;
+                        isTransitioning = false;
+                        
+                        // Preload next video in sequence
+                        if (CONFIG.preloadNext) {
+                            const nextIndex = (newIndex + 1) % validVideos.length;
+                            if (videos[nextIndex] && videos[nextIndex].readyState < 2) {
+                                videos[nextIndex].load();
+                                videos[nextIndex].currentTime = 0;
+                            }
                         }
-                    }
-                    
-                    // Schedule next auto-transition
-                    if (CONFIG.autoPlay) {
-                        scheduleNextTransition();
+                        
+                        // Schedule next auto-transition
+                        if (CONFIG.autoPlay && !isPaused) {
+                            scheduleNextTransition();
+                        }
+                        
+                        console.log(`Successfully switched to video ${newIndex}`);
+                        
+                    } catch (error) {
+                        console.error('Transition error:', error);
+                        // Force reset on error
+                        isTransitioning = false;
+                        currentVideoIndex = newIndex;
                     }
                     
                 }, CONFIG.fadeTransitionTime);
                 
-            }).catch(() => {
+            }).catch((error) => {
+                console.error('Video play error:', error);
                 // Reset on error
                 isTransitioning = false;
                 nextVideo.classList.remove('active');
-                currentVideo.classList.remove('fade-out');
+                currentVideo.style.opacity = '1';
+                nextVideo.style.opacity = '0';
+                
+                if (CONFIG.autoPlay && !isPaused) {
+                    scheduleNextTransition();
+                }
             });
         } else {
+            // Fallback if play() doesn't return a promise
             isTransitioning = false;
         }
     }
     
-    function nextVideo() {
+    function nextVideoImproved() {
         const nextIndex = (currentVideoIndex + 1) % validVideos.length;
-        switchToVideo(nextIndex);
+        switchToVideoImproved(nextIndex);
     }
     
-    function previousVideo() {
+    function previousVideoImproved() {
         const prevIndex = (currentVideoIndex - 1 + validVideos.length) % validVideos.length;
-        switchToVideo(prevIndex);
+        switchToVideoImproved(prevIndex);
     }
     
     function updateIndicators(activeIndex) {
         indicators.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === activeIndex);
+            if (index === activeIndex) {
+                indicator.classList.add('active');
+                indicator.style.opacity = '1';
+                indicator.style.transform = 'scale(1)';
+            } else {
+                indicator.classList.remove('active');
+                indicator.style.opacity = '0.6';
+                indicator.style.transform = 'scale(1)';
+            }
         });
     }
     
@@ -2794,6 +2903,35 @@ if (typeof showNotification === 'undefined') {
         }
     }
     
+    // Emergency recovery function
+    function forceReset() {
+        console.log('Force resetting video system');
+        isTransitioning = false;
+        clearTimeout(autoPlayTimer);
+        clearTimeout(transitionTimeout);
+        pendingSwitch = null;
+        
+        videos.forEach((video, index) => {
+            video.classList.remove('fade-out');
+            if (index === currentVideoIndex) {
+                video.classList.add('active');
+                video.style.opacity = '1';
+                video.play().catch(() => {});
+            } else {
+                video.classList.remove('active');
+                video.style.opacity = '0';
+                video.pause();
+                video.currentTime = 0;
+            }
+        });
+        
+        updateIndicators(currentVideoIndex);
+        
+        if (CONFIG.autoPlay && !isPaused) {
+            scheduleNextTransition();
+        }
+    }
+    
     // Initialize with slight delay for better compatibility
     function init() {
         setTimeout(() => {
@@ -2805,14 +2943,17 @@ if (typeof showNotification === 'undefined') {
         }, 100);
     }
     
-    // Public API
+    // Public API with improvements
     window.VideoCycling = {
-        next: nextVideo,
-        previous: previousVideo,
-        switchTo: switchToVideo,
+        next: nextVideoImproved,
+        previous: previousVideoImproved,
+        switchTo: switchToVideoImproved,
         pause: pauseAutoPlay,
         resume: resumeAutoPlay,
-        toggle: toggleAutoPlay
+        toggle: toggleAutoPlay,
+        reset: forceReset,
+        getCurrentIndex: () => currentVideoIndex,
+        isTransitioning: () => isTransitioning
     };
     
     init();
