@@ -2401,8 +2401,7 @@ if (typeof showNotification === 'undefined') {
 })();
 </script>
 <script>
-// Improved video cycling script with better responsiveness and debouncing
-// GLITCH-FREE SMOOTH VIDEO CONTROLLER - Keeps fade effects, eliminates all glitches
+// MOBILE FREEZE-FIX VIDEO CONTROLLER - Eliminates all mobile freezing issues
 (function() {
     'use strict';
     
@@ -2431,8 +2430,9 @@ if (typeof showNotification === 'undefined') {
     let isPaused = false;
     let validVideos = [];
     let isInitialized = false;
-    let switchQueue = [];
-    let isProcessingSwitch = false;
+    let pendingVideoIndex = null;
+    let isSwitching = false;
+    let mobilePlayPromises = new Map(); // Track mobile play promises
     
     function isMobile() {
         return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -2526,7 +2526,9 @@ if (typeof showNotification === 'undefined') {
         videoContainer.appendChild(video);
         
         if (videoControls) videoControls.style.display = 'none';
-        video.play().catch(() => {});
+        
+        // Mobile-safe play
+        safeMobilePlay(video);
     }
     
     function applyVideoStyles(video, isActive = false) {
@@ -2555,6 +2557,67 @@ if (typeof showNotification === 'undefined') {
         video.style.backfaceVisibility = 'hidden';
     }
     
+    // Mobile-safe video play function - prevents freezing
+    function safeMobilePlay(video) {
+        return new Promise((resolve, reject) => {
+            if (!video) {
+                reject(new Error('No video element'));
+                return;
+            }
+            
+            // Cancel any existing play promise for this video
+            if (mobilePlayPromises.has(video)) {
+                const existingPromise = mobilePlayPromises.get(video);
+                existingPromise.catch(() => {}); // Ignore errors from cancelled promises
+            }
+            
+            // Reset video state on mobile to prevent freezing
+            if (isMobile()) {
+                video.currentTime = 0;
+                video.load(); // Force reload on mobile for clean state
+            }
+            
+            const playPromise = video.play();
+            mobilePlayPromises.set(video, playPromise);
+            
+            if (playPromise !== undefined) {
+                playPromise
+                    .then(() => {
+                        mobilePlayPromises.delete(video);
+                        resolve();
+                    })
+                    .catch((error) => {
+                        mobilePlayPromises.delete(video);
+                        console.warn(`Video play failed: ${error.message}`);
+                        
+                        // Mobile fallback: try again after short delay
+                        if (isMobile()) {
+                            setTimeout(() => {
+                                if (video.classList.contains('active')) {
+                                    const retryPromise = video.play();
+                                    if (retryPromise) {
+                                        retryPromise.catch(() => {
+                                            // Final fallback: enable on user interaction
+                                            const enableOnTouch = () => {
+                                                video.play().catch(() => {});
+                                                document.removeEventListener('touchstart', enableOnTouch);
+                                                document.removeEventListener('click', enableOnTouch);
+                                            };
+                                            document.addEventListener('touchstart', enableOnTouch, { once: true, passive: true });
+                                            document.addEventListener('click', enableOnTouch, { once: true });
+                                        });
+                                    }
+                                }
+                            }, 500);
+                        }
+                        reject(error);
+                    });
+            } else {
+                resolve();
+            }
+        });
+    }
+    
     function createVideoElements() {
         videos = [];
         
@@ -2563,8 +2626,17 @@ if (typeof showNotification === 'undefined') {
             video.className = 'hero-video';
             video.muted = true;
             video.playsInline = true;
-            video.preload = 'auto';
             video.loop = false;
+            
+            // Mobile-specific attributes to prevent freezing
+            if (isMobile()) {
+                video.preload = 'metadata'; // Lighter preload on mobile
+                video.setAttribute('webkit-playsinline', 'true');
+                video.setAttribute('x5-video-player-type', 'h5'); // WeChat browser
+                video.setAttribute('x5-video-orientation', 'portraint'); // WeChat browser
+            } else {
+                video.preload = 'auto';
+            }
             
             const isActive = index === 0;
             applyVideoStyles(video, isActive);
@@ -2582,22 +2654,34 @@ if (typeof showNotification === 'undefined') {
             videoContainer.appendChild(video);
             videos.push(video);
             
-            // Load video immediately
-            video.load();
+            // Mobile-optimized loading
+            if (isMobile()) {
+                // Only load first video immediately on mobile
+                if (index === 0) {
+                    video.load();
+                }
+            } else {
+                video.load();
+            }
             
-            // Video event handlers
+            // Video event handlers - mobile-safe
             video.addEventListener('ended', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 if (video.classList.contains('active')) {
                     video.currentTime = 0;
-                    video.play().catch(() => {});
+                    safeMobilePlay(video);
                 }
             });
             
-            video.addEventListener('timeupdate', () => {
-                if (video.classList.contains('active') && video.paused && !isProcessingSwitch) {
-                    video.play().catch(() => {});
+            // Mobile-specific pause recovery
+            video.addEventListener('pause', () => {
+                if (video.classList.contains('active') && !isSwitching) {
+                    setTimeout(() => {
+                        if (video.classList.contains('active')) {
+                            safeMobilePlay(video);
+                        }
+                    }, 100);
                 }
             });
             
@@ -2605,33 +2689,39 @@ if (typeof showNotification === 'undefined') {
                 applyVideoStyles(video, video.classList.contains('active'));
             });
             
+            // Enhanced error recovery for mobile
             video.addEventListener('error', () => {
                 console.warn(`Video error for ${videoFile}`);
-                setTimeout(() => {
-                    if (video.classList.contains('active')) {
+                if (video.classList.contains('active')) {
+                    setTimeout(() => {
                         video.load();
-                        video.play().catch(() => {});
-                    }
-                }, 1000);
+                        safeMobilePlay(video);
+                    }, 1000);
+                }
+            });
+            
+            // Mobile-specific stalled recovery
+            video.addEventListener('stalled', () => {
+                if (isMobile() && video.classList.contains('active')) {
+                    console.warn('Video stalled on mobile, attempting recovery');
+                    video.load();
+                    setTimeout(() => safeMobilePlay(video), 200);
+                }
             });
         });
         
-        // Start first video
+        // Start first video with mobile-safe play
         if (videos[0]) {
-            const playPromise = videos[0].play();
-            if (playPromise !== undefined) {
-                playPromise.catch(() => {
-                    const playOnInteraction = () => {
-                        videos[0].play().catch(() => {});
-                        document.removeEventListener('click', playOnInteraction);
-                        document.removeEventListener('touchstart', playOnInteraction);
-                        document.removeEventListener('keydown', playOnInteraction);
-                    };
-                    document.addEventListener('click', playOnInteraction);
-                    document.addEventListener('touchstart', playOnInteraction);
-                    document.addEventListener('keydown', playOnInteraction);
-                });
-            }
+            safeMobilePlay(videos[0]).catch(() => {
+                // User interaction required fallback
+                const enableOnInteraction = () => {
+                    safeMobilePlay(videos[0]);
+                    document.removeEventListener('touchstart', enableOnInteraction);
+                    document.removeEventListener('click', enableOnInteraction);
+                };
+                document.addEventListener('touchstart', enableOnInteraction, { once: true, passive: true });
+                document.addEventListener('click', enableOnInteraction, { once: true });
+            });
         }
     }
     
@@ -2646,23 +2736,30 @@ if (typeof showNotification === 'undefined') {
             indicator.className = 'video-indicator';
             if (index === 0) indicator.classList.add('active');
             
-            // Queue-based click handler - no glitches possible
-            indicator.addEventListener('click', (e) => {
+            // Mobile-optimized click handler
+            const handleSwitch = (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                queueVideoSwitch(index);
-            });
+                
+                if (index !== currentVideoIndex) {
+                    // On mobile, prevent rapid tapping
+                    if (isMobile() && isSwitching) {
+                        pendingVideoIndex = index;
+                        return;
+                    }
+                    
+                    switchToVideoMobileSafe(index);
+                }
+            };
             
-            // Touch optimization
-            indicator.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                queueVideoSwitch(index);
-            }, { passive: false });
+            indicator.addEventListener('click', handleSwitch);
             
-            // Hover effects for desktop
-            if (!isMobile()) {
+            if (isMobile()) {
+                indicator.addEventListener('touchstart', handleSwitch, { passive: false });
+            } else {
+                // Desktop hover effects
                 indicator.addEventListener('mouseenter', () => {
-                    if (index !== currentVideoIndex && !isProcessingSwitch) {
+                    if (index !== currentVideoIndex && !isSwitching) {
                         indicator.style.transform = 'scale(1.1)';
                         indicator.style.opacity = '0.8';
                     }
@@ -2682,18 +2779,18 @@ if (typeof showNotification === 'undefined') {
     }
     
     function setupEventListeners() {
-        // Keyboard controls with queue system
+        // Keyboard controls
         document.addEventListener('keydown', (e) => {
             if (e.target.tagName.toLowerCase() === 'input') return;
             
             switch(e.key) {
                 case 'ArrowRight':
                     e.preventDefault();
-                    queueVideoSwitch((currentVideoIndex + 1) % validVideos.length);
+                    nextVideoMobileSafe();
                     break;
                 case 'ArrowLeft':
                     e.preventDefault();
-                    queueVideoSwitch((currentVideoIndex - 1 + validVideos.length) % validVideos.length);
+                    previousVideoMobileSafe();
                     break;
                 case ' ':
                     e.preventDefault();
@@ -2705,52 +2802,45 @@ if (typeof showNotification === 'undefined') {
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 pauseAutoPlay();
+                // Pause all videos on mobile to save resources
+                if (isMobile()) {
+                    videos.forEach(video => video.pause());
+                }
             } else if (CONFIG.autoPlay) {
                 resumeAutoPlay();
+                // Resume active video on mobile
+                if (isMobile() && videos[currentVideoIndex]) {
+                    safeMobilePlay(videos[currentVideoIndex]);
+                }
             }
         });
         
-        // Protect video positioning during scroll
-        let scrollTimeout;
-        window.addEventListener('scroll', () => {
-            clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(() => {
-                videos.forEach(video => {
-                    if (!isMobile() && video.style.transform !== 'translate3d(-50%, -50%, 0)') {
-                        video.style.transform = 'translate3d(-50%, -50%, 0)';
-                    }
-                });
-            }, 16);
-        }, { passive: true });
-        
-        // Handle resize and orientation changes
-        window.addEventListener('resize', () => {
-            videos.forEach((video, index) => {
-                applyVideoStyles(video, index === currentVideoIndex);
-            });
-        });
-        
+        // Mobile-specific orientation handling
         window.addEventListener('orientationchange', () => {
             setTimeout(() => {
                 videos.forEach((video, index) => {
                     applyVideoStyles(video, index === currentVideoIndex);
                 });
+                
+                // Restart current video on orientation change for mobile
+                if (isMobile() && videos[currentVideoIndex]) {
+                    safeMobilePlay(videos[currentVideoIndex]);
+                }
             }, 100);
         });
         
-        // Process switch queue continuously
-        setInterval(processSwitchQueue, 16); // 60fps processing
+        // Handle pending switches from rapid mobile tapping
+        setInterval(() => {
+            if (pendingVideoIndex !== null && !isSwitching) {
+                const targetIndex = pendingVideoIndex;
+                pendingVideoIndex = null;
+                switchToVideoMobileSafe(targetIndex);
+            }
+        }, 50);
     }
     
     function startVideoCycle() {
         if (!CONFIG.autoPlay || validVideos.length <= 1) return;
-        
-        // Preload next video
-        if (CONFIG.preloadNext && videos[1]) {
-            videos[1].load();
-            videos[1].currentTime = 0;
-        }
-        
         scheduleNextTransition();
     }
     
@@ -2760,33 +2850,22 @@ if (typeof showNotification === 'undefined') {
         clearTimeout(autoPlayTimer);
         autoPlayTimer = setTimeout(() => {
             if (!isPaused) {
-                queueVideoSwitch((currentVideoIndex + 1) % validVideos.length);
+                nextVideoMobileSafe();
             }
         }, CONFIG.videoDuration);
     }
     
-    // QUEUE SYSTEM - Prevents all glitches by processing switches one at a time
-    function queueVideoSwitch(newIndex) {
+    // Mobile-safe video switching - prevents freezing
+    function switchToVideoMobileSafe(newIndex) {
         if (newIndex === currentVideoIndex || newIndex >= validVideos.length || newIndex < 0) return;
+        if (isSwitching) {
+            if (isMobile()) {
+                pendingVideoIndex = newIndex;
+            }
+            return;
+        }
         
-        // Always use the latest request (cancel previous queued switches)
-        switchQueue = [newIndex];
-    }
-    
-    function processSwitchQueue() {
-        if (switchQueue.length === 0 || isProcessingSwitch) return;
-        
-        const targetIndex = switchQueue.pop(); // Get latest request
-        switchQueue = []; // Clear queue
-        
-        executeVideoSwitch(targetIndex);
-    }
-    
-    // SMOOTH VIDEO SWITCH - Maintains fade effect, never glitches
-    function executeVideoSwitch(newIndex) {
-        if (newIndex === currentVideoIndex || isProcessingSwitch) return;
-        
-        isProcessingSwitch = true;
+        isSwitching = true;
         
         const currentVideo = videos[currentVideoIndex];
         const nextVideo = videos[newIndex];
@@ -2794,72 +2873,97 @@ if (typeof showNotification === 'undefined') {
         // Clear auto-play timer
         clearTimeout(autoPlayTimer);
         
-        // Update indicators immediately for responsiveness
+        // Update indicators immediately
         updateIndicators(newIndex);
         
-        // Ensure perfect positioning
-        applyVideoStyles(nextVideo, false); // Start hidden
-        applyVideoStyles(currentVideo, true); // Keep current visible
+        // Mobile-specific: Load next video if not loaded
+        if (isMobile() && nextVideo.readyState < 2) {
+            nextVideo.load();
+        }
+        
+        // Prepare positioning
+        applyVideoStyles(nextVideo, false);
+        applyVideoStyles(currentVideo, true);
         
         // Prepare next video
         nextVideo.currentTime = 0;
         
-        // Start next video playing in background
-        const playPromise = nextVideo.play();
-        
-        if (playPromise !== undefined) {
-            playPromise.then(() => {
-                // Begin smooth fade transition
+        // Mobile-safe play with enhanced error handling
+        safeMobilePlay(nextVideo)
+            .then(() => {
+                // Begin smooth transition
                 nextVideo.classList.add('active');
                 nextVideo.style.opacity = '1';
                 currentVideo.style.opacity = '0';
                 
-                // Complete transition after fade
+                // Complete transition
                 setTimeout(() => {
-                    // Clean up previous video
+                    // Clean up current video - mobile-safe
                     currentVideo.classList.remove('active');
-                    currentVideo.pause();
-                    currentVideo.currentTime = 0;
                     
-                    // Ensure positioning is maintained
+                    // Stop current video safely on mobile
+                    if (isMobile()) {
+                        // Cancel any pending play promises
+                        if (mobilePlayPromises.has(currentVideo)) {
+                            mobilePlayPromises.delete(currentVideo);
+                        }
+                        currentVideo.pause();
+                        currentVideo.currentTime = 0;
+                    } else {
+                        currentVideo.pause();
+                        currentVideo.currentTime = 0;
+                    }
+                    
+                    // Update positioning
                     applyVideoStyles(currentVideo, false);
                     applyVideoStyles(nextVideo, true);
                     
                     // Update state
                     currentVideoIndex = newIndex;
-                    isProcessingSwitch = false;
+                    isSwitching = false;
                     
-                    // Preload next video
-                    if (CONFIG.preloadNext) {
+                    // Mobile-specific: Preload next video
+                    if (CONFIG.preloadNext && isMobile()) {
                         const nextIndex = (newIndex + 1) % validVideos.length;
-                        if (videos[nextIndex] && videos[nextIndex].readyState < 2) {
+                        if (videos[nextIndex] && videos[nextIndex].readyState < 1) {
                             videos[nextIndex].load();
-                            videos[nextIndex].currentTime = 0;
                         }
                     }
                     
-                    // Schedule next auto-transition
+                    // Schedule next transition
                     if (CONFIG.autoPlay && !isPaused) {
                         scheduleNextTransition();
                     }
                     
+                    console.log(`Mobile-safe switch to video ${newIndex}`);
+                    
                 }, CONFIG.fadeTransitionTime);
                 
-            }).catch((error) => {
-                console.error('Video play error:', error);
+            })
+            .catch((error) => {
+                console.error('Mobile video switch error:', error);
                 // Reset on error
-                isProcessingSwitch = false;
+                isSwitching = false;
                 nextVideo.classList.remove('active');
                 currentVideo.style.opacity = '1';
+                
+                // Try to recover current video
+                safeMobilePlay(currentVideo);
                 
                 if (CONFIG.autoPlay && !isPaused) {
                     scheduleNextTransition();
                 }
             });
-        } else {
-            // Fallback if play() doesn't return a promise
-            isProcessingSwitch = false;
-        }
+    }
+    
+    function nextVideoMobileSafe() {
+        const nextIndex = (currentVideoIndex + 1) % validVideos.length;
+        switchToVideoMobileSafe(nextIndex);
+    }
+    
+    function previousVideoMobileSafe() {
+        const prevIndex = (currentVideoIndex - 1 + validVideos.length) % validVideos.length;
+        switchToVideoMobileSafe(prevIndex);
     }
     
     function updateIndicators(activeIndex) {
@@ -2897,35 +3001,6 @@ if (typeof showNotification === 'undefined') {
         }
     }
     
-    // Emergency recovery
-    function forceReset() {
-        console.log('Force resetting video system');
-        isProcessingSwitch = false;
-        switchQueue = [];
-        clearTimeout(autoPlayTimer);
-        
-        videos.forEach((video, index) => {
-            if (index === currentVideoIndex) {
-                video.classList.add('active');
-                video.style.opacity = '1';
-                applyVideoStyles(video, true);
-                video.play().catch(() => {});
-            } else {
-                video.classList.remove('active');
-                video.style.opacity = '0';
-                applyVideoStyles(video, false);
-                video.pause();
-                video.currentTime = 0;
-            }
-        });
-        
-        updateIndicators(currentVideoIndex);
-        
-        if (CONFIG.autoPlay && !isPaused) {
-            scheduleNextTransition();
-        }
-    }
-    
     function init() {
         setTimeout(() => {
             if (document.readyState === 'loading') {
@@ -2938,15 +3013,14 @@ if (typeof showNotification === 'undefined') {
     
     // Public API
     window.VideoCycling = {
-        next: () => queueVideoSwitch((currentVideoIndex + 1) % validVideos.length),
-        previous: () => queueVideoSwitch((currentVideoIndex - 1 + validVideos.length) % validVideos.length),
-        switchTo: queueVideoSwitch,
+        next: nextVideoMobileSafe,
+        previous: previousVideoMobileSafe,
+        switchTo: switchToVideoMobileSafe,
         pause: pauseAutoPlay,
         resume: resumeAutoPlay,
         toggle: toggleAutoPlay,
-        reset: forceReset,
         getCurrentIndex: () => currentVideoIndex,
-        isTransitioning: () => isProcessingSwitch
+        isTransitioning: () => isSwitching
     };
     
     init();
