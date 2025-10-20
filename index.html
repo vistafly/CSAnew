@@ -123,22 +123,25 @@
 <header class="header" id="header">
     <nav class="nav">        
         <ul class="nav-menu" id="navMenu">
-            <li class="nav-item">
-                <a href="#home" class="nav-link">Home</a>
-            </li>
-            <li class="nav-item">
-                <a href="#programs" class="nav-link">Programs</a>
-            </li>
-            <li class="nav-item">
-                <a href="#about" class="nav-link">About</a>
-            </li>
-            <li class="nav-item">
-                <a href="#gallery" class="nav-link">Gallery</a>
-            </li>
-            <li class="nav-item">
-                <a href="#testimonials" class="nav-link">Testimonials</a>
-            </li>
-        </ul>
+    <li class="nav-item">
+        <a href="#home" class="nav-link">Home</a>
+    </li>
+    <li class="nav-item">
+        <a href="#programs" class="nav-link">Programs</a>
+    </li>
+    <li class="nav-item">
+        <a href="#about" class="nav-link">About</a>
+    </li>
+    <li class="nav-item">
+        <a href="#gallery" class="nav-link">Gallery</a>
+    </li>
+    <li class="nav-item">
+        <a href="#testimonials" class="nav-link">Testimonials</a>
+    </li>
+    <li class="nav-item">
+        <a href="#contact" class="nav-link">Contact</a>
+    </li>
+</ul>
         
         <div class="nav-right">
             <div class="nav-auth-section">
@@ -161,36 +164,41 @@
     </nav>
 </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-background">
-            <video class="hero-video" autoplay muted loop playsinline>
-                <source src="./videos/herobackground.mp4" type="video/mp4">
-            </video>
-            <div class="hero-overlay"></div>
+    <!-- Replace your existing hero section with this updated version -->
+<section class="hero" id="home">
+    <div class="hero-background">
+        <div class="video-container" id="videoContainer">
+            <!-- Videos will be dynamically loaded here -->
+        </div>
+        <div class="hero-overlay"></div>
+    </div>
+    
+    <div class="hero-content">
+        <div class="hero-logo">
+            <img src="images/logo.png" alt="CSA Logo" class="hero-logo-image">
+            <div class="hero-logo-fallback">CSA</div>
         </div>
         
-        <div class="hero-content">
-            <div class="hero-logo">
-                <img src="images/logo.png" alt="CSA Logo" class="hero-logo-image">
-                <div class="hero-logo-fallback">CSA</div>
-            </div>
-            
-            <div class="hero-text-container">
-    <h1 class="hero-title">CSA Entertainment</h1>
-    <p class="hero-subtitle">Serving Fresno, Kermen, Kings Canyon, Selma, Unified School Districts</p>
-</div>
-            
-            <div class="hero-actions">
-                <a href="#programs" class="btn btn-primary">Programs </a>
-                <a href="#contact" class="btn btn-secondary">Contact Us</a>
-            </div>
+        <div class="hero-text-container">
+            <h1 class="hero-title">CSA Entertainment</h1>
+            <p class="hero-subtitle">Serving Fresno, Kermen, Kings Canyon, Selma, Unified School Districts</p>
         </div>
         
-        <div class="scroll-indicator">
-            <div class="scroll-arrow"></div>
+        <div class="hero-actions">
+            <a href="#programs" class="btn btn-primary">Programs</a>
+            <a href="#contact" class="btn btn-secondary">Contact Us</a>
         </div>
-    </section>
+    </div>
+    
+    <!-- Optional: Video indicators -->
+    <div class="video-controls" id="videoControls">
+        <!-- Indicators will be dynamically created -->
+    </div>
+    
+    <div class="scroll-indicator">
+        <div class="scroll-arrow"></div>
+    </div>
+</section>
 
     <!-- Programs Section -->
     <section class="programs" id="programs">
@@ -374,19 +382,79 @@
             </div>
         </div>
     </section>
-
-    <!-- Gallery Section -->
-    <section class="gallery" id="gallery">
-        <div class="container">
-            <!-- Authentication Required Message -->
-            <div class="auth-required" id="authRequired">
-                <div class="auth-card">
-                    <div class="auth-icon">🔒</div>
-                    <h3>Authenticad Parent Login</h3>
-                    <p>Your school will provide you with login credentials to see your little one ROCKING THE STAGE !</p>
-                    <button class="btn btn-primary" id="galleryLoginBtn">Sign In to View Gallery</button>
+  <!-- About/Stats Section -->
+<section class="about" id="about">
+    <div class="container">
+        <div class="section-header">
+            <h2>Why Schools Choose CSA</h2>
+            <p class="section-subtitle">For over a decade, we've partnered with elementary schools to deliver exceptional sports and music programs with expert instructors and proven results.</p>
+        </div>
+        
+        <div class="about-content">
+            <div class="about-text">
+                <div class="about-features">
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">
+                            <h4>Expert Instructors</h4>
+                            <p>Certified professionals with elementary education experience</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">
+                            <h4>Proven Curriculum</h4>
+                            <p>Evidence-based programs aligned with educational standards</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">
+                            <h4>Full Support</h4>
+                            <p>Complete implementation and ongoing program management</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" data-count="2500">0</div>
+                    <div class="stat-label">Students Served</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="85">0</div>
+                    <div class="stat-label">School Partners</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="12">0</div>
+                    <div class="stat-label">Years Experience</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="97">0</div>
+                    <div class="stat-label">% Satisfaction</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <!-- Gallery Section -->
+    <section class="gallery" id="gallery">
+    <div class="container">
+        <div class="section-header">
+            <h2>Photo Gallery</h2>
+            <p class="section-subtitle">Capturing the magical moments and milestones of our young performers as they shine on stage and grow in confidence.</p>
+        </div>
+        
+        <!-- Authentication Required Message -->
+        <div class="auth-required" id="authRequired">
+            <div class="auth-card">
+                <div class="auth-icon">🔒</div>
+                <h3>Authenticad Parent Login</h3>
+                <p>Your school will provide you with login credentials to see your little one ROCKING THE STAGE !</p>
+                <button class="btn btn-primary" id="galleryLoginBtn">Sign In to View Gallery</button>
+            </div>
+        </div>
             
             <!-- Gallery Content (Hidden by default) -->
             <div class="gallery-content hidden" id="galleryContent">
@@ -670,61 +738,7 @@
         </div>
     </div>
 
-   <!-- About/Stats Section -->
-    <section class="about" id="about">
-        <div class="container">
-            <div class="about-content">
-                <div class="about-text">
-                    <h2 class="section-title">Why Schools Choose CSA</h2>
-                    <p class="about-description">
-                        For over a decade, we've partnered with elementary schools to deliver exceptional sports and music programs. Our experienced instructors, proven curricula, and comprehensive support make implementation seamless for administrators and rewarding for students.
-                    </p>
-                    <div class="about-features">
-                        <div class="feature-item">
-                            <div class="feature-icon">✓</div>
-                            <div class="feature-text">
-                                <h4>Expert Instructors</h4>
-                                <p>Certified professionals with elementary education experience</p>
-                            </div>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon">✓</div>
-                            <div class="feature-text">
-                                <h4>Proven Curriculum</h4>
-                                <p>Evidence-based programs aligned with educational standards</p>
-                            </div>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon">✓</div>
-                            <div class="feature-text">
-                                <h4>Full Support</h4>
-                                <p>Complete implementation and ongoing program management</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-number" data-count="2500">0</div>
-                        <div class="stat-label">Students Served</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" data-count="85">0</div>
-                        <div class="stat-label">School Partners</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" data-count="12">0</div>
-                        <div class="stat-label">Years Experience</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" data-count="97">0</div>
-                        <div class="stat-label">% Satisfaction</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+
 
     <!-- Testimonials Section -->
     <section class="testimonials" id="testimonials">
@@ -794,10 +808,12 @@
         <div class="container">
             <div class="contact-content">
                 <div class="contact-info">
-                    <h2 class="section-title">Ready to Get Started?</h2>
-                    <p class="contact-description">
-                        Join the growing community of schools providing exceptional sports and music programs. Contact us to learn how CSA can enhance your educational offerings.
-                    </p>
+                   <div class="section-header">
+    <h2>Ready to Get Started?</h2>
+    <p class="section-subtitle">
+        Join the growing community of schools providing exceptional sports and music programs. Contact us to learn how CSA can enhance your educational offerings.
+    </p>
+</div>
                     
                     <div class="contact-details">
                         <div class="contact-item">
@@ -1548,25 +1564,48 @@ function updatePhotoCount() {
 
 // Header scroll effect
 let lastScrollY = window.scrollY;
+
+// Function to check if device is mobile
+function isMobile() {
+    return window.innerWidth <= 768; // Adjust breakpoint as needed
+}
+
 window.addEventListener('scroll', () => {
     const currentScrollY = window.scrollY;
     const header = document.getElementById('header');
     
     if (!header) return;
     
+    // Always apply scrolled class for styling (works on all devices)
     if (currentScrollY > 50) {
         header.classList.add('scrolled');
     } else {
         header.classList.remove('scrolled');
     }
     
-    if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        header.style.transform = 'translateY(-100%)';
+    // Only apply hide/show transform on mobile devices
+    if (isMobile()) {
+        if (currentScrollY > lastScrollY && currentScrollY > 100) {
+            header.style.transform = 'translateY(-100%)';
+        } else {
+            header.style.transform = 'translateY(0)';
+        }
     } else {
+        // Ensure header is always visible on desktop
         header.style.transform = 'translateY(0)';
     }
     
     lastScrollY = currentScrollY;
+});
+
+// Reset header position on window resize to handle orientation changes
+window.addEventListener('resize', () => {
+    const header = document.getElementById('header');
+    if (!header) return;
+    
+    if (!isMobile()) {
+        header.style.transform = 'translateY(0)';
+    }
 });
 
 // Mobile navigation
@@ -1818,6 +1857,9 @@ window.manualStartCounters = function() {
 <!-- Parallax Script -->
 <script>
 // parallax.js
+// Updated parallax.js - Compatible with Video Cycling
+// Replace your existing parallax.js content with this
+
 (function() {
     'use strict';
     
@@ -1842,7 +1884,7 @@ window.manualStartCounters = function() {
         
         console.log('Elements found, setting up parallax...');
         
-        // Set initial hero positioning - start as sticky to prevent jitter
+        // Set initial hero positioning
         hero.style.position = 'sticky';
         hero.style.top = '0';
         hero.style.zIndex = '1';
@@ -1881,7 +1923,7 @@ window.manualStartCounters = function() {
             // Reset all parallax effects
             const elementsToReset = [
                 hero.querySelector('.hero-content'),
-                hero.querySelector('.hero-video'),
+                hero.querySelector('.video-container'), // Updated: target video-container instead of individual videos
                 hero.querySelector('.hero-logo'),
                 hero.querySelector('.hero-actions'),
                 hero.querySelector('.hero-text-container'),
@@ -1909,7 +1951,7 @@ window.manualStartCounters = function() {
                 return;
             }
             
-            // Only reset to relative when at the very top (prevents jitter)
+            // Only reset to relative when at the very top
             if (scrollY <= 2 && stickyApplied) {
                 hero.style.position = 'relative';
                 hero.style.top = '';
@@ -1918,7 +1960,7 @@ window.manualStartCounters = function() {
                 return;
             }
             
-            // Apply sticky positioning when scrolling (but prevent re-applying if already sticky)
+            // Apply sticky positioning when scrolling
             if (scrollY > 2 && !stickyApplied) {
                 hero.style.position = 'sticky';
                 hero.style.top = '0';
@@ -1935,9 +1977,9 @@ window.manualStartCounters = function() {
                 const easedProgress = easeOutCubic(progress);
                 
                 if (progress > 0) {
-                    // Apply effects to all hero elements - NO MOVEMENT, only fade and scale
+                    // Get hero elements
                     const heroContent = hero.querySelector('.hero-content');
-                    const heroVideo = hero.querySelector('.hero-video');
+                    const videoContainer = hero.querySelector('.video-container'); // Updated: target container
                     const heroLogo = hero.querySelector('.hero-logo');
                     const heroActions = hero.querySelector('.hero-actions');
                     const heroTextContainer = hero.querySelector('.hero-text-container');
@@ -1945,18 +1987,18 @@ window.manualStartCounters = function() {
                     const heroOverlay = hero.querySelector('.hero-overlay');
                     
                     if (heroContent) {
-                        // Don't apply opacity to preserve child backdrop-filter effects
                         const scale = 1 - (easedProgress * 0.02);
                         heroContent.style.transform = `scale(${scale})`;
                         heroContent.style.transition = 'none';
                     }
                     
-                    if (heroVideo) {
+                    // Updated: Apply effects to video container instead of individual videos
+                    if (videoContainer) {
                         const scale = 1 + (easedProgress * 0.03);
                         const opacity = 1 - (easedProgress * 0.3);
-                        heroVideo.style.transform = `scale(${scale})`;
-                        heroVideo.style.opacity = opacity;
-                        heroVideo.style.transition = 'none';
+                        videoContainer.style.transform = `scale(${scale})`;
+                        videoContainer.style.opacity = opacity;
+                        videoContainer.style.transition = 'none';
                     }
                     
                     if (heroLogo) {
@@ -1976,11 +2018,12 @@ window.manualStartCounters = function() {
                     }
                     
                     if (heroTextContainer) {
-                        // Don't apply opacity to preserve backdrop-filter blur effect
-                        const scale = 1 - (easedProgress * 0.01);
-                        heroTextContainer.style.transform = `scale(${scale})`;
-                        heroTextContainer.style.transition = 'none';
-                    }
+    const scale = 1 - (easedProgress * 0.02); // Slightly more pronounced scaling
+    const opacity = 1 - (easedProgress * 0.8); // Fade out effect
+    heroTextContainer.style.transform = `scale(${scale})`;
+    heroTextContainer.style.opacity = Math.max(0, opacity);
+    heroTextContainer.style.transition = 'none';
+}
                     
                     if (scrollIndicator) {
                         const opacity = 1 - (easedProgress * 1.5);
@@ -2251,7 +2294,523 @@ if (typeof showNotification === 'undefined') {
         }
     }
 }
+// Professional Active Section Tracking
+(function() {
+    'use strict';
+    
+    let isInitialized = false;
+    let currentSection = null;
+    
+    function initSectionTracking() {
+        if (isInitialized) return;
+        
+        const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+        const sections = document.querySelectorAll('section[id]');
+        
+        if (!navLinks.length || !sections.length) {
+            setTimeout(initSectionTracking, 200);
+            return;
+        }
+        
+        isInitialized = true;
+        
+        function setActiveSection(sectionId) {
+            if (currentSection === sectionId) return;
+            
+            navLinks.forEach(link => link.classList.remove('active'));
+            
+            const activeLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+                currentSection = sectionId;
+            }
+        }
+        
+        function getCurrentSection() {
+            const scrollPos = window.pageYOffset + 100;
+            
+            if (scrollPos < 200) return 'home';
+            
+            for (let i = sections.length - 1; i >= 0; i--) {
+                const section = sections[i];
+                if (section.offsetTop <= scrollPos) {
+                    return section.id;
+                }
+            }
+            return 'home';
+        }
+        
+        let scrollTimer;
+        function handleScroll() {
+            if (scrollTimer) clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(() => {
+                const activeSection = getCurrentSection();
+                setActiveSection(activeSection);
+            }, 10);
+        }
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (!href.startsWith('#')) return;
+                
+                e.preventDefault();
+                const targetId = href.substring(1);
+                const targetSection = document.getElementById(targetId);
+                
+                if (targetSection) {
+                    setActiveSection(targetId);
+                    
+                    // Close mobile menu
+                    const navMenu = document.getElementById('navMenu');
+                    const navToggle = document.getElementById('navToggle');
+                    if (navMenu && navMenu.classList.contains('active')) {
+                        navMenu.classList.remove('active');
+                        if (navToggle) navToggle.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                    
+                    const header = document.getElementById('header');
+                    const offset = header ? header.offsetHeight + 20 : 80;
+                    const targetTop = targetId === 'home' ? 0 : targetSection.offsetTop - offset;
+                    
+                    window.scrollTo({
+                        top: Math.max(0, targetTop),
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        
+        // Initial setup
+        setTimeout(() => {
+            const initialSection = getCurrentSection();
+            setActiveSection(initialSection);
+        }, 100);
+    }
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSectionTracking);
+    } else {
+        initSectionTracking();
+    }
+    
+    setTimeout(initSectionTracking, 500);
+})();
 </script>
-
+// Perfect Video Cycling Script - Clean Production Version
+<script>
+(function() {
+    'use strict';
+    
+    const CONFIG = {
+        videoFiles: [
+            'herobackground.mp4',
+            'video2.mp4',
+            'video3.mp4',
+            'video4.mp4',
+            'video5.mp4',
+            'video6.mp4',
+            'video7.mp4'
+        ],
+        videoDuration: 8000,
+        fadeTransitionTime: 2500,
+        autoPlay: true,
+        preloadNext: true
+    };
+    
+    let currentVideoIndex = 0;
+    let videos = [];
+    let videoContainer = null;
+    let videoControls = null;
+    let indicators = [];
+    let isTransitioning = false;
+    let autoPlayTimer = null;
+    let isPaused = false;
+    let validVideos = [];
+    
+    function initVideoCycling() {
+        videoContainer = document.getElementById('videoContainer');
+        videoControls = document.getElementById('videoControls');
+        
+        if (!videoContainer) return;
+        
+        testVideoFiles().then(() => {
+            if (validVideos.length === 0) {
+                createFallbackVideo();
+                return;
+            }
+            
+            videoContainer.innerHTML = '';
+            createVideoElements();
+            
+            if (validVideos.length > 1) {
+                createIndicators();
+                setupEventListeners();
+                startVideoCycle();
+            } else {
+                if (videoControls) videoControls.style.display = 'none';
+            }
+        });
+    }
+    
+    async function testVideoFiles() {
+        validVideos = [];
+        
+        for (const videoFile of CONFIG.videoFiles) {
+            const isValid = await testVideoFile(`./videos/${videoFile}`);
+            if (isValid) {
+                validVideos.push(videoFile);
+            }
+        }
+    }
+    
+    function testVideoFile(url) {
+        return new Promise((resolve) => {
+            const video = document.createElement('video');
+            video.preload = 'metadata';
+            video.muted = true;
+            
+            const timeout = setTimeout(() => resolve(false), 3000);
+            
+            video.onloadedmetadata = () => {
+                clearTimeout(timeout);
+                resolve(true);
+            };
+            
+            video.onerror = () => {
+                clearTimeout(timeout);
+                resolve(false);
+            };
+            
+            video.src = url;
+            video.load();
+        });
+    }
+    
+    function createFallbackVideo() {
+        const video = document.createElement('video');
+        video.className = 'hero-video active';
+        video.autoplay = true;
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        
+        const source = document.createElement('source');
+        source.src = './videos/herobackground.mp4';
+        source.type = 'video/mp4';
+        
+        video.appendChild(source);
+        videoContainer.appendChild(video);
+        
+        if (videoControls) videoControls.style.display = 'none';
+        video.play().catch(() => {});
+    }
+    
+    function createVideoElements() {
+        videos = [];
+        
+        validVideos.forEach((videoFile, index) => {
+            const video = document.createElement('video');
+            video.className = 'hero-video';
+            video.muted = true;
+            video.playsInline = true;
+            video.preload = 'auto';
+            video.loop = false;
+            
+            // Perfect positioning
+            video.style.position = 'absolute';
+            video.style.top = '50%';
+            video.style.left = '50%';
+            video.style.transform = 'translate3d(-50%, -50%, 0)';
+            video.style.transformStyle = 'preserve-3d';
+            video.style.willChange = 'opacity';
+            video.style.objectFit = 'cover';
+            video.style.width = '100%';
+            video.style.height = '100%';
+            
+            if (index === 0) {
+                video.classList.add('active');
+                video.autoplay = true;
+            }
+            
+            const source = document.createElement('source');
+            source.src = `./videos/${videoFile}`;
+            source.type = 'video/mp4';
+            
+            video.appendChild(source);
+            videoContainer.appendChild(video);
+            videos.push(video);
+            
+            // Prevent video from pausing at end
+            video.addEventListener('ended', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const vid = e.target;
+                vid.currentTime = 0;
+                if (vid.classList.contains('active')) {
+                    vid.play().catch(() => {});
+                }
+            });
+            
+            // Ensure video doesn't freeze
+            video.addEventListener('timeupdate', () => {
+                if (video.classList.contains('active') && video.paused && !isTransitioning) {
+                    video.play().catch(() => {});
+                }
+            });
+            
+            // Fix positioning after load
+            video.addEventListener('loadedmetadata', () => {
+                video.style.transform = 'translate3d(-50%, -50%, 0)';
+            });
+        });
+        
+        // Start first video with error handling
+        if (videos[0]) {
+            videos[0].style.transform = 'translate3d(-50%, -50%, 0)';
+            
+            const playPromise = videos[0].play();
+            if (playPromise !== undefined) {
+                playPromise.catch(() => {
+                    const playOnInteraction = () => {
+                        videos[0].play().catch(() => {});
+                        document.removeEventListener('click', playOnInteraction);
+                        document.removeEventListener('touchstart', playOnInteraction);
+                        document.removeEventListener('keydown', playOnInteraction);
+                    };
+                    document.addEventListener('click', playOnInteraction);
+                    document.addEventListener('touchstart', playOnInteraction);
+                    document.addEventListener('keydown', playOnInteraction);
+                });
+            }
+        }
+    }
+    
+    function createIndicators() {
+        if (!videoControls || validVideos.length <= 1) return;
+        
+        videoControls.innerHTML = '';
+        indicators = [];
+        
+        validVideos.forEach((_, index) => {
+            const indicator = document.createElement('div');
+            indicator.className = 'video-indicator';
+            if (index === 0) indicator.classList.add('active');
+            
+            indicator.addEventListener('click', () => {
+                if (!isTransitioning && index !== currentVideoIndex) {
+                    switchToVideo(index);
+                }
+            });
+            
+            videoControls.appendChild(indicator);
+            indicators.push(indicator);
+        });
+    }
+    
+    function setupEventListeners() {
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName.toLowerCase() === 'input') return;
+            
+            switch(e.key) {
+                case 'ArrowRight':
+                    e.preventDefault();
+                    nextVideo();
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    previousVideo();
+                    break;
+                case ' ':
+                    e.preventDefault();
+                    toggleAutoPlay();
+                    break;
+            }
+        });
+        
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                pauseAutoPlay();
+            } else if (CONFIG.autoPlay) {
+                resumeAutoPlay();
+            }
+        });
+        
+        // Protect video positioning during scroll
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                videos.forEach(video => {
+                    if (video.style.transform !== 'translate3d(-50%, -50%, 0)') {
+                        video.style.transform = 'translate3d(-50%, -50%, 0)';
+                    }
+                });
+            }, 16);
+        }, { passive: true });
+    }
+    
+    function startVideoCycle() {
+        if (!CONFIG.autoPlay || validVideos.length <= 1) return;
+        
+        // Preload next video
+        if (CONFIG.preloadNext && videos[1]) {
+            videos[1].load();
+            videos[1].currentTime = 0;
+        }
+        
+        scheduleNextTransition();
+    }
+    
+    function scheduleNextTransition() {
+        if (isPaused) return;
+        
+        clearTimeout(autoPlayTimer);
+        autoPlayTimer = setTimeout(() => {
+            if (!isPaused && !isTransitioning) {
+                nextVideo();
+            }
+        }, CONFIG.videoDuration);
+    }
+    
+    function switchToVideo(newIndex) {
+        if (isTransitioning || newIndex === currentVideoIndex || newIndex >= validVideos.length) return;
+        
+        isTransitioning = true;
+        const currentVideo = videos[currentVideoIndex];
+        const nextVideo = videos[newIndex];
+        
+        updateIndicators(newIndex);
+        
+        // Ensure perfect positioning
+        nextVideo.style.transform = 'translate3d(-50%, -50%, 0)';
+        currentVideo.style.transform = 'translate3d(-50%, -50%, 0)';
+        
+        // Reset and prepare next video
+        nextVideo.currentTime = 0;
+        nextVideo.classList.remove('fade-out');
+        
+        // Start next video
+        const playPromise = nextVideo.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                // Immediate activation
+                nextVideo.classList.add('active');
+                
+                // Start fade out after brief delay
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        currentVideo.classList.add('fade-out');
+                    });
+                });
+                
+                // Complete transition
+                setTimeout(() => {
+                    // Clean up current video
+                    currentVideo.classList.remove('active', 'fade-out');
+                    currentVideo.pause();
+                    currentVideo.currentTime = 0;
+                    
+                    // Lock positioning
+                    currentVideo.style.transform = 'translate3d(-50%, -50%, 0)';
+                    nextVideo.style.transform = 'translate3d(-50%, -50%, 0)';
+                    
+                    // Update state
+                    currentVideoIndex = newIndex;
+                    isTransitioning = false;
+                    
+                    // Preload next video in sequence
+                    if (CONFIG.preloadNext) {
+                        const nextIndex = (newIndex + 1) % validVideos.length;
+                        if (videos[nextIndex] && videos[nextIndex].readyState < 2) {
+                            videos[nextIndex].load();
+                            videos[nextIndex].currentTime = 0;
+                        }
+                    }
+                    
+                    // Schedule next auto-transition
+                    if (CONFIG.autoPlay) {
+                        scheduleNextTransition();
+                    }
+                    
+                }, CONFIG.fadeTransitionTime);
+                
+            }).catch(() => {
+                // Reset on error
+                isTransitioning = false;
+                nextVideo.classList.remove('active');
+                currentVideo.classList.remove('fade-out');
+            });
+        } else {
+            isTransitioning = false;
+        }
+    }
+    
+    function nextVideo() {
+        const nextIndex = (currentVideoIndex + 1) % validVideos.length;
+        switchToVideo(nextIndex);
+    }
+    
+    function previousVideo() {
+        const prevIndex = (currentVideoIndex - 1 + validVideos.length) % validVideos.length;
+        switchToVideo(prevIndex);
+    }
+    
+    function updateIndicators(activeIndex) {
+        indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === activeIndex);
+        });
+    }
+    
+    function pauseAutoPlay() {
+        isPaused = true;
+        clearTimeout(autoPlayTimer);
+    }
+    
+    function resumeAutoPlay() {
+        if (CONFIG.autoPlay && validVideos.length > 1) {
+            isPaused = false;
+            scheduleNextTransition();
+        }
+    }
+    
+    function toggleAutoPlay() {
+        CONFIG.autoPlay = !CONFIG.autoPlay;
+        if (CONFIG.autoPlay) {
+            resumeAutoPlay();
+        } else {
+            pauseAutoPlay();
+        }
+    }
+    
+    // Initialize with slight delay for better compatibility
+    function init() {
+        setTimeout(() => {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initVideoCycling);
+            } else {
+                initVideoCycling();
+            }
+        }, 100);
+    }
+    
+    // Public API
+    window.VideoCycling = {
+        next: nextVideo,
+        previous: previousVideo,
+        switchTo: switchToVideo,
+        pause: pauseAutoPlay,
+        resume: resumeAutoPlay,
+        toggle: toggleAutoPlay
+    };
+    
+    init();
+    
+})();
+</script>
 </body>
 </html>
