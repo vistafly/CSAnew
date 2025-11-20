@@ -111,7 +111,7 @@
         
         <!-- Logo Container -->
         <div class="logo-container">
-            <img src="images/logo.png" alt="CSA Logo" class="loader-logo-image">
+            <img src="public/images/logo.png" alt="CSA Logo" class="loader-logo-image">
             <div class="loader-logo-fallback">CSA</div>
         </div>
         
@@ -164,7 +164,6 @@
     </nav>
 </header>
 
-    <!-- Replace your existing hero section with this updated version -->
 <section class="hero" id="home">
     <div class="hero-background">
         <div class="video-container" id="videoContainer">
@@ -175,8 +174,11 @@
     
     <div class="hero-content">
         <div class="hero-logo">
-            <img src="images/logo.png" alt="CSA Logo" class="hero-logo-image">
-            <div class="hero-logo-fallback">CSA</div>
+            <img src="public/images/logo.png" alt="CSA Logo" class="hero-logo-image" 
+                 onload="this.style.display='block'; this.classList.add('loaded');"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                 style="display: block;">
+            <div class="hero-logo-fallback" style="display: none;">CSA</div>
         </div>
         
         <div class="hero-text-container">
@@ -211,7 +213,7 @@
             <div class="programs-grid">
                 <div class="program-card" data-program="sports">
                     <div class="program-image">
-                        <img src="images/programs/1.jpg" alt="Sports Program" loading="lazy">
+                        <img src="public/images/programs/1.jpg" alt="Sports Program" loading="lazy">
                         <div class="program-overlay">
                             <div class="program-icon">⚽</div>
                         </div>
@@ -230,7 +232,7 @@
                 
                 <div class="program-card" data-program="acoustic-guitar">
                     <div class="program-image">
-                        <img src="images/programs/1.jpg" alt="Acoustic Guitar Program" loading="lazy">
+                        <img src="public/images/programs/1.jpg" alt="Acoustic Guitar Program" loading="lazy">
                         <div class="program-overlay">
                             <div class="program-icon">🎸</div>
                         </div>
@@ -249,7 +251,7 @@
                 
                 <div class="program-card" data-program="electric-guitar">
                     <div class="program-image">
-                        <img src="images/programs/2.jpg" alt="Electric Guitar Program" loading="lazy">
+                        <img src="public/images/programs/2.jpg" alt="Electric Guitar Program" loading="lazy">
                         <div class="program-overlay">
                             <div class="program-icon">⚡</div>
                         </div>
@@ -268,7 +270,7 @@
                 
                 <div class="program-card" data-program="dance">
                     <div class="program-image">
-                        <img src="images/programs/2.jpg" alt="Dance Program" loading="lazy">
+                        <img src="public/images/programs/2.jpg" alt="Dance Program" loading="lazy">
                         <div class="program-overlay">
                             <div class="program-icon">💃</div>
                         </div>
@@ -287,7 +289,7 @@
                 
                 <div class="program-card" data-program="choir">
                     <div class="program-image">
-                        <img src="images/programs/1.jpg" alt="Choir Program" loading="lazy">
+                        <img src="public/images/programs/1.jpg" alt="Choir Program" loading="lazy">
                         <div class="program-overlay">
                             <div class="program-icon">🎵</div>
                         </div>
@@ -306,7 +308,7 @@
                 
                 <div class="program-card" data-program="percussion">
                     <div class="program-image">
-                        <img src="images/programs/2.jpg" alt="Percussion Program" loading="lazy">
+                        <img src="public/images/programs/2.jpg" alt="Percussion Program" loading="lazy">
                         <div class="program-overlay">
                             <div class="program-icon">🥁</div>
                         </div>
@@ -325,7 +327,7 @@
                 
                 <div class="program-card" data-program="dj">
                     <div class="program-image">
-                        <img src="images/programs/2.jpg" alt="DJ Introduction Program" loading="lazy">
+                        <img src="public/images/programs/2.jpg" alt="DJ Introduction Program" loading="lazy">
                         <div class="program-overlay">
                             <div class="program-icon">🎧</div>
                         </div>
@@ -344,7 +346,7 @@
                 
                 <div class="program-card" data-program="bass-guitar">
                     <div class="program-image">
-                        <img src="images/programs/1.jpg" alt="Bass Guitar Program" loading="lazy">
+                        <img src="public/images/programs/1.jpg" alt="Bass Guitar Program" loading="lazy">
                         <div class="program-overlay">
                             <div class="program-icon">🎸</div>
                         </div>
@@ -363,7 +365,7 @@
                 
                 <div class="program-card" data-program="keyboard">
                     <div class="program-image">
-                        <img src="images/programs/2.jpg" alt="Keyboard Program" loading="lazy">
+                        <img src="public/images/programs/2.jpg" alt="Keyboard Program" loading="lazy">
                         <div class="program-overlay">
                             <div class="program-icon">🎹</div>
                         </div>
@@ -501,7 +503,7 @@
                 <div class="gallery-grid" id="galleryGrid">
                     <!-- Sports Program Photos -->
                     <div class="gallery-item" data-program="sports" data-location="oakwood" data-date="2024-fall">
-                        <img src="images/gallery/5.jpg" alt="Sports Program at Oakwood Elementary" loading="lazy">
+                        <img src="public/images/gallery/5.jpg" alt="Sports Program at Oakwood Elementary" loading="lazy">
                         <div class="gallery-overlay">
                             <div class="gallery-info">
                                 <h4>Sports Program</h4>
@@ -511,7 +513,7 @@
                     </div>
                     
                     <div class="gallery-item" data-program="sports" data-location="riverside" data-date="2024-summer">
-                        <img src="images/gallery/6.jpg" alt="Sports Program at Riverside School" loading="lazy">
+                        <img src="public/images/gallery/6.jpg" alt="Sports Program at Riverside School" loading="lazy">
                         <div class="gallery-overlay">
                             <div class="gallery-info">
                                 <h4>Sports Program</h4>
@@ -521,7 +523,7 @@
                     </div>
                     
                     <div class="gallery-item" data-program="sports" data-location="maple-grove" data-date="2024-spring">
-                        <img src="images/gallery/sports-maple-spring2024-1.jpg" alt="Sports Program at Maple Grove" loading="lazy">
+                        <img src="public/images/gallery/sports-maple-spring2024-1.jpg" alt="Sports Program at Maple Grove" loading="lazy">
                         <div class="gallery-overlay">
                             <div class="gallery-info">
                                 <h4>Sports Program</h4>
@@ -532,7 +534,7 @@
                     
                     <!-- Dance Program Photos -->
                     <div class="gallery-item" data-program="dance" data-location="sunset" data-date="2024-fall">
-                        <img src="images/gallery/dance-sunset-fall2024-1.jpg" alt="Dance Program at Sunset Elementary" loading="lazy">
+                        <img src="public/images/gallery/dance-sunset-fall2024-1.jpg" alt="Dance Program at Sunset Elementary" loading="lazy">
                         <div class="gallery-overlay">
                             <div class="gallery-info">
                                 <h4>Dance Program</h4>
@@ -542,7 +544,7 @@
                     </div>
                     
                     <div class="gallery-item" data-program="dance" data-location="cedar-hills" data-date="2024-summer">
-                        <img src="images/gallery/dance-cedar-summer2024-1.jpg" alt="Dance Program at Cedar Hills" loading="lazy">
+                        <img src="public/images/gallery/dance-cedar-summer2024-1.jpg" alt="Dance Program at Cedar Hills" loading="lazy">
                         <div class="gallery-overlay">
                             <div class="gallery-info">
                                 <h4>Dance Program</h4>
@@ -552,7 +554,7 @@
                     </div>
                     
                     <div class="gallery-item" data-program="dance" data-location="oakwood" data-date="2024-spring">
-                        <img src="images/gallery/dance-oakwood-spring2024-1.jpg" alt="Dance Program at Oakwood Elementary" loading="lazy">
+                        <img src="public/images/gallery/dance-oakwood-spring2024-1.jpg" alt="Dance Program at Oakwood Elementary" loading="lazy">
                         <div class="gallery-overlay">
                             <div class="gallery-info">
                                 <h4>Dance Program</h4>
@@ -563,7 +565,7 @@
                     
                     <!-- Choir Program Photos -->
                     <div class="gallery-item" data-program="choir" data-location="riverside" data-date="2024-fall">
-                        <img src="images/gallery/choir-riverside-fall2024-1.jpg" alt="Choir Program at Riverside School" loading="lazy">
+                        <img src="public/images/gallery/choir-riverside-fall2024-1.jpg" alt="Choir Program at Riverside School" loading="lazy">
                         <div class="gallery-overlay">
                             <div class="gallery-info">
                                 <h4>Choir Program</h4>
@@ -573,7 +575,7 @@
                     </div>
                     
                     <div class="gallery-item" data-program="choir" data-location="maple-grove" data-date="2024-summer">
-                        <img src="images/gallery/choir-maple-summer2024-1.jpg" alt="Choir Program at Maple Grove" loading="lazy">
+                        <img src="public/images/gallery/choir-maple-summer2024-1.jpg" alt="Choir Program at Maple Grove" loading="lazy">
                         <div class="gallery-overlay">
                             <div class="gallery-info">
                                 <h4>Choir Program</h4>
@@ -583,7 +585,7 @@
                     </div>
                     
                     <div class="gallery-item" data-program="choir" data-location="sunset" data-date="2023-fall">
-                        <img src="images/gallery/choir-sunset-fall2023-1.jpg" alt="Choir Program at Sunset Elementary" loading="lazy">
+                        <img src="public/images/gallery/choir-sunset-fall2023-1.jpg" alt="Choir Program at Sunset Elementary" loading="lazy">
                         <div class="gallery-overlay">
                             <div class="gallery-info">
                                 <h4>Choir Program</h4>
@@ -594,7 +596,7 @@
                     
                     <!-- Percussion Program Photos -->
                     <div class="gallery-item" data-program="percussion" data-location="cedar-hills" data-date="2024-fall">
-                        <img src="images/gallery/percussion-cedar-fall2024-1.jpg" alt="Percussion Program at Cedar Hills" loading="lazy">
+                        <img src="public/images/gallery/percussion-cedar-fall2024-1.jpg" alt="Percussion Program at Cedar Hills" loading="lazy">
                         <div class="gallery-overlay">
                             <div class="gallery-info">
                                 <h4>Percussion Program</h4>
@@ -604,7 +606,7 @@
                     </div>
                     
                     <div class="gallery-item" data-program="percussion" data-location="oakwood" data-date="2024-summer">
-                        <img src="images/gallery/percussion-oakwood-summer2024-1.jpg" alt="Percussion Program at Oakwood Elementary" loading="lazy">
+                        <img src="public/images/gallery/percussion-oakwood-summer2024-1.jpg" alt="Percussion Program at Oakwood Elementary" loading="lazy">
                         <div class="gallery-overlay">
                             <div class="gallery-info">
                                 <h4>Percussion Program</h4>
@@ -614,7 +616,7 @@
                     </div>
                     
                     <div class="gallery-item" data-program="percussion" data-location="riverside" data-date="2024-spring">
-                        <img src="images/gallery/percussion-riverside-spring2024-1.jpg" alt="Percussion Program at Riverside School" loading="lazy">
+                        <img src="public/images/gallery/percussion-riverside-spring2024-1.jpg" alt="Percussion Program at Riverside School" loading="lazy">
                         <div class="gallery-overlay">
                             <div class="gallery-info">
                                 <h4>Percussion Program</h4>
@@ -625,7 +627,7 @@
                     
                     <!-- Mixed Program Photos -->
                     <div class="gallery-item" data-program="sports" data-location="sunset" data-date="2024-summer">
-                        <img src="images/gallery/sports-sunset-summer2024-2.jpg" alt="Sports Program at Sunset Elementary" loading="lazy">
+                        <img src="public/images/gallery/sports-sunset-summer2024-2.jpg" alt="Sports Program at Sunset Elementary" loading="lazy">
                         <div class="gallery-overlay">
                             <div class="gallery-info">
                                 <h4>Sports Program</h4>
@@ -635,7 +637,7 @@
                     </div>
                     
                     <div class="gallery-item" data-program="dance" data-location="riverside" data-date="2023-fall">
-                        <img src="images/gallery/dance-riverside-fall2023-1.jpg" alt="Dance Program at Riverside School" loading="lazy">
+                        <img src="public/images/gallery/dance-riverside-fall2023-1.jpg" alt="Dance Program at Riverside School" loading="lazy">
                         <div class="gallery-overlay">
                             <div class="gallery-info">
                                 <h4>Dance Program</h4>
@@ -645,7 +647,7 @@
                     </div>
                     
                     <div class="gallery-item" data-program="choir" data-location="cedar-hills" data-date="2024-spring">
-                        <img src="images/gallery/choir-cedar-spring2024-1.jpg" alt="Choir Program at Cedar Hills" loading="lazy">
+                        <img src="public/images/gallery/choir-cedar-spring2024-1.jpg" alt="Choir Program at Cedar Hills" loading="lazy">
                         <div class="gallery-overlay">
                             <div class="gallery-info">
                                 <h4>Choir Program</h4>
@@ -655,7 +657,7 @@
                     </div>
                     
                     <div class="gallery-item" data-program="percussion" data-location="maple-grove" data-date="2023-fall">
-                        <img src="images/gallery/percussion-maple-fall2023-1.jpg" alt="Percussion Program at Maple Grove" loading="lazy">
+                        <img src="public/images/gallery/percussion-maple-fall2023-1.jpg" alt="Percussion Program at Maple Grove" loading="lazy">
                         <div class="gallery-overlay">
                             <div class="gallery-info">
                                 <h4>Percussion Program</h4>
@@ -757,7 +759,7 @@
                     </div>
                     <div class="testimonial-author">
                         <div class="author-avatar">
-                            <img src="images/testimonial-1.jpg" alt="Sarah Martinez" loading="lazy">
+                            <img src="public/images/testimonials/testimonial-1.jpg" alt="Sarah Martinez" loading="lazy">
                         </div>
                         <div class="author-info">
                             <h4 class="author-name">Sarah Martinez</h4>
@@ -774,7 +776,7 @@
                     </div>
                     <div class="testimonial-author">
                         <div class="author-avatar">
-                            <img src="images/testimonial-2.jpg" alt="Michael Chen" loading="lazy">
+                            <img src="public/images/testimonials/testimonial-1.jpg" alt="Michael Chen" loading="lazy">
                         </div>
                         <div class="author-info">
                             <h4 class="author-name">Michael Chen</h4>
@@ -791,7 +793,7 @@
                     </div>
                     <div class="testimonial-author">
                         <div class="author-avatar">
-                            <img src="images/testimonial-3.jpg" alt="Jennifer Walsh" loading="lazy">
+                            <img src="public/images/testimonials/testimonial-1.jpg" alt="Jennifer Walsh" loading="lazy">
                         </div>
                         <div class="author-info">
                             <h4 class="author-name">Jennifer Walsh</h4>
@@ -937,7 +939,7 @@
             <div class="footer-content">
                 <div class="footer-brand">
    <div class="logo">
-       <img src="images/logo.png" alt="CSA Logo" class="logo-image">
+       <img src="public/images/logo.png" alt="CSA Logo" class="logo-image">
    </div>
 </div>
                 
@@ -962,13 +964,12 @@
                 </div>
                 
                 <div class="footer-section">
-                    <h4>Contact</h4>
-                    <ul class="footer-links">
-                        <li>Phone: (555) 123-4567</li>
-                        <li>Email: info@csaprograms.com</li>
-                        <li>Serving Schools Nationwide</li>
-                    </ul>
-                </div>
+    <h4>Contact Info</h4>
+    <ul class="footer-links">
+        <li><a href="tel:+1234567890">+1 (234) 567-8900</a></li>
+        <li><a href="mailto:contact@yourcompany.com">contact@CSA.com</a></li>
+    </ul>
+</div>
             </div>
             
             <div class="footer-bottom">
@@ -1671,75 +1672,7 @@ function setupProgramCards() {
     });
 }
 
-// ==================== STATS COUNTER ====================
 
-function startCounter(element, target) {
-    let current = 0;
-    const increment = target / 60;
-    const duration = 2000;
-    const stepTime = duration / 60;
-    
-    element.textContent = '0';
-    
-    const timer = setInterval(() => {
-        current += increment;
-        
-        if (current >= target) {
-            element.textContent = target;
-            clearInterval(timer);
-        } else {
-            element.textContent = Math.floor(current);
-        }
-    }, stepTime);
-}
-
-function isPartiallyVisible(element) {
-    const rect = element.getBoundingClientRect();
-    const windowHeight = window.innerHeight;
-    
-    return (rect.top < windowHeight * 0.8) && (rect.bottom > 0);
-}
-
-function initStatsCounters() {
-    const statNumbers = document.querySelectorAll('.stat-number[data-count]');
-    
-    if (statNumbers.length === 0) return;
-    
-    let hasAnimated = false;
-    
-    function checkAndAnimate() {
-        if (hasAnimated) return;
-        
-        const statsSection = document.querySelector('.stats-grid');
-        if (!statsSection) return;
-        
-        if (isPartiallyVisible(statsSection)) {
-            hasAnimated = true;
-            
-            statNumbers.forEach((element, index) => {
-                const target = parseInt(element.dataset.count);
-                
-                setTimeout(() => {
-                    startCounter(element, target);
-                }, index * 200);
-            });
-        }
-    }
-    
-    window.addEventListener('scroll', checkAndAnimate);
-    checkAndAnimate();
-    
-    setTimeout(() => {
-        if (!hasAnimated) {
-            statNumbers.forEach((element, index) => {
-                const target = parseInt(element.dataset.count);
-                setTimeout(() => {
-                    startCounter(element, target);
-                }, index * 200);
-            });
-        }
-    }, 3000);
-}
 
 // ==================== EVENT LISTENERS ====================
 
@@ -2408,13 +2341,13 @@ if (typeof showNotification === 'undefined') {
     
     const CONFIG = {
         videoFiles: [
-            'videos/herobackground.mp4',
-            'videos/video2.mp4',
-            'videos/video3.mp4',
-            'videos/video4.mp4',
-            'videos/video5.mp4',
-            'videos/video6.mp4',
-            'videos/video7.mp4'
+            'public/videos/herobackground.mp4',
+            'public/videos/video2.mp4',
+            'public/videos/video3.mp4',
+            'public/videos/video4.mp4',
+            'public/videos/video5.mp4',
+            'public/videos/video6.mp4',
+            'public/videos/video7.mp4'
         ],
         videoDuration: 8000,
         fadeTransitionTime: 1200,
@@ -3217,6 +3150,267 @@ if (typeof showNotification === 'undefined') {
     
 })();
 </script>
-
+<!-- ULTIMATE SCROLL-TRIGGERED STATS COUNTER -->
+<script>
+(function() {
+    'use strict';
+    
+    // Configuration
+    const CONFIG = {
+        visibilityThreshold: 0.4, // 40% of element must be visible
+        scrollThrottle: 100,       // Check scroll every 100ms
+        staggerDelay: 300,         // 300ms between each counter
+        fallbackDelay: 6000        // Start anyway after 6 seconds
+    };
+    
+    function startCounter(element, target, duration = null) {
+        // Smart duration based on target value
+        if (!duration) {
+            if (target <= 10) duration = 1500;
+            else if (target <= 100) duration = 2000;
+            else if (target <= 1000) duration = 2500;
+            else duration = 3000;
+        }
+        
+        let current = 0;
+        const startTime = Date.now();
+        
+        element.textContent = '0';
+        element.style.opacity = '1'; // Ensure visibility
+        
+        function updateCounter() {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // Smooth ease-out cubic curve
+            const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+            
+            current = Math.floor(target * easeOutCubic);
+            element.textContent = current;
+            
+            if (progress < 1) {
+                requestAnimationFrame(updateCounter);
+            } else {
+                element.textContent = target;
+                console.log(`✓ Counter completed: ${target}`);
+            }
+        }
+        
+        requestAnimationFrame(updateCounter);
+    }
+    
+    function getElementVisibility(element) {
+        const rect = element.getBoundingClientRect();
+        const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+        
+        // Calculate what percentage of the element is visible
+        const elementHeight = rect.height;
+        const visibleTop = Math.max(0, rect.top);
+        const visibleBottom = Math.min(windowHeight, rect.bottom);
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+        
+        return {
+            ratio: elementHeight > 0 ? visibleHeight / elementHeight : 0,
+            isVisible: visibleHeight > 0,
+            rect: rect,
+            elementHeight: elementHeight,
+            visibleHeight: visibleHeight
+        };
+    }
+    
+    function findStatsSection() {
+        // Try multiple selectors to find the stats section
+        const selectors = [
+            '.stats-grid',
+            '.about .stats-grid', 
+            '.about',
+            '[class*="stat"]',
+            '.stat-item:first-child'
+        ];
+        
+        for (const selector of selectors) {
+            const element = document.querySelector(selector);
+            if (element) {
+                console.log(`Stats section found using selector: ${selector}`);
+                return element;
+            }
+        }
+        
+        console.warn('Stats section not found with any selector');
+        return null;
+    }
+    
+    function initStatsCounters() {
+        const statNumbers = document.querySelectorAll('.stat-number[data-count]');
+        const statsSection = findStatsSection();
+        
+        console.log('=== STATS COUNTER INITIALIZATION ===');
+        console.log(`Found ${statNumbers.length} stat numbers`);
+        console.log('Stats section found:', !!statsSection);
+        
+        if (statNumbers.length === 0) {
+            console.error('❌ No stat numbers found with data-count attribute');
+            return;
+        }
+        
+        if (!statsSection) {
+            console.error('❌ Stats section not found');
+            return;
+        }
+        
+        // Log all stat numbers for debugging
+        statNumbers.forEach((el, i) => {
+            const target = parseInt(el.dataset.count);
+            console.log(`  Stat ${i}: target=${target}, current="${el.textContent}"`);
+        });
+        
+        let hasAnimated = false;
+        
+        function checkScrollPosition() {
+            if (hasAnimated) return;
+            
+            const visibility = getElementVisibility(statsSection);
+            
+            // Debug logging
+            console.log(`📊 Scroll check: visible=${visibility.ratio.toFixed(2)} (${Math.round(visibility.ratio * 100)}%)`);
+            
+            if (visibility.ratio >= CONFIG.visibilityThreshold) {
+                hasAnimated = true;
+                console.log('🎯 TRIGGERING STATS ANIMATION!');
+                console.log(`Stats section is ${Math.round(visibility.ratio * 100)}% visible (threshold: ${CONFIG.visibilityThreshold * 100}%)`);
+                
+                // Start animations with staggered timing
+                statNumbers.forEach((element, index) => {
+                    const target = parseInt(element.dataset.count);
+                    
+                    if (isNaN(target)) {
+                        console.warn(`⚠️ Invalid data-count: "${element.dataset.count}"`);
+                        return;
+                    }
+                    
+                    setTimeout(() => {
+                        console.log(`🚀 Starting counter ${index}: 0 → ${target}`);
+                        startCounter(element, target);
+                    }, index * CONFIG.staggerDelay);
+                });
+                
+                // Remove scroll listener to prevent re-triggering
+                window.removeEventListener('scroll', throttledScrollCheck);
+                console.log('Scroll listener removed');
+                
+            } else {
+                // Show position info for debugging
+                const rect = statsSection.getBoundingClientRect();
+                console.log(`Position: top=${Math.round(rect.top)}, bottom=${Math.round(rect.bottom)}, height=${Math.round(rect.height)}`);
+            }
+        }
+        
+        // Throttled scroll handler
+        let scrollTimeout;
+        function throttledScrollCheck() {
+            if (scrollTimeout) clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(checkScrollPosition, CONFIG.scrollThrottle);
+        }
+        
+        // Add scroll listener
+        window.addEventListener('scroll', throttledScrollCheck, { passive: true });
+        console.log('Scroll listener added');
+        
+        // Check immediately in case already in view
+        setTimeout(() => {
+            console.log('Initial visibility check...');
+            checkScrollPosition();
+        }, 500);
+        
+        // Fallback trigger
+        setTimeout(() => {
+            if (!hasAnimated) {
+                console.log('⏰ FALLBACK TRIGGER: Starting animation after timeout');
+                hasAnimated = true;
+                
+                statNumbers.forEach((element, index) => {
+                    const target = parseInt(element.dataset.count);
+                    if (!isNaN(target)) {
+                        setTimeout(() => {
+                            startCounter(element, target);
+                        }, index * CONFIG.staggerDelay);
+                    }
+                });
+            }
+        }, CONFIG.fallbackDelay);
+        
+        console.log(`Fallback timer set for ${CONFIG.fallbackDelay}ms`);
+    }
+    
+    // Initialize
+    function init() {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initStatsCounters);
+        } else {
+            setTimeout(initStatsCounters, 100);
+        }
+        
+        // Backup initialization
+        window.addEventListener('load', () => {
+            setTimeout(initStatsCounters, 300);
+        });
+    }
+    
+    // Testing and debugging functions
+    window.statsDebug = {
+        // Manually trigger all counters
+        start: function() {
+            console.log('🔧 Manual trigger activated');
+            const statNumbers = document.querySelectorAll('.stat-number[data-count]');
+            statNumbers.forEach((element, index) => {
+                const target = parseInt(element.dataset.count);
+                if (!isNaN(target)) {
+                    setTimeout(() => {
+                        startCounter(element, target);
+                    }, index * 300);
+                }
+            });
+        },
+        
+        // Check current visibility
+        checkVisibility: function() {
+            const statsSection = findStatsSection();
+            if (statsSection) {
+                const visibility = getElementVisibility(statsSection);
+                console.log('=== VISIBILITY CHECK ===');
+                console.log(`Visibility ratio: ${Math.round(visibility.ratio * 100)}%`);
+                console.log(`Threshold needed: ${CONFIG.visibilityThreshold * 100}%`);
+                console.log(`Will trigger: ${visibility.ratio >= CONFIG.visibilityThreshold}`);
+                console.log('Element rect:', visibility.rect);
+            }
+        },
+        
+        // Monitor scroll in real-time
+        monitor: function() {
+            let count = 0;
+            const interval = setInterval(() => {
+                this.checkVisibility();
+                count++;
+                if (count >= 20) { // Stop after 20 checks
+                    clearInterval(interval);
+                    console.log('Monitoring stopped');
+                }
+            }, 1000);
+            console.log('Started scroll monitoring (20 seconds)');
+        },
+        
+        // Reset all counters to 0
+        reset: function() {
+            document.querySelectorAll('.stat-number[data-count]').forEach(el => {
+                el.textContent = '0';
+            });
+            console.log('All counters reset to 0');
+        }
+    };
+    
+    init();
+    
+})();
+</script>
 </body>
 </html>
