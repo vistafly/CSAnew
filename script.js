@@ -415,10 +415,16 @@ class ProgramsCarousel {
         const card = this.cards[index];
         
         if (card) {
-            card.scrollIntoView({
-                behavior: 'smooth',
-                block: 'nearest',
-                inline: 'start'
+            // Calculate center position
+            const cardRect = card.getBoundingClientRect();
+            const containerRect = this.grid.getBoundingClientRect();
+            const cardCenter = card.offsetLeft + (cardRect.width / 2);
+            const containerCenter = containerRect.width / 2;
+            const scrollPosition = cardCenter - containerCenter;
+            
+            this.grid.scrollTo({
+                left: scrollPosition,
+                behavior: 'smooth'
             });
         }
         

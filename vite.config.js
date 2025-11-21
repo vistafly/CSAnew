@@ -1,8 +1,8 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  // Set base path for GitHub Pages (replace 'your-repo-name' with actual repo name)
-  base: '/CSAnew/',
+  // Use root path for local development, CSAnew for production
+  base: process.env.NODE_ENV === 'production' ? '/CSAnew/' : '/',
   
   server: {
     port: 3000,
