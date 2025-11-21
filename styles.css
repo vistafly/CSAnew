@@ -32,7 +32,7 @@ p {
 .container {
     max-width: 1500px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 50px;
 }
 
 /* Buttons */
@@ -1232,7 +1232,7 @@ body.loading .hero-logo {
     margin: 0 auto;
     text-align: center;
     line-height: 1.6;
-    margin-bottom: 90px;
+    margin-bottom: 40px;
 }
 
 /* Programs Section */
@@ -1246,6 +1246,7 @@ body.loading .hero-logo {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
     margin-top: 40px;
+    justify-items: center; /* This centers each card within its grid cell */
 }
 
 .program-card {
@@ -1348,7 +1349,7 @@ body.loading .hero-logo {
 /* Gallery Section */
 .gallery {
     background-color: #f8f9fa;
-    padding: 100px 0 10rem;
+    padding: 100px 0 8rem;
     box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
 
 }
@@ -1389,7 +1390,7 @@ body.loading .hero-logo {
 .gallery-content {
     opacity: 1;
     transition: opacity 0.3s ease;
-    padding: 30px 10px 50px;
+    padding: 0px;
 }
 
 .gallery-content.hidden {
@@ -1460,7 +1461,7 @@ body.loading .hero-logo {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 24px;
-    margin: 50px 0px 50px;
+    margin: 60px 0px 90px;
 }
 
 .gallery-item {
@@ -1807,7 +1808,7 @@ body.loading .hero-logo {
 
 /* About Section */
 .about {
-    padding: 120px 0 10rem;
+    padding: 100px 0 10rem;
     background-color: white;
     box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
 
@@ -2054,6 +2055,7 @@ body.loading .hero-logo {
     font-size: 16px;
     background-color: white;
     transition: border-color 0.3s ease;
+    max-width: 500px;
 }
 
 .educator-check select:focus {
@@ -3126,5 +3128,480 @@ body.loading .hero-logo {
     .section-header .section-subtitle {
         font-size: 15px;
         margin-bottom: 40px;
+    }
+}
+/* ===== CLEAN PROGRAM FILTERING STYLES ===== */
+.program-filters {
+    background: white;
+    border-radius: 12px;
+    padding: 32px;
+    margin: 0px auto 0px;
+    max-width: 1200px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    border: 1px solid #f0f0f0;
+}
+
+.filter-section {
+    margin-bottom: 10px;
+}
+
+.filter-section:last-child {
+    margin-bottom: 0;
+}
+
+.filter-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+    letter-spacing: 0.025em;
+}
+
+/* Category Tabs */
+.category-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 6px;
+}
+
+.category-tab {
+    background: transparent;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    outline: none;
+}
+
+.category-tab:hover {
+    background: rgba(255, 255, 255, 0.8);
+    color: #333;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.category-tab.active {
+    background: #d32f2f;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(211, 47, 47, 0.2);
+}
+
+.category-tab:active {
+    transform: translateY(0);
+}
+
+/* Specialization Pills */
+.specialization-pills {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.spec-pill {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    position: relative;
+    outline: none;
+}
+
+.spec-pill:hover {
+    background: #e2e8f0;
+    border-color: #cbd5e1;
+    color: #334155;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.spec-pill.active {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.spec-pill:active {
+    transform: translateY(0);
+}
+
+/* Filter Results */
+.filter-results {
+    padding-top: 8px;
+    border-top: 1px solid #f0f0f0;
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+    text-align: center;
+    position: relative;
+}
+
+#programCount {
+    color: #d32f2f;
+    font-weight: 700;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.clear-all {
+    background: #666;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: scale(0.9);
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 8px;
+}
+.clear-all.show {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+.clear-all:hover {
+    background: #555;
+}
+
+/* Program Card States */
+.program-card {
+    transition: all 0.4s ease;
+    opacity: 1;
+    transform: scale(1);
+    max-width: 400px;
+}
+
+.program-card.hidden {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    overflow: hidden;
+}
+
+.program-card.filtering {
+    opacity: 0.6;
+}
+
+/* Empty State */
+.programs-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    display: none;
+    background: #f8f9fa;
+    border-radius: 12px;
+    margin: 32px auto 0 auto;
+    border: 2px dashed #e0e0e0;
+    max-width: 550px;
+}
+
+.programs-empty-state.show {
+    display: block;
+}
+
+.programs-empty-state h3 {
+    color: #666;
+    font-size: 20px;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.programs-empty-state p {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 20px;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.programs-empty-state .btn {
+    background: #d32f2f;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.programs-empty-state .btn:hover {
+    background: #b71c1c;
+}
+
+/* Loading State */
+.programs-grid.loading {
+    opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .program-filters {
+        padding: 24px;
+        margin: 24px auto 32px;
+    }
+    
+    .filter-section {
+        margin-bottom: 24px;
+    }
+    
+    .category-tabs {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .category-tab {
+        flex: none;
+        text-align: center;
+        padding: 14px 16px;
+    }
+    
+    .specialization-pills {
+        gap: 8px;
+        justify-content: center;
+    }
+    
+    .spec-pill {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+    
+    .filter-results {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .program-filters {
+        padding: 20px;
+        margin: 20px auto 24px;
+    }
+    
+    .category-tab {
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+    
+    .spec-pill {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+    
+    .filter-title {
+        font-size: 15px;
+    }
+}
+
+/* Focus States for Accessibility */
+.category-tab:focus-visible,
+.spec-pill:focus-visible,
+.clear-all:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    .program-card,
+    .category-tab,
+    .spec-pill,
+    .clear-all {
+        transition: none;
+    }
+}
+/* Mobile Carousel Styles - Updated breakpoint */
+@media (max-width: 1230px) {
+    .programs-carousel-container {
+        position: relative;
+        overflow: hidden;
+        margin-top: 40px;
+        padding: 0 20px;
+        display: none; /* Hidden by default, shown when carousel mode is active */
+    }
+    
+    .programs-grid.carousel-mode {
+        display: flex !important;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        scroll-snap-type: x mandatory;
+        gap: 20px;
+        padding: 20px 0 30px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        grid-template-columns: none !important;
+        margin-top: 0;
+    }
+    
+    .programs-grid.carousel-mode::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .programs-grid.carousel-mode .program-card {
+        flex: 0 0 280px;
+        max-width: 280px;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+        margin: 0;
+    }
+    
+    /* Hide regular grid on mobile when carousel is active */
+    .programs-grid.carousel-mode ~ .programs-empty-state {
+        margin-top: 20px;
+    }
+    
+    /* Carousel Navigation Dots */
+    .carousel-dots {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 20px;
+        padding: 0 20px;
+    }
+    
+    .carousel-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.2);
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        padding: 0;
+    }
+    
+    .carousel-dot.active {
+        background: #d32f2f;
+        transform: scale(1.2);
+    }
+    
+    .carousel-dot:hover {
+        background: rgba(0, 0, 0, 0.4);
+    }
+    
+    /* Carousel Navigation Arrows */
+    .carousel-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 10;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .carousel-nav:hover {
+        background: white;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        transform: translateY(-50%) scale(1.05);
+    }
+    
+    .carousel-nav:active {
+        transform: translateY(-50%) scale(0.95);
+    }
+    
+    .carousel-nav.prev {
+        left: 10px;
+    }
+    
+    .carousel-nav.next {
+        right: 10px;
+    }
+    
+    .carousel-nav svg {
+        width: 16px;
+        height: 16px;
+        color: #333;
+    }
+    
+    /* Hide arrows when not needed */
+    .carousel-nav.disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+    
+    /* Fade edges for visual indication of scroll */
+    .programs-carousel-container::before,
+    .programs-carousel-container::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 30px;
+        width: 20px;
+        z-index: 5;
+        pointer-events: none;
+    }
+    
+    .programs-carousel-container::before {
+        left: 0;
+        background: linear-gradient(to right, #f8f9fa, transparent);
+    }
+    
+    .programs-carousel-container::after {
+        right: 0;
+        background: linear-gradient(to left, #f8f9fa, transparent);
+    }
+    
+    /* Progress indicator for carousel */
+    .carousel-progress {
+        height: 2px;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 1px;
+        margin: 20px 20px 0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .carousel-progress-bar {
+        height: 100%;
+        background: #d32f2f;
+        border-radius: 1px;
+        transition: width 0.3s ease;
+        width: 0%;
     }
 }

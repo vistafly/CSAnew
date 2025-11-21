@@ -202,188 +202,243 @@
     </div>
 </section>
 
-    <!-- Programs Section -->
-    <section class="programs" id="programs">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Our Programs</h2>
-                <p class="section-subtitle">Comprehensive curricula designed specifically for elementary schools</p>
+   <!-- Programs Section with Filtering -->
+<section class="programs" id="programs">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Our Programs</h2>
+            <p class="section-subtitle">Comprehensive curricula designed specifically for elementary schools</p>
+        </div>
+        
+        <!-- Program Filters -->
+        <div class="program-filters">
+            <!-- Category Tabs -->
+            <div class="filter-section">
+                <div class="category-tabs">
+                    <button class="category-tab active" data-category="all">All Programs</button>
+                    <button class="category-tab" data-category="afterschool">After School</button>
+                    <button class="category-tab" data-category="winter-camps">Winter Camps</button>
+                    <button class="category-tab" data-category="summer-camps">Summer Camps</button>
+                    <button class="category-tab" data-category="concerts">Concerts</button>
+                </div>
+            </div>
+
+            <!-- Specialization Filter -->
+            <div class="filter-section">
+                <div class="specialization-pills">
+                    <button class="spec-pill active" data-subcategory="all">All Types</button>
+                    <button class="spec-pill" data-subcategory="guitar-strings">Electric/Acoustic & Bass Guitar</button>
+                    <button class="spec-pill" data-subcategory="percussion">Percussion</button>
+                    <button class="spec-pill" data-subcategory="vocal">Vocal</button>
+                    <button class="spec-pill" data-subcategory="dance">Dance</button>
+                    <button class="spec-pill" data-subcategory="sports">Sports</button>
+                    <button class="spec-pill" data-subcategory="podcasting">Podcasting</button>
+                    <button class="spec-pill" data-subcategory="dj-production">DJ & Production</button>
+                    <button class="spec-pill" data-subcategory="keyboard">Keyboard & Piano</button>
+                </div>
+            </div>
+
+            <!-- Results Info -->
+            <div class="filter-results">
+                Showing <span id="programCount">11</span> programs
+                <button class="clear-all" id="clearFilters" style="display: none;">Clear Filters</button>
+            </div>
+        </div>
+        
+        <div class="programs-grid">
+            <div class="program-card" data-category="afterschool,winter-camps,summer-camps" data-subcategory="sports">
+                <div class="program-image">
+                    <img src="public/images/programs/1.jpg" alt="Sports Program" loading="lazy">
+                    <div class="program-overlay">
+                        <div class="program-icon">⚽</div>
+                    </div>
+                </div>
+                <div class="program-content">
+                    <h3 class="program-title">Sports Programs</h3>
+                    <p class="program-description">Comprehensive athletic development focusing on fundamental movement skills, teamwork, and physical fitness for all ability levels.</p>
+                    <ul class="program-features">
+                        <li>Age-appropriate skill development</li>
+                        <li>Team building activities</li>
+                        <li>Fitness and coordination</li>
+                        <li>Inclusive participation</li>
+                    </ul>
+                </div>
             </div>
             
-            <div class="programs-grid">
-                <div class="program-card" data-program="sports">
-                    <div class="program-image">
-                        <img src="public/images/programs/1.jpg" alt="Sports Program" loading="lazy">
-                        <div class="program-overlay">
-                            <div class="program-icon">⚽</div>
-                        </div>
-                    </div>
-                    <div class="program-content">
-                        <h3 class="program-title">Sports Programs</h3>
-                        <p class="program-description">Comprehensive athletic development focusing on fundamental movement skills, teamwork, and physical fitness for all ability levels.</p>
-                        <ul class="program-features">
-                            <li>Age-appropriate skill development</li>
-                            <li>Team building activities</li>
-                            <li>Fitness and coordination</li>
-                            <li>Inclusive participation</li>
-                        </ul>
+            <div class="program-card" data-category="afterschool,winter-camps,summer-camps" data-subcategory="guitar-strings">
+                <div class="program-image">
+                    <img src="public/images/programs/1.jpg" alt="Acoustic Guitar Program" loading="lazy">
+                    <div class="program-overlay">
+                        <div class="program-icon">🎸</div>
                     </div>
                 </div>
-                
-                <div class="program-card" data-program="acoustic-guitar">
-                    <div class="program-image">
-                        <img src="public/images/programs/1.jpg" alt="Acoustic Guitar Program" loading="lazy">
-                        <div class="program-overlay">
-                            <div class="program-icon">🎸</div>
-                        </div>
-                    </div>
-                    <div class="program-content">
-                        <h3 class="program-title">Acoustic Guitar</h3>
-                        <p class="program-description">Traditional acoustic guitar instruction focusing on fingerpicking, strumming patterns, and folk/classical techniques.</p>
-                        <ul class="program-features">
-                            <li>Fingerpicking techniques</li>
-                            <li>Chord progressions</li>
-                            <li>Strumming patterns</li>
-                            <li>Folk and classical styles</li>
-                        </ul>
+                <div class="program-content">
+                    <h3 class="program-title">Acoustic Guitar</h3>
+                    <p class="program-description">Traditional acoustic guitar instruction focusing on fingerpicking, strumming patterns, and folk/classical techniques.</p>
+                    <ul class="program-features">
+                        <li>Fingerpicking techniques</li>
+                        <li>Chord progressions</li>
+                        <li>Strumming patterns</li>
+                        <li>Folk and classical styles</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="program-card" data-category="afterschool,winter-camps,summer-camps" data-subcategory="guitar-strings">
+                <div class="program-image">
+                    <img src="public/images/programs/2.jpg" alt="Electric Guitar Program" loading="lazy">
+                    <div class="program-overlay">
+                        <div class="program-icon">⚡</div>
                     </div>
                 </div>
-                
-                <div class="program-card" data-program="electric-guitar">
-                    <div class="program-image">
-                        <img src="public/images/programs/2.jpg" alt="Electric Guitar Program" loading="lazy">
-                        <div class="program-overlay">
-                            <div class="program-icon">⚡</div>
-                        </div>
-                    </div>
-                    <div class="program-content">
-                        <h3 class="program-title">Electric Guitar</h3>
-                        <p class="program-description">Electric guitar fundamentals including amplifier use, effects, and modern playing techniques for rock and contemporary music.</p>
-                        <ul class="program-features">
-                            <li>Power chords and riffs</li>
-                            <li>Amplifier techniques</li>
-                            <li>Lead guitar basics</li>
-                            <li>Contemporary styles</li>
-                        </ul>
+                <div class="program-content">
+                    <h3 class="program-title">Electric Guitar</h3>
+                    <p class="program-description">Electric guitar fundamentals including amplifier use, effects, and modern playing techniques for rock and contemporary music.</p>
+                    <ul class="program-features">
+                        <li>Power chords and riffs</li>
+                        <li>Amplifier techniques</li>
+                        <li>Lead guitar basics</li>
+                        <li>Contemporary styles</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="program-card" data-category="afterschool,winter-camps,summer-camps,concerts" data-subcategory="dance">
+                <div class="program-image">
+                    <img src="public/images/programs/2.jpg" alt="Dance Program" loading="lazy">
+                    <div class="program-overlay">
+                        <div class="program-icon">💃</div>
                     </div>
                 </div>
-                
-                <div class="program-card" data-program="dance">
-                    <div class="program-image">
-                        <img src="public/images/programs/2.jpg" alt="Dance Program" loading="lazy">
-                        <div class="program-overlay">
-                            <div class="program-icon">💃</div>
-                        </div>
-                    </div>
-                    <div class="program-content">
-                        <h3 class="program-title">Dance Programs</h3>
-                        <p class="program-description">Creative movement and dance instruction that develops coordination, rhythm, self-expression, and cultural awareness.</p>
-                        <ul class="program-features">
-                            <li>Multiple dance styles</li>
-                            <li>Creative expression</li>
-                            <li>Coordination development</li>
-                            <li>Performance opportunities</li>
-                        </ul>
+                <div class="program-content">
+                    <h3 class="program-title">Dance Programs</h3>
+                    <p class="program-description">Creative movement and dance instruction that develops coordination, rhythm, self-expression, and cultural awareness.</p>
+                    <ul class="program-features">
+                        <li>Multiple dance styles</li>
+                        <li>Creative expression</li>
+                        <li>Coordination development</li>
+                        <li>Performance opportunities</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="program-card" data-category="afterschool,winter-camps,summer-camps,concerts" data-subcategory="vocal">
+                <div class="program-image">
+                    <img src="public/images/programs/1.jpg" alt="Choir Program" loading="lazy">
+                    <div class="program-overlay">
+                        <div class="program-icon">🎵</div>
                     </div>
                 </div>
-                
-                <div class="program-card" data-program="choir">
-                    <div class="program-image">
-                        <img src="public/images/programs/1.jpg" alt="Choir Program" loading="lazy">
-                        <div class="program-overlay">
-                            <div class="program-icon">🎵</div>
-                        </div>
-                    </div>
-                    <div class="program-content">
-                        <h3 class="program-title">Choir Programs</h3>
-                        <p class="program-description">Professional vocal instruction that builds confidence, musical literacy, and ensemble skills through engaging repertoire.</p>
-                        <ul class="program-features">
-                            <li>Vocal technique training</li>
-                            <li>Music theory basics</li>
-                            <li>Ensemble singing</li>
-                            <li>Concert performances</li>
-                        </ul>
+                <div class="program-content">
+                    <h3 class="program-title">Choir Programs</h3>
+                    <p class="program-description">Professional vocal instruction that builds confidence, musical literacy, and ensemble skills through engaging repertoire.</p>
+                    <ul class="program-features">
+                        <li>Vocal technique training</li>
+                        <li>Music theory basics</li>
+                        <li>Ensemble singing</li>
+                        <li>Concert performances</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="program-card" data-category="afterschool,winter-camps,summer-camps,concerts" data-subcategory="percussion">
+                <div class="program-image">
+                    <img src="public/images/programs/2.jpg" alt="Percussion Program" loading="lazy">
+                    <div class="program-overlay">
+                        <div class="program-icon">🥁</div>
                     </div>
                 </div>
-                
-                <div class="program-card" data-program="percussion">
-                    <div class="program-image">
-                        <img src="public/images/programs/2.jpg" alt="Percussion Program" loading="lazy">
-                        <div class="program-overlay">
-                            <div class="program-icon">🥁</div>
-                        </div>
-                    </div>
-                    <div class="program-content">
-                        <h3 class="program-title">Percussion Programs</h3>
-                        <p class="program-description">Dynamic rhythm instruction using professional instruments to develop timing, coordination, and ensemble skills.</p>
-                        <ul class="program-features">
-                            <li>Rhythm and timing</li>
-                            <li>Instrument technique</li>
-                            <li>Ensemble performance</li>
-                            <li>Cultural exploration</li>
-                        </ul>
+                <div class="program-content">
+                    <h3 class="program-title">Percussion Programs</h3>
+                    <p class="program-description">Dynamic rhythm instruction using professional instruments to develop timing, coordination, and ensemble skills.</p>
+                    <ul class="program-features">
+                        <li>Rhythm and timing</li>
+                        <li>Instrument technique</li>
+                        <li>Ensemble performance</li>
+                        <li>Cultural exploration</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="program-card" data-category="afterschool,winter-camps,summer-camps" data-subcategory="dj-production">
+                <div class="program-image">
+                    <img src="public/images/programs/2.jpg" alt="DJ Introduction Program" loading="lazy">
+                    <div class="program-overlay">
+                        <div class="program-icon">🎧</div>
                     </div>
                 </div>
-                
-                <div class="program-card" data-program="dj">
-                    <div class="program-image">
-                        <img src="public/images/programs/2.jpg" alt="DJ Introduction Program" loading="lazy">
-                        <div class="program-overlay">
-                            <div class="program-icon">🎧</div>
-                        </div>
-                    </div>
-                    <div class="program-content">
-                        <h3 class="program-title">DJ Introduction</h3>
-                        <p class="program-description">Introduction to modern music production and DJ skills, teaching beat matching, mixing techniques, and digital music technology.</p>
-                        <ul class="program-features">
-                            <li>Beat matching basics</li>
-                            <li>Digital music software</li>
-                            <li>Mixing techniques</li>
-                            <li>Music appreciation</li>
-                        </ul>
+                <div class="program-content">
+                    <h3 class="program-title">DJ Introduction</h3>
+                    <p class="program-description">Introduction to modern music production and DJ skills, teaching beat matching, mixing techniques, and digital music technology.</p>
+                    <ul class="program-features">
+                        <li>Beat matching basics</li>
+                        <li>Digital music software</li>
+                        <li>Mixing techniques</li>
+                        <li>Music appreciation</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="program-card" data-category="afterschool,winter-camps,summer-camps" data-subcategory="guitar-strings">
+                <div class="program-image">
+                    <img src="public/images/programs/1.jpg" alt="Bass Guitar Program" loading="lazy">
+                    <div class="program-overlay">
+                        <div class="program-icon">🎸</div>
                     </div>
                 </div>
-                
-                <div class="program-card" data-program="bass-guitar">
-                    <div class="program-image">
-                        <img src="public/images/programs/1.jpg" alt="Bass Guitar Program" loading="lazy">
-                        <div class="program-overlay">
-                            <div class="program-icon">🎸</div>
-                        </div>
-                    </div>
-                    <div class="program-content">
-                        <h3 class="program-title">Bass Guitar</h3>
-                        <p class="program-description">Foundation bass guitar skills focusing on rhythm, groove, and the essential role of bass in ensemble playing.</p>
-                        <ul class="program-features">
-                            <li>Rhythm and timing</li>
-                            <li>Groove fundamentals</li>
-                            <li>Ensemble playing</li>
-                            <li>Music theory basics</li>
-                        </ul>
+                <div class="program-content">
+                    <h3 class="program-title">Bass Guitar</h3>
+                    <p class="program-description">Foundation bass guitar skills focusing on rhythm, groove, and the essential role of bass in ensemble playing.</p>
+                    <ul class="program-features">
+                        <li>Rhythm and timing</li>
+                        <li>Groove fundamentals</li>
+                        <li>Ensemble playing</li>
+                        <li>Music theory basics</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="program-card" data-category="afterschool,winter-camps,summer-camps" data-subcategory="keyboard">
+                <div class="program-image">
+                    <img src="public/images/programs/2.jpg" alt="Keyboard Program" loading="lazy">
+                    <div class="program-overlay">
+                        <div class="program-icon">🎹</div>
                     </div>
                 </div>
-                
-                <div class="program-card" data-program="keyboard">
-                    <div class="program-image">
-                        <img src="public/images/programs/2.jpg" alt="Keyboard Program" loading="lazy">
-                        <div class="program-overlay">
-                            <div class="program-icon">🎹</div>
-                        </div>
+                <div class="program-content">
+                    <h3 class="program-title">Keyboard & Piano</h3>
+                    <p class="program-description">Foundation piano and keyboard skills development, including proper technique, music theory, and creative composition.</p>
+                    <ul class="program-features">
+                        <li>Proper hand positioning</li>
+                        <li>Scale and chord work</li>
+                        <li>Music composition</li>
+                        <li>Performance preparation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- New Podcasting Program -->
+            <div class="program-card" data-category="afterschool,winter-camps,summer-camps" data-subcategory="podcasting">
+                <div class="program-image">
+                    <img src="public/images/programs/1.jpg" alt="Podcasting Program" loading="lazy">
+                    <div class="program-overlay">
+                        <div class="program-icon">🎙️</div>
                     </div>
-                    <div class="program-content">
-                        <h3 class="program-title">Keyboard & Piano</h3>
-                        <p class="program-description">Foundation piano and keyboard skills development, including proper technique, music theory, and creative composition.</p>
-                        <ul class="program-features">
-                            <li>Proper hand positioning</li>
-                            <li>Scale and chord work</li>
-                            <li>Music composition</li>
-                            <li>Performance preparation</li>
-                        </ul>
-                    </div>
+                </div>
+                <div class="program-content">
+                    <h3 class="program-title">Podcasting & Media</h3>
+                    <p class="program-description">Learn the art of storytelling through digital media, developing communication skills, audio production, and content creation.</p>
+                    <ul class="program-features">
+                        <li>Storytelling techniques</li>
+                        <li>Audio recording & editing</li>
+                        <li>Interview skills</li>
+                        <li>Digital publishing</li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
   <!-- About/Stats Section -->
 <section class="about" id="about">
     <div class="container">
@@ -399,7 +454,7 @@
                         <div class="feature-icon">✓</div>
                         <div class="feature-text">
                             <h4>Expert Instructors</h4>
-                            <p>Certified professionals with elementary education experience</p>
+                            <p>Certified professionals with music and education experience</p>
                         </div>
                     </div>
                     <div class="feature-item">
@@ -421,20 +476,21 @@
             
             <div class="stats-grid">
                 <div class="stat-item">
-                    <div class="stat-number" data-count="2500">0</div>
+                    <div class="stat-number" data-count="6452">0</div>
                     <div class="stat-label">Students Served</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number" data-count="85">0</div>
-                    <div class="stat-label">School Partners</div>
+                    <div class="stat-number" data-count="14">0</div>
+                    <div class="stat-label">District Partners</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number" data-count="12">0</div>
-                    <div class="stat-label">Years Experience</div>
+                    <div class="stat-number" data-count="6">0</div>
+                    <div class="stat-label">Years Operated</div>
                 </div>
+
                 <div class="stat-item">
-                    <div class="stat-number" data-count="97">0</div>
-                    <div class="stat-label">% Satisfaction</div>
+                    <div class="stat-number" data-count="150">0</div>
+                    <div class="stat-label">Camp Days</div>
                 </div>
             </div>
         </div>
@@ -1681,10 +1737,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupMobileNav();
     setupSmoothScrolling();
     setupProgramCards();
-    
-    // Initialize stats counters
-    setTimeout(initStatsCounters, 100);
-    
+        
     // Auth buttons
     const loginBtn = document.getElementById('loginBtn');
     const galleryLoginBtn = document.getElementById('galleryLoginBtn');
@@ -1769,11 +1822,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('notification')?.classList.remove('show');
         }
     });
-});
-
-// Also initialize counters after window load
-window.addEventListener('load', () => {
-    setTimeout(initStatsCounters, 500);
 });
 
 // Manual trigger for testing
@@ -3412,5 +3460,6 @@ if (typeof showNotification === 'undefined') {
     
 })();
 </script>
+<script src="./script.js"></script>
 </body>
 </html>
