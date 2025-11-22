@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  // Use root path for local development, CSAnew for production
   base: process.env.NODE_ENV === 'production' ? '/CSAnew/' : '/',
   
   server: {
@@ -12,11 +11,17 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
-    // Ensure proper asset handling
     assetsDir: 'assets',
     rollupOptions: {
+      input: {
+        main: './index.html'
+      },
       output: {
         manualChunks: undefined,
+        // Ensure script.js is properly bundled
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
       }
     }
   }

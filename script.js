@@ -132,11 +132,6 @@ class ProgramFilter {
             this.updateCount(visibleCount);
             this.toggleEmptyState(visibleCount === 0);
             this.updateClearButton();
-            
-            // Update carousel after filtering
-            if (window.programsCarousel) {
-                window.programsCarousel.updateForFilters();
-            }
         }, 300);
     }
     
@@ -170,13 +165,6 @@ class ProgramFilter {
         this.updateCount(this.allPrograms.length);
         this.toggleEmptyState(false);
         this.updateClearButton();
-        
-        // Update carousel after clearing
-        setTimeout(() => {
-            if (window.programsCarousel) {
-                window.programsCarousel.updateForFilters();
-            }
-        }, 100);
     }
     
     updateCount(count = null) {
@@ -247,301 +235,10 @@ class ProgramFilter {
     }
 }
 
-// Mobile Carousel Implementation
-class ProgramsCarousel {
-    constructor() {
-        this.grid = document.querySelector('.programs-grid');
-        this.container = null;
-        this.currentIndex = 0;
-        this.cards = [];
-        this.dots = [];
-        this.isMobile = window.innerWidth <= 1230;
-        this.isInitialized = false;
-        
-        this.init();
-        this.bindEvents();
-    }
-    
-    init() {
-        if (this.isMobile) {
-            this.setupCarousel();
-        }
-    }
-    
-    setupCarousel() {
-        if (this.isInitialized || !this.grid) return;
-        
-        // Create carousel container
-        this.container = document.createElement('div');
-        this.container.className = 'programs-carousel-container';
-        this.container.style.display = 'block';
-        
-        // Wrap the grid
-        this.grid.parentNode.insertBefore(this.container, this.grid);
-        this.container.appendChild(this.grid);
-        
-        // Add carousel mode class
-        this.grid.classList.add('carousel-mode');
-        
-        // Get visible cards
-        this.updateCards();
-        
-        if (this.cards.length > 1) {
-            // Create navigation
-            this.createNavigation();
-            this.createDots();
-            this.createProgressBar();
-            
-            // Set initial state
-            this.updateDots();
-            this.updateNavigation();
-            this.updateProgress();
-            
-            // Setup scroll listener
-            this.setupScrollListener();
-        }
-        
-        this.isInitialized = true;
-        console.log('Carousel initialized with', this.cards.length, 'cards');
-    }
-    
-    updateCards() {
-        this.cards = Array.from(this.grid.querySelectorAll('.program-card:not(.hidden)'));
-    }
-    
-        
-    createProgressBar() {
-        const progressContainer = document.createElement('div');
-        progressContainer.className = 'carousel-progress';
-        const progressBar = document.createElement('div');
-        progressBar.className = 'carousel-progress-bar';
-        progressContainer.appendChild(progressBar);
-        
-        this.container.parentNode.insertBefore(progressContainer, this.container.nextSibling);
-        this.progressBar = progressBar;
-    }
-    
-    setupScrollListener() {
-        let scrollTimeout;
-        
-        this.grid.addEventListener('scroll', () => {
-            clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(() => {
-                this.updateCurrentIndexFromScroll();
-            }, 100);
-        });
-    }
-    
-    updateCurrentIndexFromScroll() {
-        const scrollLeft = this.grid.scrollLeft;
-        const cardWidth = this.cards[0]?.offsetWidth + 20; // Including gap
-        const newIndex = Math.round(scrollLeft / cardWidth);
-        
-        if (newIndex !== this.currentIndex && newIndex >= 0 && newIndex < this.cards.length) {
-            this.currentIndex = newIndex;
-            this.updateDots();
-            this.updateNavigation();
-            this.updateProgress();
-        }
-    }
-    
-    updateDots() {
-        this.dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === this.currentIndex);
-        });
-    }
-    
-    updateNavigation() {
-        if (this.prevBtn && this.nextBtn) {
-            this.prevBtn.classList.toggle('disabled', this.currentIndex === 0);
-            this.nextBtn.classList.toggle('disabled', this.currentIndex >= this.cards.length - 1);
-        }
-    }
-    
-    updateProgress() {
-        if (this.progressBar && this.cards.length > 1) {
-            const progress = ((this.currentIndex + 1) / this.cards.length) * 100;
-            this.progressBar.style.width = progress + '%';
-        }
-    }
-    
-    goToSlide(index) {
-        if (index < 0 || index >= this.cards.length) return;
-        
-        this.currentIndex = index;
-        const card = this.cards[index];
-        
-        if (card) {
-            // Calculate center position
-            const cardRect = card.getBoundingClientRect();
-            const containerRect = this.grid.getBoundingClientRect();
-            const cardCenter = card.offsetLeft + (cardRect.width / 2);
-            const containerCenter = containerRect.width / 2;
-            const scrollPosition = cardCenter - containerCenter;
-            
-            this.grid.scrollTo({
-                left: scrollPosition,
-                behavior: 'smooth'
-            });
-        }
-        
-        this.updateDots();
-        this.updateNavigation();
-        this.updateProgress();
-    }
-    
-    prev() {
-        if (this.currentIndex > 0) {
-            this.goToSlide(this.currentIndex - 1);
-        }
-    }
-    
-    next() {
-        if (this.currentIndex < this.cards.length - 1) {
-            this.goToSlide(this.currentIndex + 1);
-        }
-    }
-    
-    handleResize() {
-        const wasMobile = this.isMobile;
-        this.isMobile = window.innerWidth <= 1230;
-        
-        if (!wasMobile && this.isMobile) {
-            // Switched to mobile
-            this.setupCarousel();
-        } else if (wasMobile && !this.isMobile) {
-            // Switched to desktop
-            this.destroyCarousel();
-        }
-    }
-    
-    destroyCarousel() {
-        if (!this.container || !this.isInitialized) return;
-        
-        // Remove carousel classes
-        this.grid.classList.remove('carousel-mode');
-        
-        // Move grid back to original location
-        this.container.parentNode.insertBefore(this.grid, this.container);
-        
-        // Remove carousel elements
-        this.container.remove();
-        if (this.dotsContainer) this.dotsContainer.remove();
-        if (this.progressBar && this.progressBar.parentNode) {
-            this.progressBar.parentNode.remove();
-        }
-        
-        // Reset variables
-        this.container = null;
-        this.dots = [];
-        this.currentIndex = 0;
-        this.isInitialized = false;
-        
-        console.log('Carousel destroyed');
-    }
-    
-    // Update carousel when filters change
-    updateForFilters() {
-        if (!this.isMobile || !this.isInitialized) return;
-        
-        this.updateCards();
-        
-        if (this.cards.length <= 1) {
-            // Hide navigation if only one or no cards
-            if (this.prevBtn) this.prevBtn.style.display = 'none';
-            if (this.nextBtn) this.nextBtn.style.display = 'none';
-            if (this.dotsContainer) this.dotsContainer.style.display = 'none';
-            if (this.progressBar && this.progressBar.parentNode) {
-                this.progressBar.parentNode.style.display = 'none';
-            }
-        } else {
-            // Show navigation
-            if (this.prevBtn) this.prevBtn.style.display = 'flex';
-            if (this.nextBtn) this.nextBtn.style.display = 'flex';
-            if (this.dotsContainer) this.dotsContainer.style.display = 'flex';
-            if (this.progressBar && this.progressBar.parentNode) {
-                this.progressBar.parentNode.style.display = 'block';
-            }
-            
-            // Recreate dots for new card count
-            if (this.dotsContainer) {
-                this.dotsContainer.innerHTML = '';
-                this.dots = [];
-                this.cards.forEach((_, index) => {
-                    const dot = document.createElement('button');
-                    dot.className = 'carousel-dot';
-                    dot.addEventListener('click', () => this.goToSlide(index));
-                    this.dotsContainer.appendChild(dot);
-                    this.dots.push(dot);
-                });
-            }
-        }
-        
-        // Reset to first slide
-        this.currentIndex = 0;
-        this.updateDots();
-        this.updateNavigation();
-        this.updateProgress();
-        
-        // Scroll to beginning
-        this.grid.scrollLeft = 0;
-    }
-    
-    bindEvents() {
-        // Handle resize
-        window.addEventListener('resize', () => {
-            clearTimeout(this.resizeTimeout);
-            this.resizeTimeout = setTimeout(() => {
-                this.handleResize();
-            }, 250);
-        });
-        
-        // Touch gestures for mobile
-        if (this.isMobile) {
-            let startX = 0;
-            let currentX = 0;
-            let isDragging = false;
-            
-            document.addEventListener('touchstart', (e) => {
-                if (!this.container || !this.container.contains(e.target)) return;
-                startX = e.touches[0].clientX;
-                isDragging = true;
-            });
-            
-            document.addEventListener('touchmove', (e) => {
-                if (!isDragging) return;
-                currentX = e.touches[0].clientX;
-            });
-            
-            document.addEventListener('touchend', () => {
-                if (!isDragging) return;
-                
-                const diffX = startX - currentX;
-                const threshold = 50;
-                
-                if (Math.abs(diffX) > threshold) {
-                    if (diffX > 0) {
-                        this.next();
-                    } else {
-                        this.prev();
-                    }
-                }
-                
-                isDragging = false;
-            });
-        }
-    }
-}
-
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing program filter...');
     window.programFilter = new ProgramFilter();
-    
-    // Initialize carousel
-    if (window.innerWidth <= 1230) {
-        window.programsCarousel = new ProgramsCarousel();
-    }
 });
 
 // Fallback initialization in case DOMContentLoaded already fired
@@ -551,10 +248,6 @@ if (document.readyState === 'loading') {
             console.log('Fallback: Initializing program filter...');
             window.programFilter = new ProgramFilter();
         }
-        
-        if (window.innerWidth <= 1230 && !window.programsCarousel) {
-            window.programsCarousel = new ProgramsCarousel();
-        }
     });
 } else {
     // DOM is already loaded
@@ -562,21 +255,7 @@ if (document.readyState === 'loading') {
     if (!window.programFilter) {
         window.programFilter = new ProgramFilter();
     }
-    
-    if (window.innerWidth <= 1230 && !window.programsCarousel) {
-        window.programsCarousel = new ProgramsCarousel();
-    }
 }
-
-// Handle window resize for carousel
-window.addEventListener('resize', () => {
-    if (window.innerWidth <= 1230 && !window.programsCarousel) {
-        window.programsCarousel = new ProgramsCarousel();
-    } else if (window.innerWidth > 1230 && window.programsCarousel) {
-        window.programsCarousel.destroyCarousel();
-        window.programsCarousel = null;
-    }
-});
 
 // Enhanced program card interactions
 document.addEventListener('DOMContentLoaded', () => {
@@ -629,23 +308,23 @@ window.debugFilters = function() {
     console.log('Programs grid found:', !!document.querySelector('.programs-grid'));
     console.log('Program cards found:', document.querySelectorAll('.program-card').length);
     console.log('Program filter instance:', !!window.programFilter);
-    console.log('Carousel instance:', !!window.programsCarousel);
-    console.log('Current breakpoint (<=1230):', window.innerWidth <= 1230);
+    console.log('Horizontal Scroll Manager:', !!window.horizontalScrollManager);
     
     if (window.programFilter) {
         console.log('Current filters:', window.programFilter.getCurrentFilters());
     }
     
-    if (window.programsCarousel) {
-        console.log('Carousel initialized:', window.programsCarousel.isInitialized);
-        console.log('Cards in carousel:', window.programsCarousel.cards.length);
+    if (window.horizontalScrollManager) {
+        console.log('Scroll Mode:', window.horizontalScrollManager.getCurrentMode());
+        console.log('Visible cards:', window.horizontalScrollManager.getVisibleCardCount());
     }
 };
 
 // Export for other scripts
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { ProgramFilter, ProgramsCarousel };
+    module.exports = { ProgramFilter };
 }
+
 /**
  * PROFESSIONAL HORIZONTAL SCROLL MANAGER
  * High-end animations, bulletproof functionality, responsive design
@@ -677,26 +356,26 @@ class FixedHorizontalScrollManager {
     }
     
     init() {
-    if (!this.programsGrid) {
-        console.error('❌ Programs grid not found');
-        return;
+        if (!this.programsGrid) {
+            console.error('❌ Programs grid not found');
+            return;
+        }
+        
+        console.log('🚀 Fixed Horizontal Scroll Manager initialized');
+        
+        this.createScrollProgress();
+        this.setupEventListeners();
+        this.forceGridLayout();
+        
+        // ALWAYS show scroll controls
+        if (this.scrollControls) {
+            this.scrollControls.style.display = 'flex';
+            this.scrollControls.style.visibility = 'visible';
+        }
+        
+        this.checkScrollNeed();
+        this.updateViewToggleState();
     }
-    
-    console.log('🚀 Fixed Horizontal Scroll Manager initialized');
-    
-    this.createScrollProgress();
-    this.setupEventListeners();
-    this.forceGridLayout();
-    
-    // ALWAYS show scroll controls
-    if (this.scrollControls) {
-        this.scrollControls.style.display = 'flex';
-        this.scrollControls.style.visibility = 'visible';
-    }
-    
-    this.checkScrollNeed();
-    this.updateViewToggleState();
-}
     
     // CRITICAL: Force proper grid layout
     forceGridLayout() {
@@ -833,65 +512,95 @@ class FixedHorizontalScrollManager {
     }
     
     enableScrollMode() {
-    if (this.isScrollMode || this.isTransitioning) return;
-    
-    console.log('🔄 Enabling horizontal scroll mode...');
-    
-    this.isTransitioning = true;
-    this.isScrollMode = true;
-    
-    // CRITICAL: Proper transition to flex layout
-    this.programsGrid.style.display = 'flex';
-    this.programsGrid.style.flexDirection = 'row';
-    this.programsGrid.style.flexWrap = 'nowrap';
-    this.programsGrid.style.overflowX = 'auto';
-    this.programsGrid.style.overflowY = 'hidden';
-    this.programsGrid.style.gap = '24px';
-    this.programsGrid.style.justifyContent = 'flex-start';
-    this.programsGrid.style.alignItems = 'stretch';
-    
-    // Remove grid properties
-    this.programsGrid.style.gridTemplateColumns = '';
-    this.programsGrid.style.justifyItems = '';
-    
-    // Add scroll class
-    this.programsGrid.classList.add('horizontal-scroll');
-    
-    // Show controls and ENABLE buttons by default
-    if (this.scrollControls) {
-        this.scrollControls.classList.add('active');
-        this.scrollControls.style.display = 'flex';
-        this.scrollControls.style.visibility = 'visible';
-        this.scrollControls.style.opacity = '1';
-    }
-    
-    // Enable buttons by default
-    if (this.scrollLeftBtn) {
-        this.scrollLeftBtn.disabled = false;
-        this.scrollLeftBtn.style.opacity = '1';
-    }
-    if (this.scrollRightBtn) {
-        this.scrollRightBtn.disabled = false;
-        this.scrollRightBtn.style.opacity = '1';
-    }
-    
-    if (this.filterResults) {
-        this.filterResults.classList.add('scroll-active');
-    }
-    
-    setTimeout(() => {
-        this.updateViewToggleState();
-        this.isTransitioning = false;
+        if (this.isScrollMode || this.isTransitioning) return;
         
-        console.log('✅ Scroll mode enabled successfully');
+        console.log('🔄 Enabling horizontal scroll mode...');
         
-        // Update buttons AFTER layout has settled
+        this.isTransitioning = true;
+        this.isScrollMode = true;
+        
+        // CRITICAL: Proper transition to flex layout
+        this.programsGrid.style.display = 'flex';
+        this.programsGrid.style.flexDirection = 'row';
+        this.programsGrid.style.flexWrap = 'nowrap';
+        this.programsGrid.style.overflowX = 'auto';
+        this.programsGrid.style.overflowY = 'hidden';
+        this.programsGrid.style.gap = '24px';
+        this.programsGrid.style.justifyContent = 'flex-start';
+        this.programsGrid.style.alignItems = 'stretch';
+        
+        // Remove grid properties
+        this.programsGrid.style.gridTemplateColumns = '';
+        this.programsGrid.style.justifyItems = '';
+        
+        // Add scroll class
+        this.programsGrid.classList.add('horizontal-scroll');
+        
+        // Show controls and ENABLE buttons by default
+        if (this.scrollControls) {
+            this.scrollControls.classList.add('active');
+            this.scrollControls.style.display = 'flex';
+            this.scrollControls.style.visibility = 'visible';
+            this.scrollControls.style.opacity = '1';
+        }
+        
+        // Enable buttons by default
+        if (this.scrollLeftBtn) {
+            this.scrollLeftBtn.disabled = false;
+            this.scrollLeftBtn.style.opacity = '1';
+        }
+        if (this.scrollRightBtn) {
+            this.scrollRightBtn.disabled = false;
+            this.scrollRightBtn.style.opacity = '1';
+        }
+        
+        if (this.filterResults) {
+            this.filterResults.classList.add('scroll-active');
+        }
+        
         setTimeout(() => {
-            this.updateScrollButtons();
-            this.updateScrollProgress();
-        }, 300);
-    }, 100);
-}
+            this.updateViewToggleState();
+            this.isTransitioning = false;
+            
+            console.log('✅ Scroll mode enabled successfully');
+            
+            // Update buttons AFTER layout has settled
+            setTimeout(() => {
+                this.updateScrollButtons();
+                this.updateScrollProgress();
+            }, 300);
+        }, 100);
+    }
+    
+    disableScrollMode() {
+        if (!this.isScrollMode || this.isTransitioning) return;
+        
+        console.log('🔄 Disabling horizontal scroll mode...');
+        
+        this.isTransitioning = true;
+        this.isScrollMode = false;
+        
+        // Remove scroll class
+        this.programsGrid.classList.remove('horizontal-scroll');
+        
+        // Force grid layout
+        this.forceGridLayout();
+        
+        // Hide controls
+        if (this.scrollControls) {
+            this.scrollControls.classList.remove('active');
+        }
+        
+        if (this.filterResults) {
+            this.filterResults.classList.remove('scroll-active');
+        }
+        
+        setTimeout(() => {
+            this.updateViewToggleState();
+            this.isTransitioning = false;
+            console.log('✅ Grid mode enabled successfully');
+        }, 100);
+    }
     
     toggleScrollMode() {
         if (this.isTransitioning) return;

@@ -3775,17 +3775,6 @@ body.loading .hero-logo {
 
 /* CORRECTED PROFESSIONAL HORIZONTAL SCROLL - FIXES GRID LAYOUT AND CONTROLS */
 
-/* Base Programs Grid - ENFORCED Multi-Row Layout */
-.programs-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-    margin-top: 40px;
-    justify-items: center;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
 /* CRITICAL FIX: Force grid layout when NOT in scroll mode - prevents single column */
 .programs-grid:not(.horizontal-scroll) {
     display: grid !important;
