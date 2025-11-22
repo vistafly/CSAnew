@@ -34,6 +34,18 @@ p {
     margin: 0 auto;
     padding: 0 50px;
 }
+@media (max-width: 768px) {
+  .container {
+    padding: 0 20px;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 16px;
+  }
+}
 
 /* Buttons */
 .btn {
@@ -1491,7 +1503,9 @@ body.loading .hero-logo {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
     margin-top: 40px;
-    justify-items: center; /* This centers each card within its grid cell */
+    justify-items: center;
+    transition: all 0.3s ease;
+    position: relative;
 }
 
 .program-card {
@@ -3408,11 +3422,12 @@ body.loading .hero-logo {
 .program-filters {
     background: white;
     border-radius: 12px;
-    padding: 32px;
+    padding: 8px;
     margin: 0px auto 0px;
-    max-width: 1250px;
+    max-width: 1500px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
     border: 1px solid #f0f0f0;
+    overflow: hidden;
 }
 
 .filter-section {
@@ -3521,17 +3536,6 @@ body.loading .hero-logo {
     transform: translateY(0);
 }
 
-/* Filter Results */
-.filter-results {
-    padding-top: 8px;
-    border-top: 1px solid #f0f0f0;
-    font-size: 14px;
-    color: #666;
-    font-weight: 500;
-    text-align: center;
-    position: relative;
-}
-
 #programCount {
     color: #d32f2f;
     font-weight: 700;
@@ -3539,23 +3543,6 @@ body.loading .hero-logo {
     margin-left: 5px;
 }
 
-.clear-all {
-    background: #666;
-    color: white;
-    border: none;
-    padding: 6px 14px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    opacity: 0;
-    transform: scale(0.9);
-    pointer-events: none;
-    position: absolute;
-    right: 0;
-    top: 8px;
-}
 .clear-all.show {
     opacity: 1;
     transform: scale(1);
@@ -3673,12 +3660,7 @@ body.loading .hero-logo {
         padding: 6px 12px;
         font-size: 13px;
     }
-    
-    .filter-results {
-        flex-direction: column;
-        gap: 12px;
-        align-items: flex-start;
-    }
+
 }
 
 @media (max-width: 480px) {
@@ -3719,246 +3701,565 @@ body.loading .hero-logo {
         transition: none;
     }
 }
-/* Mobile Carousel Styles - Updated breakpoint */
-@media (max-width: 1230px) {
-    .programs-carousel-container {
-        position: relative;
-        overflow: hidden;
-        margin-top: 40px;
-        padding: 0 20px;
-        display: none; /* Hidden by default, shown when carousel mode is active */
-    }
-    
-    .programs-grid.carousel-mode {
-        display: flex !important;
-        overflow-x: auto;
-        scroll-behavior: smooth;
-        scroll-snap-type: x mandatory;
-        gap: 40px;
-        padding: 20px calc(50vw - 140px) 30px; /* Centers first/last card */
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-        grid-template-columns: none !important;
-        margin-top: 0;
-        justify-content: flex-start;
-    }
-    
-    .programs-grid.carousel-mode::-webkit-scrollbar {
-        display: none;
-    }
-    
-    .programs-grid.carousel-mode .program-card {
-        flex: 0 0 280px;
-        max-width: 280px;
-        scroll-snap-align: center; /* Changed from 'start' to 'center' */
-        scroll-snap-stop: always;
-        margin: 0;
-    }
-    
-    /* Hide regular grid on mobile when carousel is active */
-    .programs-grid.carousel-mode ~ .programs-empty-state {
-        margin-top: 20px;
-    }
-    
-    /* Carousel Navigation Dots */
-    .carousel-dots {
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-        margin-top: 20px;
-        padding: 0 20px;
-    }
-    
-    .carousel-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: rgba(0, 0, 0, 0.2);
-        border: none;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        padding: 0;
-    }
-    
-    .carousel-dot.active {
-        background: #d32f2f;
-        transform: scale(1.2);
-    }
-    
-    .carousel-dot:hover {
-        background: rgba(0, 0, 0, 0.4);
-    }
-    
-    /* Carousel Navigation Arrows */
-    .carousel-nav {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(255, 255, 255, 0.9);
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        border-radius: 50%;
-        width: 44px;
-        height: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        z-index: 10;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-    }
-    
-    .carousel-nav:hover {
-        background: white;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-        transform: translateY(-50%) scale(1.05);
-    }
-    
-    .carousel-nav:active {
-        transform: translateY(-50%) scale(0.95);
-    }
-    
-    .carousel-nav.prev {
-        left: 10px;
-    }
-    
-    .carousel-nav.next {
-        right: 10px;
-    }
-    
-    .carousel-nav svg {
-        width: 16px;
-        height: 16px;
-        color: #333;
-    }
-    
-    /* Hide arrows when not needed */
-    .carousel-nav.disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
-        pointer-events: none;
-    }
-    
-    /* Remove fade edges as they interfere with centering */
-    .programs-carousel-container::before,
-    .programs-carousel-container::after {
-        display: none;
-    }
-    
-    /* Progress indicator for carousel */
-    .carousel-progress {
-        height: 2px;
-        background: rgba(0, 0, 0, 0.1);
-        border-radius: 1px;
-        margin: 20px 20px 0;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .carousel-progress-bar {
-        height: 100%;
-        background: #d32f2f;
-        border-radius: 1px;
-        transition: width 0.3s ease;
-        width: 0%;
-    }
-}
-/* Tablet devices */
-@media (max-width: 1024px) {
-    .container {
-        padding: 0 40px;
-    }
+/* Single Row Horizontal Scroll - Space Saving */
+.programs-grid.scrollable {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    padding: 15px 0 25px 0;
+    gap: 20px;
+    justify-content: flex-start;
+    align-items: stretch;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    /* Force single row - no wrapping */
+    flex-wrap: nowrap;
 }
 
-/* Small tablets and large phones */
+.programs-grid.scrollable .program-card {
+    /* Fixed width cards in single row */
+    flex: 0 0 280px;
+    min-width: 280px;
+    max-width: 280px;
+    height: auto;
+    scroll-snap-align: start;
+}
+
+/* Enhanced Scrollbar for horizontal scrolling */
+.programs-grid.scrollable::-webkit-scrollbar {
+    height: 12px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 6px;
+}
+
+.programs-grid.scrollable::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 6px;
+    margin: 0 20px;
+}
+
+.programs-grid.scrollable::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #d32f2f, #b71c1c);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.programs-grid.scrollable::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #b71c1c, #8d0101);
+}
+
+/* Grid mode (default) - normal multi-row layout */
+.programs-grid:not(.scrollable) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    justify-items: center;
+}
+
+/* Mobile adjustments */
 @media (max-width: 768px) {
-    .container {
-        padding: 0 24px;
-    }
-}
-
-/* Mobile devices */
-@media (max-width: 480px) {
-    .container {
-        padding: 0 20px;
-    }
-}
-
-/* Small mobile devices */
-@media (max-width: 375px) {
-    .container {
-        padding: 0 16px;
-    }
-}
-
-/* Extra small devices */
-@media (max-width: 320px) {
-    .container {
-        padding: 0 12px;
-    }
-}
-
-/* Optional: Section-specific container adjustments for mobile */
-@media (max-width: 768px) {
-    /* Hero section - full bleed on mobile for impact */
-    .hero .container {
-        padding: 0;
+    .programs-grid.scrollable {
+        gap: 15px;
+        padding: 10px 0 20px;
     }
     
-    /* Programs section - tighter on mobile */
-    .programs .container {
-        padding: 0 16px;
-    }
-    
-    /* Contact section - comfortable padding */
-    .contact .container {
-        padding: 0 20px;
-    }
-    
-    /* Gallery section - minimal padding for max image display */
-    .gallery .container {
-        padding: 0 12px;
-    }
-}
-
-/* Ensure no overflow issues on mobile */
-@media (max-width: 768px) {
-    body {
-        overflow-x: hidden;
-    }
-
-    
-    /* Prevent content from breaking container */
-    .container * {
-        max-width: 100%;
-        word-wrap: break-word;
-    }
-}
-/* Adjust centering for different screen sizes */
-@media (max-width: 768px) {
-    .programs-grid.carousel-mode {
-        padding: 20px calc(50vw - 140px) 30px;
-    }
-}
-
-@media (max-width: 480px) {
-    .programs-grid.carousel-mode {
-        padding: 20px calc(50vw - 140px) 30px;
-    }
-    
-    .programs-grid.carousel-mode .program-card {
+    .programs-grid.scrollable .program-card {
         flex: 0 0 260px;
+        min-width: 260px;
         max-width: 260px;
     }
 }
 
-@media (max-width: 375px) {
-    .programs-grid.carousel-mode {
-        padding: 20px calc(50vw - 120px) 30px;
+/* CORRECTED PROFESSIONAL HORIZONTAL SCROLL - FIXES GRID LAYOUT AND CONTROLS */
+
+/* Base Programs Grid - ENFORCED Multi-Row Layout */
+.programs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+    justify-items: center;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* CRITICAL FIX: Force grid layout when NOT in scroll mode - prevents single column */
+.programs-grid:not(.horizontal-scroll) {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+    gap: 25px !important;
+    justify-items: center !important;
+    overflow: visible !important;
+    flex-direction: unset !important;
+    flex-wrap: unset !important;
+    justify-content: unset !important;
+}
+
+/* Single Row Horizontal Scroll Mode - Space Saving */
+.programs-grid.horizontal-scroll {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    scroll-behavior: smooth;
+    gap: 24px;
+    justify-content: flex-start;
+    align-items: stretch;
+    padding: 40px 10px 20px 0;
+    
+    /* Remove grid properties completely */
+    grid-template-columns: unset !important;
+    justify-items: unset !important;
+    
+    /* iOS Momentum Scrolling */
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    transform: translateZ(0);
+    will-change: scroll-position;
+}
+
+/* Cards in Horizontal Scroll Mode */
+.programs-grid.horizontal-scroll .program-card {
+    flex: 0 0 300px !important;
+    min-width: 300px !important;
+    max-width: 300px !important;
+    width: 300px !important;
+    height: auto;
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+    transform: translateZ(0);
+    will-change: transform;
+    transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Enhanced Hover Effects for Horizontal Scroll */
+.programs-grid.horizontal-scroll .program-card:hover {
+    transform: translateY(-8px) translateZ(0) scale(1.02);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.15),
+        0 10px 20px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+}
+
+/* Professional Scrollbar Styling */
+.programs-grid.horizontal-scroll::-webkit-scrollbar {
+    height: 12px;
+    background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.05), transparent);
+}
+
+.programs-grid.horizontal-scroll::-webkit-scrollbar-track {
+    background: rgba(248, 249, 250, 0.8);
+    border-radius: 6px;
+    margin: 0 20px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.programs-grid.horizontal-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #d32f2f, #b71c1c, #d32f2f);
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.programs-grid.horizontal-scroll::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(90deg, #b71c1c, #8d0101, #b71c1c);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    transform: scaleY(1.1);
+}
+
+/* FIXED Filter Results Layout */
+.filter-results {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    border-top: 2px solid #f0f0f0;
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 0 0 16px 16px;
+    margin: 0 -32px;
+    position: relative;
+    transition: all 0.4s ease;
+
+ 
+}
+
+.results-info {
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+}
+
+#programCount {
+    font-weight: 700;
+    color: #d32f2f;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.filter-results.scroll-active #programCount {
+    background: linear-gradient(135deg, #d32f2f, #b71c1c);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(211, 47, 47, 0.3);
+}
+
+/* FIXED SCROLL CONTROLS - NO UNWANTED SPACING */
+.scroll-controls {
+    display: none;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    width: auto;
+    margin: 0;
+    padding: 0;
+}
+
+.scroll-controls.active {
+    display: flex;
+}
+
+/* SCROLL BUTTONS WITH ROTATION SUPPORT */
+.scroll-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    display: block;
+    outline: none;
+    flex-shrink: 0;
+    width: auto;
+    transition: transform 0.2s ease, opacity 0.3s ease;
+}
+
+.scroll-btn:hover:not(:disabled) {
+    transform: scale(1.1);
+}
+
+.scroll-btn:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+/* Disabled state */
+.scroll-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Arrow images with rotation parameters */
+/* Arrow images - NO ROTATION AT ALL */
+.scroll-btn .scroll-arrow {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    pointer-events: none;
+    transform: none !important; /* Completely disable transform */
+}
+
+.scroll-btn.left .scroll-arrow,
+.scroll-btn.right .scroll-arrow {
+    transform: none !important;
+}
+
+/* Hover states - ONLY translate, NO rotation */
+.scroll-btn.left:hover:not(:disabled),
+.scroll-btn.right:hover:not(:disabled) {
+    transform: scale(1.1) !important;
+}
+
+.scroll-btn.left:hover:not(:disabled) .scroll-arrow,
+.scroll-btn.right:hover:not(:disabled) .scroll-arrow {
+    transform: none !important; /* Image itself doesn't transform */
+}
+
+/* Active states - ONLY translate, NO rotation */
+.scroll-btn.left:active:not(:disabled),
+.scroll-btn.right:active:not(:disabled) {
+    transform: scale(0.95) !important;
+}
+
+.scroll-btn.left:active:not(:disabled) .scroll-arrow,
+.scroll-btn.right:active:not(:disabled) .scroll-arrow {
+    transform: none !important; /* Image itself doesn't transform */
+}
+
+/* Premium View Toggle - FIXED DOTS */
+.view-toggle {
+    position: relative;
+    background: linear-gradient(135deg, #666 0%, #555 50%, #666 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-left: 16px;
+    box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.2),
+        0 2px 8px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 44px !important;
+}
+
+.view-toggle:hover {
+    background: linear-gradient(135deg, #555 0%, #333 50%, #555 100%);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 24px rgba(0, 0, 0, 0.3),
+        0 4px 12px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* FIXED TOGGLE ICON WITH PROPER GRID/LIST SYMBOLS */
+.toggle-icon {
+    font-family: Arial, sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1 !important;
+    display: inline-block !important;
+    font-weight: bold !important;
+    text-align: center !important;
+    width: 20px !important;
+}
+
+/* Use proper grid and list icons */
+.toggle-icon.grid-mode::before {
+    content: '⊞' !important; /* Grid symbol */
+}
+
+.toggle-icon.list-mode::before {
+    content: '☰' !important; /* List/horizontal lines symbol */
+}
+
+/* Scroll Progress Indicator */
+.scroll-progress {
+    width: 350px;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0 !important;
+}
+
+.scroll-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #d32f2f, #b71c1c, #d32f2f);
+    border-radius: 3px;
+    transition: width 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    width: 0%;
+    box-shadow: 0 1px 3px rgba(211, 47, 47, 0.3);
+}
+
+/* CRITICAL: Prevent unwanted layout changes during filtering */
+.program-card {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.program-card.hidden {
+    opacity: 0 !important;
+    transform: scale(0.8) !important;
+    pointer-events: none !important;
+    /* Don't use display: none - it breaks grid layout */
+    visibility: hidden !important;
+    position: absolute !important;
+    z-index: -1 !important;
+}
+
+.programs-grid.transitioning {
+    opacity: 0.9;
+}
+
+/* Responsive Design - Mobile First */
+@media (max-width: 768px) {
+    .programs-grid.horizontal-scroll {
+        gap: 16px;
+        margin-top: 20px;
+        overflow-y: visible;
+        overflow-x: visible;
     }
     
-    .programs-grid.carousel-mode .program-card {
-        flex: 0 0 240px;
-        max-width: 240px;
+    .programs-grid.horizontal-scroll .program-card {
+        flex: 0 0 280px !important;
+        min-width: 280px !important;
+        max-width: 280px !important;
+        width: 280px !important;
+    }
+    
+    .scroll-controls {
+        gap: 12px;
+    }
+    
+    .view-toggle {
+        padding: 10px 16px;
+        font-size: 12px;
+        margin-left: 12px;
+        min-width: 40px !important;
+    }
+    
+    .toggle-icon {
+        font-size: 16px !important;
+        width: 18px !important;
+    }
+    
+    .filter-results {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 16px !important;
+        padding: 16px 20px;
+        margin: 0 -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        width: calc(100% + 40px) !important;
+    }
+
+    .scroll-progress {
+        width: 60px;
+        height: 5px;
+        margin: 0 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .programs-grid.horizontal-scroll .program-card {
+        flex: 0 0 260px !important;
+        min-width: 290px !important;
+        max-width: 260px !important;
+        width: 260px !important;
+    }
+    
+    .scroll-controls {
+        gap: 10px;
+    }
+    
+    .view-toggle {
+        padding: 8px 12px;
+        font-size: 11px;
+        min-width: 36px !important;
+    }
+    
+    .toggle-icon {
+        font-size: 14px !important;
+        width: 16px !important;
+    }
+}
+
+/* Force visibility for scroll controls when active */
+.scroll-controls.active * {
+    visibility: visible !important;
+}
+.filter-results {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 30px 0 0;
+}
+
+.results-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.results-info {
+    font-size: 16px;
+    color: #333;
+}
+
+.clear-all {
+    padding: 8px 16px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+        position: absolute;
+    right: 0;
+    top: 25px;
+    margin-right: 110px;
+}
+
+.scroll-controls {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.scroll-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+    max-width: 120px;
+}
+
+.scroll-btn:hover {
+    transform: scale(1.1);
+}
+
+.scroll-btn:active {
+    transform: scale(0.95);
+}
+
+.scroll-arrow {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .results-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .scroll-arrow {
+        width: 40px;
+        height: 40px;
+    }
+}
+.programs .container {
+    max-width: 90%;
+    width: 90%;
+    margin: 0 auto;
+    padding: 0 50px;
+}
+
+@media (max-width: 768px) {
+    .programs .container {
+        padding: 0 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .programs .container {
+        padding: 0 16px;
     }
 }

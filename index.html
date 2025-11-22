@@ -237,15 +237,25 @@
                     <button class="spec-pill" data-subcategory="keyboard">Keyboard & Piano</button>
                 </div>
             </div>
-
-            <!-- Results Info -->
-            <div class="filter-results">
-             <span id="programCount">9</span> result(s)
-                <button class="clear-all" id="clearFilters" style="display: none;">Clear Filters</button>
-            </div>
+<!-- Results Info with Professional Scroll Controls -->
+<div class="filter-results">
+    <div class="results-container">
+        <div class="results-info">
+            <span id="programCount">9</span> result(s)
         </div>
-        
-        <div class="programs-grid">
+        <button class="clear-all" id="clearFilters" style="display: none;">Clear Filters</button>
+    </div>
+    
+    <div class="scroll-controls" id="scrollControls">
+        <button class="scroll-btn left" id="scrollLeft" title="Scroll Left">
+            <img src="/images/icons/leftarrow.png" alt="Left Arrow" class="scroll-arrow">
+        </button>
+        <button class="scroll-btn right" id="scrollRight" title="Scroll Right">
+            <img src="/images/icons/rightarrow.png" alt="Right Arrow" class="scroll-arrow">
+        </button>
+    </div>
+</div>
+        <div class="programs-grid" id="programsGrid">
             <div class="program-card" data-category="afterschool,winter-camps,summer-camps" data-subcategory="sports">
                 <div class="program-image">
                     <img src="/images/programs/1.jpg" alt="Sports Program" loading="lazy">
