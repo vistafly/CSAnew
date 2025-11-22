@@ -10,6 +10,7 @@ class ProgramFilter {
         this.allPrograms = [];
         this.currentCategory = 'all';
         this.currentSubcategory = 'all';
+        this.isFiltering = false; // NEW: Prevent recursive filtering
         
         this.init();
     }
@@ -95,6 +96,13 @@ class ProgramFilter {
     }
     
     filterPrograms() {
+        // CRITICAL FIX: Prevent recursive calls
+        if (this.isFiltering) {
+            return;
+        }
+        
+        this.isFiltering = true;
+        
         console.log('Filtering programs with:', {
             category: this.currentCategory,
             subcategory: this.currentSubcategory
@@ -132,6 +140,11 @@ class ProgramFilter {
             this.updateCount(visibleCount);
             this.toggleEmptyState(visibleCount === 0);
             this.updateClearButton();
+            
+            // CRITICAL: Reset flag after everything is done
+            setTimeout(() => {
+                this.isFiltering = false;
+            }, 100);
         }, 300);
     }
     
@@ -346,6 +359,7 @@ class FixedHorizontalScrollManager {
         this.isTransitioning = false;
         this.isManualToggle = false;
         this.scrollThreshold = 3;
+        this.isCheckingLayout = false; // NEW: Prevent recursive layout checks
         
         // Performance optimization
         this.scrollTimeout = null;
@@ -473,7 +487,10 @@ class FixedHorizontalScrollManager {
     }
     
     checkScrollNeed() {
-        if (this.isTransitioning) return;
+        // CRITICAL FIX: Prevent recursive calls
+        if (this.isTransitioning || this.isCheckingLayout) return;
+        
+        this.isCheckingLayout = true;
         
         const visibleCards = this.getVisibleCards();
         const containerWidth = this.programsGrid.offsetWidth;
@@ -495,6 +512,11 @@ class FixedHorizontalScrollManager {
         }
         
         this.updateCardCount(visibleCards.length);
+        
+        // Reset flag after a delay
+        setTimeout(() => {
+            this.isCheckingLayout = false;
+        }, 200);
     }
     
     getVisibleCards() {
@@ -745,12 +767,18 @@ class FixedHorizontalScrollManager {
         }, 250);
     }
     
-    // CRITICAL: Handle filtering properly
+    // CRITICAL: Handle filtering properly with better debouncing
     handleFilterChange() {
+        if (this.isCheckingLayout) {
+            // Already checking, skip this call
+            return;
+        }
+        
         if (this.filterTimeout) {
             clearTimeout(this.filterTimeout);
         }
         
+        // Increased debounce time to prevent rapid firing
         this.filterTimeout = setTimeout(() => {
             console.log('🔍 Filter change detected, checking layout...');
             
@@ -761,38 +789,48 @@ class FixedHorizontalScrollManager {
             
             // Then check if scroll is needed
             this.checkScrollNeed();
-        }, 100);
+        }, 500); // Increased from 100ms to 500ms
     }
     
-    // Observer for DOM changes (filter updates)
+    // Observer for DOM changes (filter updates) - WITH BETTER FILTERING
     observeGridChanges() {
         if (!this.programsGrid) return;
         
+        let observerTimeout = null;
+        
         const observer = new MutationObserver((mutations) => {
-            let shouldCheck = false;
-            
-            mutations.forEach(mutation => {
-                if (mutation.type === 'attributes' && 
-                    (mutation.attributeName === 'class' || 
-                     mutation.attributeName === 'style')) {
-                    shouldCheck = true;
-                }
-                
-                if (mutation.type === 'childList') {
-                    shouldCheck = true;
-                }
-            });
-            
-            if (shouldCheck) {
-                this.handleFilterChange();
+            // Clear existing timeout
+            if (observerTimeout) {
+                clearTimeout(observerTimeout);
             }
+            
+            // Debounce the mutation observations
+            observerTimeout = setTimeout(() => {
+                let shouldCheck = false;
+                
+                mutations.forEach(mutation => {
+                    // Only respond to specific changes that matter
+                    if (mutation.type === 'attributes') {
+                        const attr = mutation.attributeName;
+                        if (attr === 'class' && mutation.target.classList.contains('program-card')) {
+                            // Only care about cards being hidden/shown
+                            shouldCheck = true;
+                        }
+                    }
+                });
+                
+                if (shouldCheck) {
+                    this.handleFilterChange();
+                }
+            }, 300); // Debounce mutations
         });
         
         observer.observe(this.programsGrid, {
-            childList: true,
+            childList: false, // Don't watch for added/removed children
             subtree: true,
             attributes: true,
-            attributeFilter: ['class', 'style']
+            attributeFilter: ['class'], // Only watch class changes
+            attributeOldValue: true // Track old values to compare
         });
         
         return observer;
@@ -866,12 +904,12 @@ function integrateWithFilterSystem() {
             // Execute original filter
             originalFilterPrograms();
             
-            // Update scroll manager after filtering
+            // Update scroll manager after filtering (with longer delay)
             setTimeout(() => {
                 if (window.horizontalScrollManager) {
                     window.horizontalScrollManager.handleFilterChange();
                 }
-            }, 50);
+            }, 600); // Increased from 50ms to 600ms to avoid rapid firing
         };
         
         console.log('🔗 Enhanced filter system integration complete');
@@ -906,6 +944,7 @@ window.debugHorizontalScroll = () => {
         console.log('Visible cards:', window.horizontalScrollManager.getVisibleCardCount());
         console.log('Is transitioning:', window.horizontalScrollManager.isTransitioning);
         console.log('Manual toggle:', window.horizontalScrollManager.isManualToggle);
+        console.log('Is checking layout:', window.horizontalScrollManager.isCheckingLayout);
         
         const grid = document.getElementById('programsGrid');
         if (grid) {

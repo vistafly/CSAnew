@@ -864,6 +864,21 @@ body.loading .hero-logo {
     /* Remove margin-left: 16px; */
 }
 
+.scroll-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* CRITICAL: Ensure the arrow image inherits the disabled state */
+.scroll-btn:disabled .scroll-arrow {
+    opacity: 0.5 !important;
+    pointer-events: none;
+}
+
+/* Also ensure the image doesn't override when button has inline opacity */
+.scroll-btn .scroll-arrow {
+    opacity: inherit;
+}
 
 .user-info:hover {
     background: #e9ecef;
@@ -3888,7 +3903,12 @@ body.loading .hero-logo {
     flex: 1 !important;
     min-width: 0 !important;
 }
-
+@media (max-width: 768px) {
+    .results-info {
+        gap: 2px !important;
+        margin-left: 30px;
+    }
+}
 #programCount {
     font-weight: 700;
     color: #d32f2f;
@@ -4124,7 +4144,7 @@ body.loading .hero-logo {
     }
 
     .scroll-progress {
-        width: 60px;
+        width: 150px;
         height: 5px;
         margin: 0 8px;
     }
@@ -4190,6 +4210,13 @@ body.loading .hero-logo {
     top: 25px;
     margin-right: 110px;
 }
+@media (max-width: 768px) {
+    .clear-all {
+        margin-right: 30px;
+        top: 31px;
+        padding: 3px 9px;
+    }
+}
 
 .scroll-controls {
     display: flex;
@@ -4208,7 +4235,11 @@ body.loading .hero-logo {
     transition: transform 0.2s;
     max-width: 120px;
 }
-
+@media (max-width: 768px) {
+    .scroll-btn {
+        max-width: 45px;
+    }
+}
 .scroll-btn:hover {
     transform: scale(1.1);
 }
