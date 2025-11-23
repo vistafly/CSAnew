@@ -540,17 +540,7 @@ class FixedHorizontalScrollManager {
         
         this.isTransitioning = true;
         this.isScrollMode = true;
-        
-        // CRITICAL: Proper transition to flex layout
-        this.programsGrid.style.display = 'flex';
-        this.programsGrid.style.flexDirection = 'row';
-        this.programsGrid.style.flexWrap = 'nowrap';
-        this.programsGrid.style.overflowX = 'auto';
-        this.programsGrid.style.overflowY = 'hidden';
-        this.programsGrid.style.gap = '24px';
-        this.programsGrid.style.justifyContent = 'flex-start';
-        this.programsGrid.style.alignItems = 'stretch';
-        
+   
         // Remove grid properties
         this.programsGrid.style.gridTemplateColumns = '';
         this.programsGrid.style.justifyItems = '';

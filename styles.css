@@ -1517,20 +1517,16 @@ body.loading .hero-logo {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
-    margin-top: 40px;
     justify-items: center;
     transition: all 0.3s ease;
     position: relative;
 }
 
 .program-card {
-    background: white;
+    background: rgb(201, 201, 201);
     border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 -10px 30px rgba(27, 27, 27, 0.377);
     transition: all 0.3s ease;
     cursor: pointer;
-    min-width: 80px;
 }
 
 .program-card:hover {
@@ -1541,6 +1537,8 @@ body.loading .hero-logo {
 .program-image {
     position: relative;
     height: 170px;
+    border-top-right-radius: 12px;
+    border-top-left-radius: 12px;
     overflow: hidden;
 }
 
@@ -3439,8 +3437,7 @@ body.loading .hero-logo {
     border-radius: 12px;
     padding: 8px;
     margin: 0px auto 0px;
-    max-width: 1500px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    max-width: none;
     border: 1px solid #f0f0f0;
     overflow: hidden;
 }
@@ -3813,7 +3810,7 @@ body.loading .hero-logo {
     gap: 24px;
     justify-content: flex-start;
     align-items: stretch;
-    padding: 40px 10px 20px 0;
+    padding: 30px;
     
     /* Remove grid properties completely */
     grid-template-columns: unset !important;
@@ -4104,7 +4101,6 @@ body.loading .hero-logo {
 @media (max-width: 768px) {
     .programs-grid.horizontal-scroll {
         gap: 16px;
-        margin-top: 20px;
         overflow-y: visible;
         overflow-x: visible;
     }
@@ -4280,6 +4276,6 @@ body.loading .hero-logo {
 
 @media (max-width: 480px) {
     .programs .container {
-        padding: 0 16px;
+        padding: 0 0px;
     }
 }
