@@ -1515,7 +1515,6 @@ body.loading .hero-logo {
 
 .programs-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
     justify-items: center;
     transition: all 0.3s ease;
@@ -1523,7 +1522,7 @@ body.loading .hero-logo {
 }
 
 .program-card {
-    background: rgb(201, 201, 201);
+    background: rgba(202, 202, 202, 0.199);
     border-radius: 12px;
     transition: all 0.3s ease;
     cursor: pointer;
@@ -3435,7 +3434,7 @@ body.loading .hero-logo {
 .program-filters {
     background: white;
     border-radius: 12px;
-    padding: 8px;
+    padding: 0px;
     margin: 0px auto 0px;
     max-width: none;
     border: 1px solid #f0f0f0;
@@ -3549,10 +3548,12 @@ body.loading .hero-logo {
 }
 
 #programCount {
-    color: #d32f2f;
-    font-weight: 700;
-    margin-right: 5px;
-    margin-left: 5px;
+        background: linear-gradient(135deg, #d32f2f, #b71c1c);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(211, 47, 47, 0.3);
 }
 
 .clear-all.show {
@@ -3644,7 +3645,7 @@ body.loading .hero-logo {
 /* Responsive Design */
 @media (max-width: 768px) {
     .program-filters {
-        padding: 24px;
+        padding: 5px;
         margin: 24px auto 32px;
     }
     
@@ -3677,8 +3678,8 @@ body.loading .hero-logo {
 
 @media (max-width: 480px) {
     .program-filters {
-        padding: 20px;
-        margin: 20px auto 24px;
+        padding: 0px;
+        margin: 0px ;
     }
     
     .category-tab {
@@ -3763,13 +3764,6 @@ body.loading .hero-logo {
     background: linear-gradient(45deg, #b71c1c, #8d0101);
 }
 
-/* Grid mode (default) - normal multi-row layout */
-.programs-grid:not(.scrollable) {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-    justify-items: center;
-}
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
@@ -3797,8 +3791,14 @@ body.loading .hero-logo {
     flex-direction: unset !important;
     flex-wrap: unset !important;
     justify-content: unset !important;
+    padding-top: 30px;
+    padding-bottom: 100px;
 }
-
+@media (max-width: 768px) {
+.programs-grid:not(.horizontal-scroll) {
+    padding: 30px;
+    }
+}
 /* Single Row Horizontal Scroll Mode - Space Saving */
 .programs-grid.horizontal-scroll {
     display: flex !important;
@@ -3807,10 +3807,10 @@ body.loading .hero-logo {
     overflow-x: auto !important;
     overflow-y: visible !important;
     scroll-behavior: smooth;
-    gap: 24px;
     justify-content: flex-start;
     align-items: stretch;
-    padding: 30px;
+    padding: 20px 0 10px;
+    margin-left: 30px;
     
     /* Remove grid properties completely */
     grid-template-columns: unset !important;
@@ -3908,15 +3908,19 @@ body.loading .hero-logo {
 }
 #programCount {
     font-weight: 700;
-    color: #d32f2f;
+    color: #ffffff;
     font-size: 16px;
     transition: all 0.3s ease;
+    font-weight: 700;
+    margin-right: 5px;
+    width: 40px;
+    text-align: center;
 }
 
 .filter-results.scroll-active #programCount {
     background: linear-gradient(135deg, #d32f2f, #b71c1c);
     color: white;
-    padding: 6px 12px;
+    padding: 6px 15px;
     border-radius: 20px;
     font-size: 14px;
     box-shadow: 0 2px 8px rgba(211, 47, 47, 0.3);
@@ -4103,18 +4107,11 @@ body.loading .hero-logo {
         gap: 16px;
         overflow-y: visible;
         overflow-x: visible;
+        margin-left: 27px;
     }
     
-    .programs-grid.horizontal-scroll .program-card {
-        flex: 0 0 280px !important;
-        min-width: 280px !important;
-        max-width: 280px !important;
-        width: 280px !important;
-    }
     
-    .scroll-controls {
-        gap: 12px;
-    }
+
     
     .view-toggle {
         padding: 10px 16px;
@@ -4145,17 +4142,43 @@ body.loading .hero-logo {
         margin: 0 8px;
     }
 }
-
+@media (max-width: 3000px) {
+.programs-grid.horizontal-scroll .program-card {
+        flex: 0 0 480px !important;
+        min-width: 480px !important;
+        max-width: 480px !important;
+        width: 480px !important;
+    }
+    }
+/* Responsive Design - Mobile First */
+@media (max-width: 489px) {
+    .programs-grid.horizontal-scroll {
+        margin-left: 40px;
+    }
+    }
+    /* Responsive Design - Mobile First */
+@media (max-width: 488px) {
+    .programs-grid.horizontal-scroll {
+        margin-left: 30px;
+    }
+    }
+    /* Responsive Design - Mobile First */
+@media (max-width: 400px) {
+    .programs-grid.horizontal-scroll {
+        margin-left: 10px;
+    }
+    }
+    @media (max-width: 399px) {
+    .programs-grid.horizontal-scroll {
+        margin-left: 19px;
+    }
+    }
 @media (max-width: 480px) {
     .programs-grid.horizontal-scroll .program-card {
-        flex: 0 0 260px !important;
-        min-width: 290px !important;
-        max-width: 260px !important;
-        width: 260px !important;
-    }
-    
-    .scroll-controls {
-        gap: 10px;
+        flex: 0 0 275px !important;
+        min-width: 305px !important;
+        max-width: 275px !important;
+        width: 275px !important;
     }
     
     .view-toggle {
@@ -4264,13 +4287,13 @@ body.loading .hero-logo {
 .programs .container {
     max-width: 90%;
     width: 90%;
-    margin: 0 auto;
-    padding: 0 50px;
+    margin: auto;
+    padding: 0 0px;
 }
 
 @media (max-width: 768px) {
     .programs .container {
-        padding: 0 20px;
+        padding: 0 0px;
     }
 }
 
