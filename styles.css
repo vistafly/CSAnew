@@ -5874,6 +5874,7 @@ select option {
     flex-direction: column;
     border-right: 1px solid rgba(255, 255, 255, 0.05);
     box-shadow: 20px 0 60px rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
 }
 
 .audio-player-sidebar.active {
@@ -5923,22 +5924,20 @@ select option {
 }
 
 .player-logo-icon {
-    width: 40px;
-    height: 40px;
-    background: var(--accent-gradient);
+    width: 60px;
+    height: 60px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 16px var(--accent-glow);
+    overflow: hidden;
 }
 
-.player-logo-icon svg {
-    width: 22px;
-    height: 22px;
-    fill: white;
+.player-logo-icon img {
+    width: 180%;
+    height: 180%;
+    object-fit: contain;
 }
-
 .player-logo-text {
     font-weight: 700;
     font-size: 18px;
@@ -6079,7 +6078,6 @@ select option {
 /* Track Info */
 .audio-player-sidebar .track-info {
     text-align: center;
-    margin-bottom: 24px;
 }
 
 .audio-player-sidebar .track-title {
@@ -6578,7 +6576,7 @@ select option {
     }
 
     .audio-player-sidebar .now-playing {
-        padding: 24px 20px;
+        padding: 10px 24px 20px;
     }
 
     .album-art-container {
@@ -6601,9 +6599,9 @@ select option {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 395px) {
     .album-art-container {
-        max-width: 240px;
+        max-width: 150px;
     }
 
     .audio-player-sidebar .track-title {
@@ -6619,4 +6617,9 @@ select option {
         height: 40px;
     }
 }
+@media (max-width: 768px) {
+.audio-player-sidebar .now-playing {
+        padding: 5px 10px 10px;
+    }
+    }
 /* END AUDIO PLAYER SIDEBAR */
