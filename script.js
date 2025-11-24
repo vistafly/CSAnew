@@ -1,4 +1,4 @@
-// script.js 
+// script.js - COMPLETE VERSION WITH MOBILE SCROLL FIX
 // Clean Program Filtering System
 class ProgramFilter {
     constructor() {
@@ -10,7 +10,7 @@ class ProgramFilter {
         this.allPrograms = [];
         this.currentCategory = 'all';
         this.currentSubcategory = 'all';
-        this.isFiltering = false; // NEW: Prevent recursive filtering
+        this.isFiltering = false; // Prevent recursive filtering
         
         this.init();
     }
@@ -339,8 +339,9 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 /**
- * PROFESSIONAL HORIZONTAL SCROLL MANAGER
+ * PROFESSIONAL HORIZONTAL SCROLL MANAGER - MOBILE SCROLL FIX
  * High-end animations, bulletproof functionality, responsive design
+ * FIXED: Now properly calculates actual card widths for mobile scrolling
  */
 
 class FixedHorizontalScrollManager {
@@ -359,7 +360,7 @@ class FixedHorizontalScrollManager {
         this.isTransitioning = false;
         this.isManualToggle = false;
         this.scrollThreshold = 3;
-        this.isCheckingLayout = false; // NEW: Prevent recursive layout checks
+        this.isCheckingLayout = false; // Prevent recursive layout checks
         
         // Performance optimization
         this.scrollTimeout = null;
@@ -523,30 +524,57 @@ class FixedHorizontalScrollManager {
         return Array.from(this.programsGrid.querySelectorAll('.program-card:not(.hidden):not([style*="display: none"]):not([style*="visibility: hidden"])'));
     }
     
+    // MOBILE FIX: Get actual card width from DOM
     getCardWidth() {
+        const firstCard = this.programsGrid.querySelector('.program-card:not(.hidden)');
+        if (firstCard) {
+            const width = firstCard.offsetWidth;
+            console.log('📏 Actual card width from DOM:', width);
+            return width;
+        }
+        
+        // Fallback to estimated widths
         const isMobile = window.innerWidth <= 768;
-        return isMobile ? 280 : 300;
+        const fallbackWidth = isMobile ? 280 : 300;
+        console.log('📏 Using fallback card width:', fallbackWidth);
+        return fallbackWidth;
     }
     
+    // MOBILE FIX: Get actual gap from computed styles
     getGapSize() {
+        if (this.programsGrid) {
+            const computedStyle = window.getComputedStyle(this.programsGrid);
+            const gap = computedStyle.gap || computedStyle.columnGap;
+            
+            if (gap && gap !== 'normal') {
+                const gapValue = parseFloat(gap);
+                console.log('📏 Actual gap from CSS:', gapValue);
+                return gapValue;
+            }
+        }
+        
+        // Fallback to estimated gaps
         const isMobile = window.innerWidth <= 768;
-        return isMobile ? 16 : 24;
+        const fallbackGap = isMobile ? 16 : 24;
+        console.log('📏 Using fallback gap:', fallbackGap);
+        return fallbackGap;
     }
     
     enableScrollMode() {
-        if (this.isScrollMode || this.isTransitioning) return;
-        
-        console.log('🔄 Enabling horizontal scroll mode...');
-        
-        this.isTransitioning = true;
-        this.isScrollMode = true;
-   
-        // Remove grid properties
-        this.programsGrid.style.gridTemplateColumns = '';
-        this.programsGrid.style.justifyItems = '';
-        
-        // Add scroll class
-        this.programsGrid.classList.add('horizontal-scroll');
+    if (this.isScrollMode || this.isTransitioning) return;
+    
+    console.log('🔄 Enabling horizontal scroll mode...');
+    
+    this.isTransitioning = true;
+    this.isScrollMode = true;
+
+    // Remove grid properties
+    this.programsGrid.style.gridTemplateColumns = '';
+    this.programsGrid.style.justifyItems = '';
+    this.programsGrid.style.display = ''; // Clear display to let class control it
+    
+    // Add scroll class - this applies all horizontal scroll styles
+    this.programsGrid.classList.add('horizontal-scroll');
         
         // Show controls and ENABLE buttons by default
         if (this.scrollControls) {
@@ -633,10 +661,31 @@ class FixedHorizontalScrollManager {
         }, 3000);
     }
     
+    // MOBILE FIXED: Get actual card width + gap for accurate scrolling
+    getScrollAmount() {
+        const firstCard = this.programsGrid.querySelector('.program-card:not(.hidden)');
+        
+        if (firstCard) {
+            // Get actual rendered card width
+            const cardWidth = firstCard.offsetWidth;
+            const gap = this.getGapSize();
+            const scrollAmount = cardWidth + gap;
+            
+            console.log(`📏 Mobile scroll amount: ${cardWidth}px card + ${gap}px gap = ${scrollAmount}px`);
+            
+            return scrollAmount;
+        }
+        
+        // Fallback calculation
+        const fallbackAmount = this.getCardWidth() + this.getGapSize();
+        console.log(`📏 Fallback scroll amount: ${fallbackAmount}px`);
+        return fallbackAmount;
+    }
+    
     scrollLeft() {
         if (!this.isScrollMode || !this.programsGrid) return;
         
-        const scrollAmount = this.getCardWidth() + this.getGapSize();
+        const scrollAmount = this.getScrollAmount();
         
         this.programsGrid.scrollBy({
             left: -scrollAmount,
@@ -649,7 +698,7 @@ class FixedHorizontalScrollManager {
     scrollRight() {
         if (!this.isScrollMode || !this.programsGrid) return;
         
-        const scrollAmount = this.getCardWidth() + this.getGapSize();
+        const scrollAmount = this.getScrollAmount();
         
         this.programsGrid.scrollBy({
             left: scrollAmount,
@@ -758,29 +807,38 @@ class FixedHorizontalScrollManager {
     }
     
     // CRITICAL: Handle filtering properly with better debouncing
-    handleFilterChange() {
-        if (this.isCheckingLayout) {
-            // Already checking, skip this call
-            return;
-        }
-        
-        if (this.filterTimeout) {
-            clearTimeout(this.filterTimeout);
-        }
-        
-        // Increased debounce time to prevent rapid firing
-        this.filterTimeout = setTimeout(() => {
-            console.log('🔍 Filter change detected, checking layout...');
-            
-            // Always ensure proper layout first
-            if (!this.isScrollMode) {
-                this.forceGridLayout();
-            }
-            
-            // Then check if scroll is needed
-            this.checkScrollNeed();
-        }, 500); // Increased from 100ms to 500ms
+handleFilterChange() {
+    if (this.isCheckingLayout) {
+        // Already checking, skip this call
+        return;
     }
+    
+    if (this.filterTimeout) {
+        clearTimeout(this.filterTimeout);
+    }
+    
+    // Optimized debounce time
+    this.filterTimeout = setTimeout(() => {
+        console.log('🔍 Filter change detected, checking layout...');
+        
+        const visibleCards = this.getVisibleCards();
+        const shouldBeScrollMode = visibleCards.length > this.scrollThreshold;
+        
+        // Maintain layout mode during filtering
+        if (shouldBeScrollMode && this.isScrollMode) {
+            // Already in correct mode, just update
+            this.updateCardCount(visibleCards.length);
+            this.updateScrollButtons();
+        } else if (!shouldBeScrollMode && !this.isScrollMode) {
+            // Already in correct mode, just update
+            this.forceGridLayout();
+            this.updateCardCount(visibleCards.length);
+        } else {
+            // Need to switch modes
+            this.checkScrollNeed();
+        }
+    }, 200); // Balanced timing
+}
     
     // Observer for DOM changes (filter updates) - WITH BETTER FILTERING
     observeGridChanges() {
@@ -935,11 +993,17 @@ window.debugHorizontalScroll = () => {
         console.log('Is transitioning:', window.horizontalScrollManager.isTransitioning);
         console.log('Manual toggle:', window.horizontalScrollManager.isManualToggle);
         console.log('Is checking layout:', window.horizontalScrollManager.isCheckingLayout);
+        console.log('Scroll amount:', window.horizontalScrollManager.getScrollAmount());
+        console.log('Card width:', window.horizontalScrollManager.getCardWidth());
+        console.log('Gap size:', window.horizontalScrollManager.getGapSize());
         
         const grid = document.getElementById('programsGrid');
         if (grid) {
             console.log('Grid display:', grid.style.display);
             console.log('Grid classes:', grid.className);
+            console.log('Grid scroll position:', grid.scrollLeft);
+            console.log('Grid scroll width:', grid.scrollWidth);
+            console.log('Grid client width:', grid.clientWidth);
         }
     } else {
         console.warn('⚠️ Horizontal scroll manager not initialized');

@@ -141,6 +141,9 @@
     <li class="nav-item">
         <a href="#contact" class="nav-link">Contact</a>
     </li>
+    <li class="nav-item">
+    <a href="#careers" class="nav-link" id="careersBtn">Careers</a>
+</li>
 </ul>
         
         <div class="nav-right">
@@ -198,8 +201,10 @@
     </div>
     
     <div class="scroll-indicator">
+    <div class="scroll-arrow-wrapper">
         <div class="scroll-arrow"></div>
     </div>
+</div>
 </section>
 
   <!-- Programs Section with Filtering -->
@@ -415,8 +420,8 @@
 <section class="about" id="about">
     <div class="container">
         <div class="section-header">
-            <h2>Why Schools Choose CSA</h2>
-            <p class="section-subtitle">For over a decade, we've partnered with elementary schools to deliver exceptional sports and music programs with expert instructors and proven results.</p>
+            <h2>The CSA Way!</h2>
+            <p class="section-subtitle">We've taken the initiative to empower the youth through music & sports. Partnered with elementary schools to deliver exceptional sports and music programs with expert instructors and proven results.</p>
         </div>
         
         <div class="about-content">
@@ -768,8 +773,210 @@
         </div>
     </div>
 
-
-
+<!-- Career Interest Form Modal -->
+<div class="modal-overlay" id="careerModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Career Interest Form</h3>
+            <button class="modal-close" id="careerModalClose">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form class="career-form" id="careerForm">
+                <div class="form-header">
+                    <p>Join our team of passionate music and arts educators!</p>
+                </div>
+                
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <h4>Personal Information</h4>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="careerFirstName">First Name *</label>
+                            <input type="text" id="careerFirstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="careerLastName">Last Name *</label>
+                            <input type="text" id="careerLastName" name="lastName" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="careerEmail">Email Address *</label>
+                            <input type="email" id="careerEmail" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="careerPhone">Phone Number *</label>
+                            <input type="tel" id="careerPhone" name="phone" placeholder="(555) 123-4567" required>
+                            <small style="color: #666; font-size: 12px; display: block; margin-top: 4px;">
+                                Format: (555) 123-4567
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Position Information -->
+                <div class="form-section">
+                    <h4>Position Information</h4>
+                    
+                    <div class="form-group">
+                        <label for="positionInterest">Position of Interest *</label>
+                        <select id="positionInterest" name="position" required>
+                            <option value="">Select position</option>
+                            <option value="Music Instructor">Music Instructor</option>
+                            <option value="Sports Coach">Sports Coach</option>
+                            <option value="Dance Instructor">Dance Instructor</option>
+                            <option value="Percussion Instructor">Percussion Instructor</option>
+                            <option value="Choir Director">Choir Director</option>
+                            <option value="Program Coordinator">Program Coordinator</option>
+                            <option value="Administrative Staff">Administrative Staff</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="availability">Availability *</label>
+                        <select id="availability" name="availability" required>
+                            <option value="">Select availability</option>
+                            <option value="Full-Time">Full-Time</option>
+                            <option value="Part-Time">Part-Time</option>
+                            <option value="Contract/Seasonal">Contract/Seasonal</option>
+                            <option value="Flexible">Flexible</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Qualifications -->
+                <div class="form-section">
+                    <h4>Qualifications</h4>
+                    
+                    <div class="form-group">
+                        <label for="experience">Years of Experience *</label>
+                        <select id="experience" name="experience" required>
+                            <option value="">Select experience</option>
+                            <option value="Less than 1 year">Less than 1 year</option>
+                            <option value="1-3 years">1-3 years</option>
+                            <option value="3-5 years">3-5 years</option>
+                            <option value="5-10 years">5-10 years</option>
+                            <option value="10+ years">10+ years</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="education">Education Level *</label>
+                        <select id="education" name="education" required>
+                            <option value="">Select education level</option>
+                            <option value="High School Diploma">High School Diploma</option>
+                            <option value="Associate Degree">Associate Degree</option>
+                            <option value="Bachelor's Degree">Bachelor's Degree</option>
+                            <option value="Master's Degree">Master's Degree</option>
+                            <option value="Doctorate">Doctorate</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="certifications">Certifications (if any)</label>
+                        <textarea id="certifications" name="certifications" rows="3" placeholder="List any relevant certifications or credentials..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Additional Information -->
+                <div class="form-section">
+                    <h4>Additional Information</h4>
+                    
+                    <div class="form-group">
+                        <label for="coverLetter">Why do you want to join CSA? *</label>
+                        <textarea id="coverLetter" name="coverLetter" rows="5" placeholder="Tell us about your passion for music/sports education and why you'd be a great fit for our team..." required></textarea>
+                    </div>
+                    
+                    <!-- Resume Upload (OPTIONAL) -->
+<div class="form-group">
+    <label for="resumeFile">Resume Upload <span style="color: #999; font-weight: 400;">(Optional)</span></label>
+    <div class="file-upload-container">
+        <input 
+            type="file" 
+            id="resumeFile" 
+            name="resumeFile"
+            accept=".pdf,.doc,.docx"
+            style="display: none;">
+        
+        <label for="resumeFile" class="file-upload-label">
+            <div class="file-upload-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+            </div>
+            <div class="file-upload-text">
+                <p style="font-weight: 600; margin: 0 0 5px;">Click to upload or drag and drop</p>
+                <p style="font-size: 13px; color: #999; margin: 0;">PDF, DOC, or DOCX (max 5MB) - Optional</p>
+            </div>
+        </label>
+        
+        <p id="fileName" class="file-name">No file selected</p>
+    </div>
+    
+    <!-- Progress Bar -->
+    <div id="uploadProgress" class="upload-progress hidden">
+        <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+        </div>
+        <p id="progressText" class="progress-text">0%</p>
+    </div>
+</div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-full">Submit Application</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Success Modal -->
+<div id="successModal" class="modal-overlay">
+    <div class="modal-container success-modal-container">
+        <div class="success-modal-content">
+            <!-- Success Icon -->
+            <div class="success-icon-wrapper">
+                <svg class="success-icon" viewBox="0 0 52 52">
+                    <circle class="success-circle" cx="26" cy="26" r="25" fill="none"/>
+                    <path class="success-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                </svg>
+            </div>
+            
+            <!-- Success Message -->
+            <h2 class="success-title">Application Submitted!</h2>
+            
+            <p class="success-message">
+                Thank you for your interest in joining CSA Entertainment.
+            </p>
+            
+            <!-- Application ID Box -->
+            <div class="application-id-box">
+                <p class="id-label">Your Application ID</p>
+                <p id="applicationIdDisplay" class="application-id">ABC123XYZ456</p>
+                <p class="id-instruction">Please save this ID for your records</p>
+            </div>
+            
+            <!-- Next Steps -->
+            <div class="next-steps">
+                <p class="next-steps-title">What happens next?</p>
+                <ul class="next-steps-list">
+                    <li>Our team will review your application</li>
+                    <li>We'll contact you within 1-2 weeks</li>
+                    <li>Keep an eye on your email</li>
+                </ul>
+            </div>
+            
+            <!-- Close Button -->
+            <button class="success-close-btn" id="successModalClose">
+                Got it, thanks!
+            </button>
+        </div>
+    </div>
+</div>
     <!-- Testimonials Section -->
     <section class="testimonials" id="testimonials">
         <div class="container">
@@ -871,92 +1078,452 @@
                 </div>
                 
                 <div class="contact-form-container">
-                    <form class="contact-form" id="contactForm">
-                        <div class="form-header">
-                            <h3>Request Information</h3>
-                            <p>Tell us about your school's needs</p>
-                        </div>
-                        
-                        <div class="educator-check">
-                            <label for="educatorRole">Are you an educator or administrator?</label>
-                            <select id="educatorRole" name="educatorRole" required>
-                                <option value="">Please select</option>
-                                <option value="yes">Yes, I work in education</option>
-                                <option value="no">No, I do not work in education</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-fields" id="formFields">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="firstName">First Name *</label>
-                                    <input type="text" id="firstName" name="firstName" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="lastName">Last Name *</label>
-                                    <input type="text" id="lastName" name="lastName" required>
-                                </div>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="email">Email Address *</label>
-                                    <input type="email" id="email" name="email" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="phone">Phone Number</label>
-                                    <input type="tel" id="phone" name="phone">
-                                </div>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="school">School/District Name *</label>
-                                    <input type="text" id="school" name="school" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="position">Your Position *</label>
-                                    <select id="position" name="position" required>
-                                        <option value="">Select position</option>
-                                        <option value="principal">Principal</option>
-                                        <option value="assistant-principal">Assistant Principal</option>
-                                        <option value="pe-coordinator">PE Coordinator</option>
-                                        <option value="music-coordinator">Music Coordinator</option>
-                                        <option value="program-director">Program Director</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="programs">Programs of Interest</label>
-                                <select id="programs" name="programs">
-                                    <option value="">Select programs</option>
-                                    <option value="sports">Sports Programs</option>
-                                    <option value="dance">Dance Programs</option>
-                                    <option value="choir">Choir Programs</option>
-                                    <option value="percussion">Percussion Programs</option>
-                                    <option value="multiple">Multiple Programs</option>
-                                    <option value="all">All Programs</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="message">Message</label>
-                                <textarea id="message" name="message" rows="4" placeholder="Tell us about your school's goals and how we can help..."></textarea>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary btn-full">Send Message</button>
-                        </div>
-                        
-                        <div class="non-educator-message" id="nonEducatorMessage">
-                            <div class="message-content">
-                                <h4>Thank You for Your Interest!</h4>
-                                <p>Our programs are designed specifically for elementary schools and educational institutions. If you're a parent interested in these programs, please contact your child's school administration to inquire about partnering with CSA.</p>
-                            </div>
-                        </div>
-                    </form>
+   <div class="contact-form-container">
+    <form class="contact-form" id="contactForm">
+        <div class="form-header">
+            <h3>Request Information</h3>
+            <p>Tell us about your needs</p>
+        </div>
+        
+        <!-- Initial Role Selection -->
+        <div class="educator-check">
+            <label for="educatorRole">I am a:</label>
+            <select id="educatorRole" name="educatorRole" required>
+                <option value="">Please select</option>
+                <option value="education-professional">Education Professional</option>
+                <option value="parent">Parent/Guardian</option>
+            </select>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- EDUCATION PROFESSIONAL FORM FIELDS -->
+        <!-- ============================================ -->
+        <div class="form-fields" id="educatorFormFields" style="display: none;">
+            <div class="form-section-header">
+                <h4>Education Professional Inquiry</h4>
+                <p>Tell us about your school or district</p>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="eduFirstName">First Name *</label>
+                    <input type="text" id="eduFirstName" name="firstName">
                 </div>
+                <div class="form-group">
+                    <label for="eduLastName">Last Name *</label>
+                    <input type="text" id="eduLastName" name="lastName">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="eduEmail">Work Email Address *</label>
+                    <input type="email" id="eduEmail" name="email" placeholder="name@school.edu">
+                </div>
+                <div class="form-group">
+                    <label for="eduPhone">Office Phone Number</label>
+                    <input type="tel" id="eduPhone" name="phone">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="organizationName">School/District Name *</label>
+                    <input type="text" id="organizationName" name="organization" placeholder="Enter school or district name">
+                </div>
+                <div class="form-group">
+                    <label for="organizationType">Organization Type *</label>
+                    <select id="organizationType" name="organizationType">
+                        <option value="">Select type</option>
+                        <option value="elementary-school">Elementary School</option>
+                        <option value="middle-school">Middle School</option>
+                        <option value="k8-school">K-8 School</option>
+                        <option value="school-district">School District Office</option>
+                        <option value="charter-school">Charter School</option>
+                        <option value="private-school">Private School</option>
+                        <option value="education-service-center">Education Service Center</option>
+                        <option value="after-school-program">After School Program</option>
+                        <option value="community-center">Community Center</option>
+                        <option value="other">Other Educational Institution</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="eduPosition">Your Position/Title *</label>
+                <select id="eduPosition" name="position">
+                    <option value="">Select your position</option>
+                    <optgroup label="District Administration">
+                        <option value="superintendent">Superintendent</option>
+                        <option value="assistant-superintendent">Assistant Superintendent</option>
+                        <option value="district-director">District Program Director</option>
+                        <option value="curriculum-director">Curriculum Director</option>
+                        <option value="district-coordinator">District Coordinator</option>
+                    </optgroup>
+                    <optgroup label="School Administration">
+                        <option value="principal">Principal</option>
+                        <option value="assistant-principal">Assistant Principal</option>
+                        <option value="dean">Dean</option>
+                        <option value="program-director">Program Director</option>
+                    </optgroup>
+                    <optgroup label="Coordinators & Specialists">
+                        <option value="pe-coordinator">PE Coordinator</option>
+                        <option value="music-coordinator">Music Coordinator</option>
+                        <option value="arts-coordinator">Arts Coordinator</option>
+                        <option value="activities-coordinator">Activities Coordinator</option>
+                        <option value="after-school-coordinator">After School Coordinator</option>
+                        <option value="enrichment-coordinator">Enrichment Coordinator</option>
+                        <option value="education-specialist">Education Specialist</option>
+                    </optgroup>
+                    <optgroup label="Teachers">
+                        <option value="pe-teacher">PE Teacher</option>
+                        <option value="music-teacher">Music Teacher</option>
+                        <option value="art-teacher">Art Teacher</option>
+                        <option value="classroom-teacher">Classroom Teacher</option>
+                        <option value="department-head">Department Head</option>
+                    </optgroup>
+                    <optgroup label="Other Roles">
+                        <option value="counselor">School Counselor</option>
+                        <option value="board-member">School Board Member</option>
+                        <option value="office-staff">Office Staff</option>
+                        <option value="other">Other</option>
+                    </optgroup>
+                </select>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="studentCount">Approximate Student Population</label>
+                    <select id="studentCount" name="studentCount">
+                        <option value="">Select range</option>
+                        <option value="under-100">Under 100 students</option>
+                        <option value="100-300">100-300 students</option>
+                        <option value="300-500">300-500 students</option>
+                        <option value="500-800">500-800 students</option>
+                        <option value="800-1000">800-1,000 students</option>
+                        <option value="over-1000">Over 1,000 students</option>
+                        <option value="district-wide">District-wide (multiple schools)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="gradeLevel">Grade Levels Served</label>
+                    <select id="gradeLevel" name="gradeLevel">
+                        <option value="">Select grades</option>
+                        <option value="prek-k">Pre-K to Kindergarten</option>
+                        <option value="k-2">K-2nd Grade</option>
+                        <option value="3-5">3rd-5th Grade</option>
+                        <option value="k-5">K-5th Grade (Elementary)</option>
+                        <option value="k-6">K-6th Grade</option>
+                        <option value="k-8">K-8th Grade</option>
+                        <option value="6-8">6th-8th Grade (Middle)</option>
+                        <option value="multiple">Multiple Schools/Grades</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+    <label>Programs of Interest * <span class="label-hint">(Select all that apply)</span></label>
+    <div class="checkbox-controls">
+        <button type="button" class="checkbox-control-btn" onclick="selectAllPrograms('eduPrograms')">
+            <span class="control-icon">✓</span> Select All
+        </button>
+        <button type="button" class="checkbox-control-btn clear" onclick="clearAllPrograms('eduPrograms')">
+            <span class="control-icon">✕</span> Clear All
+        </button>
+    </div>
+    <div class="checkbox-grid two-columns" id="eduProgramsGrid">
+        <div class="checkbox-group-label">Music Programs</div>
+        <label class="checkbox-item">
+            <input type="checkbox" name="eduPrograms" value="choir">
+            <span class="checkbox-label">🎵 Choir Programs</span>
+        </label>
+        <label class="checkbox-item">
+            <input type="checkbox" name="eduPrograms" value="percussion">
+            <span class="checkbox-label">🥁 Percussion Programs</span>
+        </label>
+        <label class="checkbox-item">
+            <input type="checkbox" name="eduPrograms" value="guitar">
+            <span class="checkbox-label">🎸 Guitar Programs</span>
+        </label>
+        <label class="checkbox-item">
+            <input type="checkbox" name="eduPrograms" value="keyboard">
+            <span class="checkbox-label">🎹 Keyboard & Piano</span>
+        </label>
+        <label class="checkbox-item">
+            <input type="checkbox" name="eduPrograms" value="dj">
+            <span class="checkbox-label">🎧 DJ & Music Production</span>
+        </label>
+        
+        <div class="checkbox-group-label">Arts & Movement</div>
+        <label class="checkbox-item">
+            <input type="checkbox" name="eduPrograms" value="dance">
+            <span class="checkbox-label">💃 Dance Programs</span>
+        </label>
+        <label class="checkbox-item">
+            <input type="checkbox" name="eduPrograms" value="sports">
+            <span class="checkbox-label">⚽ Sports Programs</span>
+        </label>
+        
+        <div class="checkbox-group-label">Media & Technology</div>
+        <label class="checkbox-item">
+            <input type="checkbox" name="eduPrograms" value="podcasting">
+            <span class="checkbox-label">🎙️ Podcasting & Media</span>
+        </label>
+        
+        <div class="checkbox-group-label">Program Types</div>
+        <label class="checkbox-item">
+            <input type="checkbox" name="eduPrograms" value="after-school">
+            <span class="checkbox-label">📚 After School Programs</span>
+        </label>
+        <label class="checkbox-item">
+            <input type="checkbox" name="eduPrograms" value="winter-camps">
+            <span class="checkbox-label">❄️ Winter Camps</span>
+        </label>
+        <label class="checkbox-item">
+            <input type="checkbox" name="eduPrograms" value="summer-camps">
+            <span class="checkbox-label">☀️ Summer Camps</span>
+        </label>
+        <label class="checkbox-item">
+            <input type="checkbox" name="eduPrograms" value="concerts">
+            <span class="checkbox-label">🎤 Concert Programs</span>
+        </label>
+        <label class="checkbox-item">
+            <input type="checkbox" name="eduPrograms" value="assemblies">
+            <span class="checkbox-label">🏫 School Assemblies</span>
+        </label>
+        
+        <label class="checkbox-item consultation-option full-width">
+            <input type="checkbox" name="eduPrograms" value="consultation">
+            <span class="checkbox-label">💬 Program Consultation - Help me decide</span>
+        </label>
+    </div>
+    <p class="field-error" id="eduProgramsError" style="display: none;">Please select at least one program</p>
+</div>
+            
+            <div class="form-group">
+                <label for="implementationTimeline">Implementation Timeline</label>
+                <select id="implementationTimeline" name="timeline">
+                    <option value="">When are you looking to start?</option>
+                    <option value="immediately">As soon as possible</option>
+                    <option value="this-semester">This semester</option>
+                    <option value="next-semester">Next semester</option>
+                    <option value="next-school-year">Next school year</option>
+                    <option value="summer">Summer programs</option>
+                    <option value="exploring">Just exploring options</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="eduMessage">Additional Information</label>
+                <textarea id="eduMessage" name="message" rows="4" placeholder="Tell us about your school's goals, current programs, budget considerations, or any specific needs..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="howHeard">How did you hear about CSA?</label>
+                <select id="howHeard" name="howHeard">
+                    <option value="">Please select</option>
+                    <option value="colleague">Colleague/Another School</option>
+                    <option value="district">District Recommendation</option>
+                    <option value="conference">Conference/Event</option>
+                    <option value="google">Google Search</option>
+                    <option value="social-media">Social Media</option>
+                    <option value="parent-referral">Parent Referral</option>
+                    <option value="flyer">Flyer/Brochure</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-full">Request Information</button>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- PARENT/GUARDIAN FORM FIELDS -->
+        <!-- ============================================ -->
+        <div class="form-fields" id="parentFormFields" style="display: none;">
+            <div class="form-section-header">
+                <h4>Parent/Guardian Inquiry</h4>
+                <p>Help us connect you with your school</p>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="parentFirstName">Your First Name *</label>
+                    <input type="text" id="parentFirstName" name="firstName">
+                </div>
+                <div class="form-group">
+                    <label for="parentLastName">Your Last Name *</label>
+                    <input type="text" id="parentLastName" name="lastName">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="parentEmail">Email Address *</label>
+                    <input type="email" id="parentEmail" name="email">
+                </div>
+                <div class="form-group">
+                    <label for="parentPhone">Phone Number</label>
+                    <input type="tel" id="parentPhone" name="phone">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="childSchool">Your Child's School Name *</label>
+                <input type="text" id="childSchool" name="childSchool" placeholder="Enter your child's school name">
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="childGrade">Your Child's Grade Level</label>
+                    <select id="childGrade" name="childGrade">
+                        <option value="">Select grade</option>
+                        <option value="prek">Pre-K</option>
+                        <option value="kindergarten">Kindergarten</option>
+                        <option value="1st">1st Grade</option>
+                        <option value="2nd">2nd Grade</option>
+                        <option value="3rd">3rd Grade</option>
+                        <option value="4th">4th Grade</option>
+                        <option value="5th">5th Grade</option>
+                        <option value="6th">6th Grade</option>
+                        <option value="multiple">Multiple Children</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="schoolDistrict">School District</label>
+                    <select id="schoolDistrict" name="schoolDistrict">
+                        <option value="">Select district</option>
+                        <option value="fresno-unified">Fresno Unified</option>
+                        <option value="clovis-unified">Clovis Unified</option>
+                        <option value="central-unified">Central Unified</option>
+                        <option value="sanger-unified">Sanger Unified</option>
+                        <option value="selma-unified">Selma Unified</option>
+                        <option value="kings-canyon">Kings Canyon Unified</option>
+                        <option value="kerman-unified">Kerman Unified</option>
+                        <option value="other">Other District</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="parentRole">Your Involvement (Optional)</label>
+                <select id="parentRole" name="parentRole">
+                    <option value="">Select if applicable</option>
+                    <option value="parent-only">Parent/Guardian</option>
+                    <option value="pta-member">PTA/PTO Member</option>
+                    <option value="pta-leader">PTA/PTO Board Member/Officer</option>
+                    <option value="school-volunteer">School Volunteer</option>
+                    <option value="booster-club">Booster Club Member</option>
+                    <option value="site-council">School Site Council Member</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+    <label>Programs Your Child Would Enjoy <span class="label-hint">(Select all that apply)</span></label>
+    <div class="checkbox-controls">
+        <button type="button" class="checkbox-control-btn" onclick="selectAllPrograms('parentPrograms')">
+            <span class="control-icon">✓</span> Select All
+        </button>
+        <button type="button" class="checkbox-control-btn clear" onclick="clearAllPrograms('parentPrograms')">
+            <span class="control-icon">✕</span> Clear All
+        </button>
+    </div>
+    <div class="checkbox-grid two-columns" id="parentProgramsGrid">
+        <div class="checkbox-group-label">Music</div>
+        <label class="checkbox-item">
+            <input type="checkbox" name="parentPrograms" value="choir">
+            <span class="checkbox-label">🎵 Choir/Singing</span>
+        </label>
+        <label class="checkbox-item">
+            <input type="checkbox" name="parentPrograms" value="percussion">
+            <span class="checkbox-label">🥁 Drums/Percussion</span>
+        </label>
+        <label class="checkbox-item">
+            <input type="checkbox" name="parentPrograms" value="guitar">
+            <span class="checkbox-label">🎸 Guitar</span>
+        </label>
+        <label class="checkbox-item">
+            <input type="checkbox" name="parentPrograms" value="keyboard">
+            <span class="checkbox-label">🎹 Keyboard/Piano</span>
+        </label>
+        <label class="checkbox-item">
+            <input type="checkbox" name="parentPrograms" value="dj">
+            <span class="checkbox-label">🎧 DJ & Music Production</span>
+        </label>
+        
+        <div class="checkbox-group-label">Arts & Movement</div>
+        <label class="checkbox-item">
+            <input type="checkbox" name="parentPrograms" value="dance">
+            <span class="checkbox-label">💃 Dance</span>
+        </label>
+        <label class="checkbox-item">
+            <input type="checkbox" name="parentPrograms" value="sports">
+            <span class="checkbox-label">⚽ Sports</span>
+        </label>
+        
+        <div class="checkbox-group-label">Media</div>
+        <label class="checkbox-item">
+            <input type="checkbox" name="parentPrograms" value="podcasting">
+            <span class="checkbox-label">🎙️ Podcasting & Media</span>
+        </label>
+        
+        <div class="checkbox-group-label">Program Types</div>
+        <label class="checkbox-item">
+            <input type="checkbox" name="parentPrograms" value="after-school">
+            <span class="checkbox-label">📚 After School Programs</span>
+        </label>
+        <label class="checkbox-item">
+            <input type="checkbox" name="parentPrograms" value="summer-camps">
+            <span class="checkbox-label">☀️ Summer Camps</span>
+        </label>
+        <label class="checkbox-item">
+            <input type="checkbox" name="parentPrograms" value="winter-camps">
+            <span class="checkbox-label">❄️ Winter Camps</span>
+        </label>
+        
+        <label class="checkbox-item not-sure-option full-width">
+            <input type="checkbox" name="parentPrograms" value="not-sure" id="parentNotSure">
+            <span class="checkbox-label">🤔 Not sure yet - tell me more!</span>
+        </label>
+    </div>
+</div>
+            
+            <div class="form-group">
+                <label for="inquiryType">How Can We Help You? *</label>
+                <select id="inquiryType" name="inquiryType">
+                    <option value="">Select your inquiry type</option>
+                    <option value="check-availability">Check if CSA is available at my child's school</option>
+                    <option value="request-school">Request CSA programs at my child's school</option>
+                    <option value="enroll-child">Enroll my child in an existing program</option>
+                    <option value="program-info">Get more information about programs</option>
+                    <option value="summer-camps">Learn about summer camp options</option>
+                    <option value="speak-to-rep">Speak with a CSA representative</option>
+                    <option value="pta-partnership">Discuss PTA/School partnership</option>
+                    <option value="other">Other inquiry</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="parentMessage">Your Message</label>
+                <textarea id="parentMessage" name="message" rows="4" placeholder="Tell us more about what you're looking for, your child's interests, or any questions you have..."></textarea>
+            </div>
+            
+            <div class="parent-note">
+                <p><strong>💡 Note:</strong> CSA partners directly with schools and districts to provide programs. If CSA isn't currently at your child's school, we can help you connect with school administration to explore bringing our programs to your community!</p>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-full">Submit Inquiry</button>
+        </div>
+        
+        <!-- Placeholder message before selection -->
+        <div class="role-select-prompt" id="roleSelectPrompt">
+            <div class="prompt-content">
+                <div class="prompt-icon">👆</div>
+                <p>Please select your role above to continue</p>
+            </div>
+        </div>
+    </form>
+</div>
             </div>
         </div>
     </section>
@@ -1368,7 +1935,21 @@ import {
     signInWithEmailAndPassword, 
     signOut
 } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
+import { 
+    getFirestore, 
+    collection, 
+    addDoc,
+    doc,
+    updateDoc,
+    serverTimestamp 
+} from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
 
+import { 
+    getStorage, 
+    ref, 
+    uploadBytesResumable, 
+    getDownloadURL 
+} from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js';
 // Firebase Configuration
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -1387,6 +1968,9 @@ if (!firebaseConfig.apiKey || firebaseConfig.apiKey === 'undefined') {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app); // Add this line
+
 
 // Global state
 window.currentUser = null;
@@ -1438,6 +2022,190 @@ async function signOutUser() {
     window.currentUser = null; // Add this line
     showNotification('Signed out successfully');
 }
+// ==================== SIMPLIFIED CAREER FORM FUNCTIONS (No Email) ====================
+
+// Phone number formatting
+function formatPhoneNumber(input) {
+    const numbers = input.replace(/\D/g, '');
+    
+    if (numbers.length <= 3) {
+        return numbers;
+    } else if (numbers.length <= 6) {
+        return `(${numbers.slice(0, 3)}) ${numbers.slice(3)}`;
+    } else {
+        return `(${numbers.slice(0, 3)}) ${numbers.slice(3, 6)}-${numbers.slice(6, 10)}`;
+    }
+}
+
+// Validate file upload
+function validateResumeFile(file) {
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    const allowedTypes = [
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    ];
+    
+    if (!file) {
+        return { valid: false, error: 'Please upload a resume file' };
+    }
+    
+    if (!allowedTypes.includes(file.type)) {
+        return { valid: false, error: 'Only PDF, DOC, and DOCX files are allowed' };
+    }
+    
+    if (file.size > maxSize) {
+        return { valid: false, error: 'File size must be less than 5MB' };
+    }
+    
+    return { valid: true };
+}
+
+// Upload resume to Firebase Storage
+async function uploadResume(file, applicationId) {
+    return new Promise((resolve, reject) => {
+        const timestamp = Date.now();
+        const sanitizedFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+        const fileName = `resumes/${applicationId}/${timestamp}_${sanitizedFileName}`;
+        
+        const storageRef = ref(storage, fileName);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        
+        uploadTask.on('state_changed',
+            (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                updateUploadProgress(progress);
+            },
+            (error) => {
+                console.error('Upload error:', error);
+                reject(error);
+            },
+            async () => {
+                try {
+                    const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                    resolve({
+                        url: downloadURL,
+                        fileName: file.name,
+                        fileSize: file.size,
+                        fileType: file.type
+                    });
+                } catch (error) {
+                    reject(error);
+                }
+            }
+        );
+    });
+}
+
+// Update upload progress UI
+function updateUploadProgress(progress) {
+    const progressContainer = document.getElementById('uploadProgress');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    
+    if (progressContainer && progressFill && progressText) {
+        progressContainer.classList.remove('hidden');
+        progressFill.style.width = `${progress}%`;
+        progressText.textContent = `${Math.round(progress)}%`;
+    }
+}
+
+async function submitCareerForm(formData, resumeFile) {
+    try {
+        // Create application document with all data
+        const careerApplication = {
+            ...formData,
+            submittedAt: serverTimestamp(),
+            status: 'pending',
+            resumeUploaded: false  // Default to false
+        };
+        
+        // Add document to Firestore - docRef.id will be auto-generated
+        const docRef = await addDoc(collection(db, 'career_applications'), careerApplication);
+        console.log('Application created with ID:', docRef.id);
+        
+        // ✅ CRITICAL FIX: Only upload resume IF file exists
+        if (resumeFile) {
+            console.log('Resume file provided, uploading...');
+            
+            // Upload resume to Firebase Storage
+            const resumeData = await uploadResume(resumeFile, docRef.id);
+            
+            // Update document with resume info
+            await updateDoc(doc(db, 'career_applications', docRef.id), {
+                resumeUploaded: true,
+                resumeURL: resumeData.url,
+                resumeFileName: resumeData.fileName,
+                resumeFileSize: resumeData.fileSize,
+                resumeFileType: resumeData.fileType
+            });
+            
+            console.log('Resume uploaded successfully');
+        } else {
+            console.log('No resume file provided - skipping upload');
+        }
+        
+        // Return the document ID
+        return docRef.id;
+    } catch (error) {
+        console.error('Error submitting application:', error);
+        throw error;
+    }
+}
+
+// Updated validation
+function validateCareerForm() {
+    const requiredFields = [
+        'careerFirstName', 'careerLastName', 'careerEmail', 'careerPhone',
+        'positionInterest', 'availability', 'experience', 'education', 'coverLetter'
+    ];
+    
+    let isValid = true;
+    const errors = [];
+    
+    // Check all required fields
+    requiredFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field && !field.value.trim()) {
+            field.style.borderColor = '#f44336';
+            errors.push(`${field.previousElementSibling?.textContent.replace(' *', '') || fieldId} is required`);
+            isValid = false;
+        } else if (field) {
+            field.style.borderColor = '#e0e0e0';
+        }
+    });
+    
+    // Validate email format
+    const emailField = document.getElementById('careerEmail');
+    if (emailField?.value) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailField.value.trim())) {
+            emailField.style.borderColor = '#f44336';
+            errors.push('Please enter a valid email address');
+            isValid = false;
+        }
+    }
+    
+    // Validate phone format
+    const phoneField = document.getElementById('careerPhone');
+    if (phoneField?.value) {
+        const phoneRegex = /^\(\d{3}\)\s\d{3}-\d{4}$/;
+        if (!phoneRegex.test(phoneField.value.trim())) {
+            phoneField.style.borderColor = '#f44336';
+            errors.push('Please enter a valid phone number: (555) 123-4567');
+            isValid = false;
+        }
+    }
+    
+        // ✅ If no file selected, that's perfectly fine - don't add any error
+    
+    if (!isValid) {
+        showNotification(errors[0], 'error');
+    }
+    
+    return isValid;
+}
+
 // Logo loading fix
 document.addEventListener('DOMContentLoaded', () => {
     const heroLogoImg = document.querySelector('.hero-logo-image');
@@ -1460,7 +2228,9 @@ function showModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
         modal.classList.add('active');
+        document.body.classList.add('modal-open');
         document.body.style.overflow = 'hidden';
+        document.body.style.height = '100vh';
     }
 }
 
@@ -1468,7 +2238,9 @@ function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
         modal.classList.remove('active');
+        document.body.classList.remove('modal-open');
         document.body.style.overflow = '';
+        document.body.style.height = '';
         
         // Reset forms and styling
         modal.querySelectorAll('form').forEach(form => form.reset());
@@ -1476,6 +2248,60 @@ function closeModal(modalId) {
             input.style.borderColor = '#e0e0e0';
         });
     }
+}
+// ==================== SUCCESS MODAL FUNCTIONS ====================
+
+function showSuccessModal(applicationId) {
+    const successModal = document.getElementById('successModal');
+    const applicationIdDisplay = document.getElementById('applicationIdDisplay');
+    
+    if (!successModal) {
+        console.error('Success modal not found');
+        showNotification('Application submitted successfully! Your Application ID: ' + applicationId);
+        return;
+    }
+    
+    // Set the Application ID
+    if (applicationIdDisplay) {
+        applicationIdDisplay.textContent = applicationId;
+    }
+    
+    // Show the modal
+    successModal.classList.add('active');
+    
+    // Prevent body scroll
+    document.body.style.overflow = 'hidden';
+    
+    // Add animation class for entry
+    const modalContent = successModal.querySelector('.success-modal-content');
+    if (modalContent) {
+        modalContent.style.animation = 'successModalSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+    }
+}
+
+function closeSuccessModal() {
+    const successModal = document.getElementById('successModal');
+    
+    if (!successModal) return;
+    
+    // Add exit animation
+    const modalContent = successModal.querySelector('.success-modal-content');
+    if (modalContent) {
+        modalContent.style.animation = 'successModalSlideOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+    }
+    
+    // Remove modal after animation
+    setTimeout(() => {
+        successModal.classList.remove('active');
+        
+        // Restore body scroll
+        document.body.style.overflow = '';
+        
+        // Reset animation
+        if (modalContent) {
+            modalContent.style.animation = '';
+        }
+    }, 300);
 }
 
 // ==================== ERROR HANDLING ====================
@@ -1784,6 +2610,278 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
+    // ==================== CAREER FORM EVENT LISTENERS ====================
+    
+    // Career Modal Controls
+    const careersBtn = document.getElementById('careersBtn');
+    const careerModalClose = document.getElementById('careerModalClose');
+    const careerForm = document.getElementById('careerForm');
+    
+    // Open Career Modal
+    if (careersBtn) {
+        careersBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            showModal('careerModal');
+        });
+    }
+    
+    // Close Career Modal
+    if (careerModalClose) {
+        careerModalClose.addEventListener('click', () => {
+            closeModal('careerModal');
+        });
+    }
+    
+    // ========== PHONE NUMBER FORMATTING ==========
+    const phoneInput = document.getElementById('careerPhone');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', (e) => {
+            const formatted = formatPhoneNumber(e.target.value);
+            e.target.value = formatted;
+            
+            // Clear error styling when user types
+            if (e.target.style.borderColor === 'rgb(244, 67, 54)') {
+                e.target.style.borderColor = '#e0e0e0';
+            }
+        });
+    }
+    
+    // ========== FILE UPLOAD HANDLING (OPTIONAL) ==========
+    const fileInput = document.getElementById('resumeFile');
+    const fileNameDisplay = document.getElementById('fileName');
+    
+    if (fileInput && fileNameDisplay) {
+        // Handle file selection (click or programmatic)
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            
+            if (file) {
+                // Validate file
+                const validation = validateResumeFile(file);
+                
+                if (validation.valid) {
+                    // Show file name and size
+                    const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                    fileNameDisplay.textContent = `${file.name} (${sizeMB} MB)`;
+                    fileNameDisplay.style.color = '#4caf50';
+                    
+                    // Add success styling to label
+                    const fileUploadLabel = document.querySelector('.file-upload-label');
+                    if (fileUploadLabel) {
+                        fileUploadLabel.classList.add('success');
+                    }
+                    
+                    // Clear error styling
+                    fileInput.style.borderColor = '#e0e0e0';
+                } else {
+                    // Show error
+                    fileNameDisplay.textContent = validation.error;
+                    fileNameDisplay.style.color = '#f44336';
+                    fileInput.style.borderColor = '#f44336';
+                    showNotification(validation.error, 'error');
+                    
+                    // Clear the file input
+                    fileInput.value = '';
+                }
+            } else {
+                // No file selected
+                fileNameDisplay.textContent = 'No file selected';
+                fileNameDisplay.style.color = '#666';
+                
+                const fileUploadLabel = document.querySelector('.file-upload-label');
+                if (fileUploadLabel) {
+                    fileUploadLabel.classList.remove('success');
+                }
+            }
+        });
+        
+        // ========== DRAG AND DROP SUPPORT ==========
+        const fileUploadLabel = document.querySelector('.file-upload-label');
+        
+        if (fileUploadLabel) {
+            // Prevent default drag behaviors
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                fileUploadLabel.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }, false);
+            });
+            
+            // Highlight drop area when file is dragged over
+            ['dragenter', 'dragover'].forEach(eventName => {
+                fileUploadLabel.addEventListener(eventName, () => {
+                    fileUploadLabel.classList.add('drag-over');
+                }, false);
+            });
+            
+            // Remove highlight when drag leaves
+            ['dragleave', 'drop'].forEach(eventName => {
+                fileUploadLabel.addEventListener(eventName, () => {
+                    fileUploadLabel.classList.remove('drag-over');
+                }, false);
+            });
+            
+            // Handle dropped files
+            fileUploadLabel.addEventListener('drop', (e) => {
+                const droppedFiles = e.dataTransfer.files;
+                
+                if (droppedFiles.length > 0) {
+                    // Only take the first file
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(droppedFiles[0]);
+                    fileInput.files = dataTransfer.files;
+                    
+                    // Trigger change event to validate
+                    fileInput.dispatchEvent(new Event('change'));
+                }
+            }, false);
+        }
+    }
+    
+    // ========== REAL-TIME VALIDATION FOR OTHER FIELDS ==========
+    if (careerForm) {
+        const careerFormFields = careerForm.querySelectorAll('input:not([type="file"]), select, textarea');
+        
+        careerFormFields.forEach(field => {
+            // Validate on blur (when user leaves field)
+            field.addEventListener('blur', () => {
+                if (field.hasAttribute('required') && !field.value.trim()) {
+                    field.style.borderColor = '#f44336';
+                } else if (field.type === 'email' && field.value.trim()) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    field.style.borderColor = emailRegex.test(field.value.trim()) ? '#e0e0e0' : '#f44336';
+                } else {
+                    field.style.borderColor = '#e0e0e0';
+                }
+            });
+            
+            // Clear error styling when user starts typing
+            field.addEventListener('input', () => {
+                if (field.style.borderColor === 'rgb(244, 67, 54)') {
+                    field.style.borderColor = '#e0e0e0';
+                }
+            });
+        });
+    }
+    
+    // ========== CAREER FORM SUBMISSION (OPTIONAL RESUME) ==========
+    if (careerForm) {
+        careerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Validate form
+            if (!validateCareerForm()) {
+                return;
+            }
+            
+            // Get form data
+            const formData = new FormData(careerForm);
+            const data = Object.fromEntries(formData.entries());
+            
+            // ✅ Get resume file OR null (OPTIONAL - no error if missing)
+            const resumeFile = document.getElementById('resumeFile').files[0] || null;
+            
+            // Remove file from data object (handled separately)
+            delete data.resumeFile;
+            
+            // Show loading state
+            const submitBtn = careerForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            
+            // Different loading message based on file presence
+            submitBtn.textContent = resumeFile ? 'Uploading Resume...' : 'Submitting Application...';
+            submitBtn.disabled = true;
+            
+            // Disable form fields during submission
+            const formFields = careerForm.querySelectorAll('input, select, textarea, button');
+            formFields.forEach(field => field.disabled = true);
+            
+            try {
+                // Submit with optional file upload (can be null)
+                const applicationId = await submitCareerForm(data, resumeFile);
+                
+                // Close career modal
+                closeModal('careerModal');
+                
+                // Show success modal with Application ID
+                showSuccessModal(applicationId);
+                
+                // Reset form
+                careerForm.reset();
+                
+                // Reset file upload UI
+                const fileNameDisplay = document.getElementById('fileName');
+                const uploadProgress = document.getElementById('uploadProgress');
+                const fileUploadLabel = document.querySelector('.file-upload-label');
+                
+                if (fileNameDisplay) {
+                    fileNameDisplay.textContent = 'No file selected';
+                    fileNameDisplay.style.color = '#666';
+                }
+                
+                if (uploadProgress) {
+                    uploadProgress.classList.add('hidden');
+                    const progressFill = document.getElementById('progressFill');
+                    if (progressFill) {
+                        progressFill.style.width = '0%';
+                    }
+                }
+                
+                if (fileUploadLabel) {
+                    fileUploadLabel.classList.remove('success');
+                }
+                
+                // Clear all error styling
+                formFields.forEach(field => {
+                    field.style.borderColor = '#e0e0e0';
+                });
+                
+            } catch (error) {
+                console.error('Error submitting application:', error);
+                
+                // Show detailed error message
+                let errorMessage = 'Error submitting application. Please try again.';
+                
+                if (error.code === 'storage/unauthorized') {
+                    errorMessage = 'File upload permission denied. Please contact support.';
+                } else if (error.code === 'storage/canceled') {
+                    errorMessage = 'Upload was canceled. Please try again.';
+                } else if (error.code === 'storage/unknown') {
+                    errorMessage = 'Unknown error occurred. Please check your connection and try again.';
+                }
+                
+                showNotification(errorMessage, 'error');
+                
+            } finally {
+                // Reset button state
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                
+                // Re-enable form fields
+                formFields.forEach(field => field.disabled = false);
+            }
+        });
+    }
+    
+    // Success modal close button
+    const successModalCloseBtn = document.getElementById('successModalClose');
+    if (successModalCloseBtn) {
+        successModalCloseBtn.addEventListener('click', () => {
+            closeSuccessModal();
+        });
+    }
+    
+    // Close success modal when clicking outside
+    const successModal = document.getElementById('successModal');
+    if (successModal) {
+        successModal.addEventListener('click', (e) => {
+            if (e.target === successModal) {
+                closeSuccessModal();
+            }
+        });
+    }
+
+    
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
@@ -1797,7 +2895,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+async function submitContactInquiry(formData) {
+    try {
+        const contactData = {
+            ...formData,
+            submittedAt: serverTimestamp(),
+            status: 'new',
+            viewed: false
+        };
+        
+        const docRef = await addDoc(collection(db, 'contact_inquiries'), contactData);
+        console.log('Contact inquiry submitted with ID:', docRef.id);
+        
+        return docRef.id;
+    } catch (error) {
+        console.error('Error submitting contact inquiry:', error);
+        throw error;
+    }
+}
 
+window.submitContactInquiry = submitContactInquiry;
 // Manual trigger for testing
 window.manualStartCounters = function() {
     document.querySelectorAll('.stat-number[data-count]').forEach((element, index) => {
@@ -2079,59 +3196,165 @@ window.manualStartCounters = function() {
 </script>
 <!-- Contact Form Script (add this after the parallax script) -->
 <script>
-// Contact Form Functionality
+// Contact Form Functionality - DYNAMIC ROLE-BASED FORMS WITH CHECKBOX SUPPORT
 document.addEventListener('DOMContentLoaded', () => {
     const educatorRole = document.getElementById('educatorRole');
-    const formFields = document.getElementById('formFields');
-    const nonEducatorMessage = document.getElementById('nonEducatorMessage');
+    const educatorFormFields = document.getElementById('educatorFormFields');
+    const parentFormFields = document.getElementById('parentFormFields');
+    const roleSelectPrompt = document.getElementById('roleSelectPrompt');
     const contactForm = document.getElementById('contactForm');
 
-    // Educator role selection
+    // Role selection - Show appropriate form
     if (educatorRole) {
         educatorRole.addEventListener('change', (e) => {
             const value = e.target.value;
             
-            if (value === 'yes') {
-                if (formFields) formFields.classList.add('active');
-                if (nonEducatorMessage) nonEducatorMessage.classList.remove('active');
-            } else if (value === 'no') {
-                if (formFields) formFields.classList.remove('active');
-                if (nonEducatorMessage) nonEducatorMessage.classList.add('active');
+            // Hide all forms first
+            if (educatorFormFields) educatorFormFields.style.display = 'none';
+            if (parentFormFields) parentFormFields.style.display = 'none';
+            if (roleSelectPrompt) roleSelectPrompt.style.display = 'none';
+            
+            // Clear required attributes from hidden forms
+            clearFormRequirements();
+            
+            // Clear any previous checkbox selections
+            clearAllCheckboxes();
+            
+            if (value === 'education-professional') {
+                if (educatorFormFields) {
+                    educatorFormFields.style.display = 'block';
+                    educatorFormFields.classList.add('active');
+                    setEducatorFieldsRequired(true);
+                }
+            } else if (value === 'parent') {
+                if (parentFormFields) {
+                    parentFormFields.style.display = 'block';
+                    parentFormFields.classList.add('active');
+                    setParentFieldsRequired(true);
+                }
             } else {
-                if (formFields) formFields.classList.remove('active');
-                if (nonEducatorMessage) nonEducatorMessage.classList.remove('active');
+                // Show prompt if nothing selected
+                if (roleSelectPrompt) roleSelectPrompt.style.display = 'block';
+            }
+        });
+    }
+    
+    // Clear all checkbox selections
+    function clearAllCheckboxes() {
+        document.querySelectorAll('input[name="eduPrograms"]').forEach(cb => cb.checked = false);
+        document.querySelectorAll('input[name="parentPrograms"]').forEach(cb => cb.checked = false);
+        
+        // Hide any error messages
+        const eduError = document.getElementById('eduProgramsError');
+        if (eduError) eduError.style.display = 'none';
+    }
+    
+    // Clear all required attributes
+    function clearFormRequirements() {
+        // Educator fields
+        const eduFields = ['eduFirstName', 'eduLastName', 'eduEmail', 'organizationName', 'organizationType', 'eduPosition'];
+        eduFields.forEach(id => {
+            const field = document.getElementById(id);
+            if (field) field.removeAttribute('required');
+        });
+        
+        // Parent fields
+        const parentFields = ['parentFirstName', 'parentLastName', 'parentEmail', 'childSchool', 'inquiryType'];
+        parentFields.forEach(id => {
+            const field = document.getElementById(id);
+            if (field) field.removeAttribute('required');
+        });
+    }
+    
+    // Set educator fields as required
+    function setEducatorFieldsRequired(required) {
+        const fields = ['eduFirstName', 'eduLastName', 'eduEmail', 'organizationName', 'organizationType', 'eduPosition'];
+        fields.forEach(id => {
+            const field = document.getElementById(id);
+            if (field) {
+                if (required) {
+                    field.setAttribute('required', 'required');
+                } else {
+                    field.removeAttribute('required');
+                }
+            }
+        });
+        // Note: eduPrograms is now checkboxes, handled separately in validation
+    }
+    
+    // Set parent fields as required
+    function setParentFieldsRequired(required) {
+        const fields = ['parentFirstName', 'parentLastName', 'parentEmail', 'childSchool', 'inquiryType'];
+        fields.forEach(id => {
+            const field = document.getElementById(id);
+            if (field) {
+                if (required) {
+                    field.setAttribute('required', 'required');
+                } else {
+                    field.removeAttribute('required');
+                }
             }
         });
     }
 
     // Form validation
     function validateForm() {
-        const requiredFields = [
-            'firstName',
-            'lastName', 
-            'email',
-            'school',
-            'position'
-        ];
+        const role = educatorRole ? educatorRole.value : '';
         
-        let isValid = true;
-        const errors = [];
-        
-        // Check if educator role is selected
-        if (!educatorRole || educatorRole.value !== 'yes') {
-            showNotification('Please confirm you are an educator to access the form.', 'error');
+        if (!role) {
+            showNotification('Please select your role to continue.', 'error');
             return false;
         }
         
-        // Validate required fields
-        requiredFields.forEach(fieldName => {
-            const field = document.getElementById(fieldName);
+        let requiredFields = [];
+        let isValid = true;
+        const errors = [];
+        
+        if (role === 'education-professional') {
+            requiredFields = [
+                { id: 'eduFirstName', label: 'First Name' },
+                { id: 'eduLastName', label: 'Last Name' },
+                { id: 'eduEmail', label: 'Email Address' },
+                { id: 'organizationName', label: 'School/District Name' },
+                { id: 'organizationType', label: 'Organization Type' },
+                { id: 'eduPosition', label: 'Your Position' }
+            ];
+            
+            // Check if at least one program is selected (checkboxes)
+            const eduProgramsChecked = document.querySelectorAll('input[name="eduPrograms"]:checked');
+            const eduProgramsGrid = document.getElementById('eduProgramsGrid');
+            const eduProgramsError = document.getElementById('eduProgramsError');
+            
+            if (eduProgramsChecked.length === 0) {
+                if (eduProgramsError) eduProgramsError.style.display = 'block';
+                if (eduProgramsGrid) eduProgramsGrid.style.borderColor = '#f44336';
+                errors.push('Please select at least one program of interest');
+                isValid = false;
+            } else {
+                if (eduProgramsError) eduProgramsError.style.display = 'none';
+                if (eduProgramsGrid) eduProgramsGrid.style.borderColor = '#e0e0e0';
+            }
+            
+        } else if (role === 'parent') {
+            requiredFields = [
+                { id: 'parentFirstName', label: 'First Name' },
+                { id: 'parentLastName', label: 'Last Name' },
+                { id: 'parentEmail', label: 'Email Address' },
+                { id: 'childSchool', label: "Child's School Name" },
+                { id: 'inquiryType', label: 'How Can We Help You' }
+            ];
+            // Parent programs are optional, no validation needed
+        }
+        
+        // Validate required text/select fields
+        requiredFields.forEach(fieldInfo => {
+            const field = document.getElementById(fieldInfo.id);
             if (field) {
                 const value = field.value.trim();
                 
                 if (!value) {
                     field.style.borderColor = '#f44336';
-                    errors.push(`${field.previousElementSibling.textContent.replace(' *', '')} is required`);
+                    errors.push(`${fieldInfo.label} is required`);
                     isValid = false;
                 } else {
                     field.style.borderColor = '#e0e0e0';
@@ -2140,7 +3363,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         // Validate email format
-        const emailField = document.getElementById('email');
+        const emailFieldId = role === 'education-professional' ? 'eduEmail' : 'parentEmail';
+        const emailField = document.getElementById(emailFieldId);
         if (emailField) {
             const emailValue = emailField.value.trim();
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -2169,9 +3393,57 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            // Get form data
-            const formData = new FormData(contactForm);
-            const data = Object.fromEntries(formData.entries());
+            const role = educatorRole.value;
+            
+            // Collect form data based on role
+            let formData = {
+                role: role,
+                submittedAt: new Date().toISOString()
+            };
+            
+            if (role === 'education-professional') {
+                // Collect selected programs as array (checkboxes)
+                const selectedEduPrograms = Array.from(
+                    document.querySelectorAll('input[name="eduPrograms"]:checked')
+                ).map(cb => cb.value);
+                
+                formData = {
+                    ...formData,
+                    firstName: document.getElementById('eduFirstName')?.value || '',
+                    lastName: document.getElementById('eduLastName')?.value || '',
+                    email: document.getElementById('eduEmail')?.value || '',
+                    phone: document.getElementById('eduPhone')?.value || '',
+                    organization: document.getElementById('organizationName')?.value || '',
+                    organizationType: document.getElementById('organizationType')?.value || '',
+                    position: document.getElementById('eduPosition')?.value || '',
+                    studentCount: document.getElementById('studentCount')?.value || '',
+                    gradeLevel: document.getElementById('gradeLevel')?.value || '',
+                    programs: selectedEduPrograms, // Now an array
+                    timeline: document.getElementById('implementationTimeline')?.value || '',
+                    message: document.getElementById('eduMessage')?.value || '',
+                    howHeard: document.getElementById('howHeard')?.value || ''
+                };
+            } else if (role === 'parent') {
+                // Collect selected programs as array (checkboxes)
+                const selectedParentPrograms = Array.from(
+                    document.querySelectorAll('input[name="parentPrograms"]:checked')
+                ).map(cb => cb.value);
+                
+                formData = {
+                    ...formData,
+                    firstName: document.getElementById('parentFirstName')?.value || '',
+                    lastName: document.getElementById('parentLastName')?.value || '',
+                    email: document.getElementById('parentEmail')?.value || '',
+                    phone: document.getElementById('parentPhone')?.value || '',
+                    childSchool: document.getElementById('childSchool')?.value || '',
+                    childGrade: document.getElementById('childGrade')?.value || '',
+                    schoolDistrict: document.getElementById('schoolDistrict')?.value || '',
+                    parentRole: document.getElementById('parentRole')?.value || '',
+                    programs: selectedParentPrograms, // Now an array
+                    inquiryType: document.getElementById('inquiryType')?.value || '',
+                    message: document.getElementById('parentMessage')?.value || ''
+                };
+            }
             
             // Show loading state
             const submitBtn = contactForm.querySelector('button[type="submit"]');
@@ -2180,23 +3452,36 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.disabled = true;
             
             try {
-                // Simulate form submission (replace with actual API call)
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                // Submit to Firebase contact_inquiries collection
+                const inquiryId = await window.submitContactInquiry(formData);
                 
-                // Show success message
-                showNotification('Thank you! We\'ll contact you within 24 hours to discuss your school\'s needs.');
+                // Show success message based on role
+                if (role === 'education-professional') {
+                    showNotification('Thank you! A CSA representative will contact you within 24-48 hours. Ref: ' + inquiryId.slice(-6).toUpperCase());
+                } else {
+                    showNotification('Thank you for your inquiry! We\'ll be in touch soon. Ref: ' + inquiryId.slice(-6).toUpperCase());
+                }
                 
                 // Reset form
                 contactForm.reset();
-                if (formFields) formFields.classList.remove('active');
-                if (nonEducatorMessage) nonEducatorMessage.classList.remove('active');
+                clearAllCheckboxes();
+                if (educatorFormFields) educatorFormFields.style.display = 'none';
+                if (parentFormFields) parentFormFields.style.display = 'none';
+                if (roleSelectPrompt) roleSelectPrompt.style.display = 'block';
                 
                 // Clear any error styling
-                document.querySelectorAll('input, select, textarea').forEach(field => {
+                contactForm.querySelectorAll('input, select, textarea').forEach(field => {
                     field.style.borderColor = '#e0e0e0';
                 });
                 
+                // Reset checkbox grid borders
+                const eduGrid = document.getElementById('eduProgramsGrid');
+                const parentGrid = document.getElementById('parentProgramsGrid');
+                if (eduGrid) eduGrid.style.borderColor = '#e0e0e0';
+                if (parentGrid) parentGrid.style.borderColor = '#e0e0e0';
+                
             } catch (error) {
+                console.error('Form submission error:', error);
                 showNotification('There was an error sending your message. Please try again.', 'error');
             } finally {
                 // Reset button state
@@ -2207,7 +3492,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Real-time form field validation
-    document.querySelectorAll('input, select, textarea').forEach(field => {
+    contactForm?.querySelectorAll('input:not([type="checkbox"]), select, textarea').forEach(field => {
         field.addEventListener('blur', () => {
             if (field.hasAttribute('required') && !field.value.trim()) {
                 field.style.borderColor = '#f44336';
@@ -2225,11 +3510,47 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+    
+    // Clear error styling when checkbox is selected (for educator programs)
+    document.querySelectorAll('input[name="eduPrograms"]').forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const checkedCount = document.querySelectorAll('input[name="eduPrograms"]:checked').length;
+            const eduProgramsGrid = document.getElementById('eduProgramsGrid');
+            const eduProgramsError = document.getElementById('eduProgramsError');
+            
+            if (checkedCount > 0) {
+                if (eduProgramsError) eduProgramsError.style.display = 'none';
+                if (eduProgramsGrid) eduProgramsGrid.style.borderColor = '#e0e0e0';
+            }
+        });
+    });
 
-    // Set initial states
-    if (formFields) formFields.classList.remove('active');
-    if (nonEducatorMessage) nonEducatorMessage.classList.remove('active');
+    // Set initial state - show prompt
+    if (roleSelectPrompt) roleSelectPrompt.style.display = 'block';
+    if (educatorFormFields) educatorFormFields.style.display = 'none';
+    if (parentFormFields) parentFormFields.style.display = 'none';
 });
+
+// Select/Clear all helper functions for checkboxes
+function selectAllPrograms(name) {
+    document.querySelectorAll(`input[name="${name}"]`).forEach(cb => {
+        cb.checked = true;
+    });
+    
+    // Clear error if educator programs
+    if (name === 'eduPrograms') {
+        const eduProgramsGrid = document.getElementById('eduProgramsGrid');
+        const eduProgramsError = document.getElementById('eduProgramsError');
+        if (eduProgramsError) eduProgramsError.style.display = 'none';
+        if (eduProgramsGrid) eduProgramsGrid.style.borderColor = '#e0e0e0';
+    }
+}
+
+function clearAllPrograms(name) {
+    document.querySelectorAll(`input[name="${name}"]`).forEach(cb => {
+        cb.checked = false;
+    });
+}
 
 // Notification function (if not already defined)
 if (typeof showNotification === 'undefined') {
@@ -2248,6 +3569,7 @@ if (typeof showNotification === 'undefined') {
         }
     }
 }
+
 // Professional Active Section Tracking
 (function() {
     'use strict';
@@ -2362,20 +3684,20 @@ if (typeof showNotification === 'undefined') {
     'use strict';
     
     const CONFIG = {
-    videoFiles: [
-        './videos/herobackground.mp4',
-        './videos/video2.mp4',
-        './videos/video3.mp4',
-        './videos/video4.mp4',
-        './videos/video5.mp4',
-        './videos/video6.mp4',
-        './videos/video7.mp4'
-    ],
-    videoDuration: 8000,
-    fadeTransitionTime: 1200,
-    autoPlay: true,
-    preloadNext: true
-};
+        videoFiles: [
+            './videos/herobackground.mp4',
+            './videos/video2.mp4',
+            './videos/video3.mp4',
+            './videos/video4.mp4',
+            './videos/video5.mp4',
+            './videos/video6.mp4',
+            './videos/video7.mp4'
+        ],
+        videoDuration: 8000,
+        fadeTransitionTime: 1200,
+        autoPlay: true,
+        preloadNext: true
+    };
     
     let currentVideoIndex = 0;
     let videos = [];
@@ -2389,7 +3711,7 @@ if (typeof showNotification === 'undefined') {
     let switchQueue = [];
     let isProcessingSwitch = false;
     let isMobileDevice = false;
-    let videoLoadStates = new Map(); // Track video loading states
+    let videoLoadStates = new Map();
     
     function isMobile() {
         isMobileDevice = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -2404,7 +3726,15 @@ if (typeof showNotification === 'undefined') {
         
         if (!videoContainer) return;
         
-        isMobile(); // Set mobile detection
+        isMobile();
+        
+        // CRITICAL: Ensure container doesn't interfere with videos
+        videoContainer.style.position = 'absolute';
+        videoContainer.style.top = '0';
+        videoContainer.style.left = '0';
+        videoContainer.style.width = '100%';
+        videoContainer.style.height = '100%';
+        videoContainer.style.overflow = 'hidden';
         
         testVideoFiles().then(() => {
             if (validVideos.length === 0) {
@@ -2435,8 +3765,6 @@ if (typeof showNotification === 'undefined') {
             if (isValid) {
                 validVideos.push(videoFile);
                 console.log(`✓ Video loaded: ${videoFile}`);
-            } else {
-                console.log(`✗ Video failed: ${videoFile}`);
             }
         }
         
@@ -2449,9 +3777,7 @@ if (typeof showNotification === 'undefined') {
             video.preload = 'metadata';
             video.muted = true;
             
-            const timeout = setTimeout(() => {
-                resolve(false);
-            }, 3000);
+            const timeout = setTimeout(() => resolve(false), 3000);
             
             video.onloadedmetadata = () => {
                 clearTimeout(timeout);
@@ -2490,32 +3816,23 @@ if (typeof showNotification === 'undefined') {
     }
     
     function applyVideoStyles(video, isActive = false) {
-        // MOBILE-SPECIFIC POSITIONING FIX
-        if (isMobileDevice) {
-            video.style.position = 'fixed';
-            video.style.top = '0';
-            video.style.left = '0';
-            video.style.width = '100vw';
-            video.style.height = '100vh';
-            video.style.transform = 'none';
-            video.style.zIndex = isActive ? '1' : '-1';
-        } else {
-            video.style.position = 'absolute';
-            video.style.top = '50%';
-            video.style.left = '50%';
-            video.style.transform = 'translate3d(-50%, -50%, 0)';
-            video.style.width = '100%';
-            video.style.height = '100%';
-            video.style.zIndex = '1';
-        }
-        
-        video.style.objectFit = 'cover';
-        video.style.opacity = isActive ? '1' : '0';
-        video.style.transition = 'opacity 1.2s ease-in-out';
-        video.style.willChange = 'opacity';
-        video.style.backfaceVisibility = 'hidden';
-        video.style.webkitBackfaceVisibility = 'hidden';
-    }
+    // FIXED: Proper centering for full screen coverage
+    video.style.position = 'absolute';
+    video.style.top = '50%';
+    video.style.left = '50%';
+    video.style.transform = 'translate(-50%, -50%)';
+    video.style.minWidth = '100%';
+    video.style.minHeight = '100%';
+    video.style.width = 'auto';
+    video.style.height = 'auto';
+    video.style.objectFit = 'cover';
+    video.style.opacity = isActive ? '1' : '0';
+    video.style.transition = 'opacity 1.2s ease-in-out';
+    video.style.zIndex = isActive ? '2' : '1';
+    video.style.willChange = 'opacity';
+    video.style.backfaceVisibility = 'hidden';
+    video.style.webkitBackfaceVisibility = 'hidden';
+}
     
     function createVideoElements() {
         videos = [];
@@ -2529,7 +3846,6 @@ if (typeof showNotification === 'undefined') {
             video.preload = 'auto';
             video.loop = false;
             
-            // MOBILE OPTIMIZATION: Set playback attributes
             if (isMobileDevice) {
                 video.setAttribute('webkit-playsinline', 'true');
                 video.setAttribute('playsinline', 'true');
@@ -2553,22 +3869,19 @@ if (typeof showNotification === 'undefined') {
             videoContainer.appendChild(video);
             videos.push(video);
             
-            // Track video load state
             videoLoadStates.set(index, {
                 loaded: false,
                 playing: false,
                 error: false
             });
             
-            // ENHANCED VIDEO EVENT HANDLERS WITH MOBILE FIXES
+            // Enhanced event handlers
             video.addEventListener('loadedmetadata', () => {
                 console.log(`Video ${index} metadata loaded`);
                 videoLoadStates.get(index).loaded = true;
-                applyVideoStyles(video, video.classList.contains('active'));
             });
             
             video.addEventListener('canplay', () => {
-                console.log(`Video ${index} can play`);
                 if (video.classList.contains('active') && !videoLoadStates.get(index).playing) {
                     video.play().catch(handleVideoError);
                 }
@@ -2582,34 +3895,51 @@ if (typeof showNotification === 'undefined') {
                 videoLoadStates.get(index).playing = false;
             });
             
-            // CRITICAL FIX: Proper ended event handling
-            video.addEventListener('ended', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log(`Video ${index} ended`);
+            // CRITICAL FIX: Better ended event handling
+            video.addEventListener('ended', () => {
+                console.log(`Video ${index} ended, current: ${currentVideoIndex}`);
                 
-                if (video.classList.contains('active')) {
-                    // MOBILE FIX: Reset video properly before replay
-                    video.currentTime = 0;
-                    
-                    // Add small delay to prevent mobile issues
-                    setTimeout(() => {
-                        if (video.classList.contains('active')) {
-                            video.play().catch(handleVideoError);
+                // Only handle if this is the active video
+                if (index === currentVideoIndex && video.classList.contains('active')) {
+                    // Use requestAnimationFrame for smooth handling
+                    requestAnimationFrame(() => {
+                        try {
+                            // Reset the video
+                            video.currentTime = 0;
+                            video.load();
+                            
+                            // Wait a bit before replaying
+                            setTimeout(() => {
+                                if (video.classList.contains('active') && index === currentVideoIndex) {
+                                    const playPromise = video.play();
+                                    if (playPromise !== undefined) {
+                                        playPromise.catch(err => {
+                                            console.warn(`Replay failed for video ${index}:`, err);
+                                            // If replay fails, advance to next
+                                            if (validVideos.length > 1 && !isProcessingSwitch) {
+                                                queueVideoSwitch(getNextIndex());
+                                            }
+                                        });
+                                    }
+                                }
+                            }, 150);
+                        } catch (err) {
+                            console.error(`Error handling video end:`, err);
+                            // Fallback: advance to next video
+                            if (validVideos.length > 1 && !isProcessingSwitch) {
+                                queueVideoSwitch(getNextIndex());
+                            }
                         }
-                    }, 100);
+                    });
                 }
             });
             
-            // MOBILE-SPECIFIC ERROR HANDLING
             video.addEventListener('error', (e) => {
                 console.error(`Video ${index} error:`, e);
                 videoLoadStates.get(index).error = true;
-                handleVideoError(e);
             });
             
             video.addEventListener('stalled', () => {
-                console.warn(`Video ${index} stalled`);
                 if (video.classList.contains('active')) {
                     setTimeout(() => {
                         if (video.readyState < 2) {
@@ -2620,18 +3950,9 @@ if (typeof showNotification === 'undefined') {
                 }
             });
             
-            // MOBILE FIX: Handle video seeking issues
-            video.addEventListener('seeked', () => {
-                if (video.classList.contains('active') && video.paused) {
-                    video.play().catch(handleVideoError);
-                }
-            });
-            
-            // Load video immediately
             video.load();
         });
         
-        // Start first video with enhanced error handling
         if (videos[0]) {
             startFirstVideo();
         }
@@ -2645,27 +3966,21 @@ if (typeof showNotification === 'undefined') {
         if (playPromise !== undefined) {
             playPromise.catch((error) => {
                 console.warn('First video autoplay failed:', error);
-                // Mobile autoplay fallback
                 const playOnInteraction = () => {
                     firstVideo.play().catch(handleVideoError);
                     document.removeEventListener('click', playOnInteraction);
                     document.removeEventListener('touchstart', playOnInteraction);
-                    document.removeEventListener('keydown', playOnInteraction);
                 };
                 document.addEventListener('click', playOnInteraction);
                 document.addEventListener('touchstart', playOnInteraction);
-                document.addEventListener('keydown', playOnInteraction);
             });
         }
     }
     
     function handleVideoError(error) {
         console.error('Video error:', error);
-        // Don't crash - just log and continue
         if (CONFIG.autoPlay && !isPaused) {
-            setTimeout(() => {
-                scheduleNextTransition();
-            }, 2000);
+            setTimeout(scheduleNextTransition, 2000);
         }
     }
     
@@ -2680,36 +3995,17 @@ if (typeof showNotification === 'undefined') {
             indicator.className = 'video-indicator';
             if (index === 0) indicator.classList.add('active');
             
-            // MOBILE-OPTIMIZED CLICK HANDLER
             indicator.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 queueVideoSwitch(index);
             });
             
-            // MOBILE-OPTIMIZED TOUCH HANDLER
             indicator.addEventListener('touchend', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 queueVideoSwitch(index);
             }, { passive: false });
-            
-            // Desktop hover effects
-            if (!isMobileDevice) {
-                indicator.addEventListener('mouseenter', () => {
-                    if (index !== currentVideoIndex && !isProcessingSwitch) {
-                        indicator.style.transform = 'scale(1.1)';
-                        indicator.style.opacity = '0.8';
-                    }
-                });
-                
-                indicator.addEventListener('mouseleave', () => {
-                    indicator.style.transform = 'scale(1)';
-                    if (index !== currentVideoIndex) {
-                        indicator.style.opacity = '0.6';
-                    }
-                });
-            }
             
             videoControls.appendChild(indicator);
             indicators.push(indicator);
@@ -2717,7 +4013,6 @@ if (typeof showNotification === 'undefined') {
     }
     
     function setupEventListeners() {
-        // Keyboard controls with mobile check
         document.addEventListener('keydown', (e) => {
             if (e.target.tagName.toLowerCase() === 'input' || isMobileDevice) return;
             
@@ -2745,32 +4040,13 @@ if (typeof showNotification === 'undefined') {
             }
         });
         
-        // Handle resize and orientation changes
         window.addEventListener('resize', () => {
-            const wasMobile = isMobileDevice;
-            isMobile(); // Refresh mobile detection
-            
-            if (wasMobile !== isMobileDevice) {
-                // Device type changed - reapply styles
-                videos.forEach((video, index) => {
-                    applyVideoStyles(video, index === currentVideoIndex);
-                });
-            }
+            isMobile();
         });
         
-        window.addEventListener('orientationchange', () => {
-            setTimeout(() => {
-                videos.forEach((video, index) => {
-                    applyVideoStyles(video, index === currentVideoIndex);
-                });
-            }, 100);
-        });
-        
-        // Process switch queue continuously
-        setInterval(processSwitchQueue, 16); // 60fps processing
+        setInterval(processSwitchQueue, 16);
     }
     
-    // CRITICAL FIX: Safe index calculation with bounds checking
     function getNextIndex() {
         const nextIndex = currentVideoIndex + 1;
         return nextIndex >= validVideos.length ? 0 : nextIndex;
@@ -2784,7 +4060,6 @@ if (typeof showNotification === 'undefined') {
     function startVideoCycle() {
         if (!CONFIG.autoPlay || validVideos.length <= 1) return;
         
-        // Preload next video
         if (CONFIG.preloadNext && videos[1]) {
             videos[1].load();
             videos[1].currentTime = 0;
@@ -2799,39 +4074,31 @@ if (typeof showNotification === 'undefined') {
         clearTimeout(autoPlayTimer);
         autoPlayTimer = setTimeout(() => {
             if (!isPaused) {
-                queueVideoSwitch(getNextIndex()); // Use safe index calculation
+                queueVideoSwitch(getNextIndex());
             }
         }, CONFIG.videoDuration);
     }
     
-    // QUEUE SYSTEM - Prevents all glitches by processing switches one at a time
     function queueVideoSwitch(newIndex) {
-        // CRITICAL FIX: Validate index bounds
         if (newIndex === currentVideoIndex || newIndex >= validVideos.length || newIndex < 0) {
-            console.warn(`Invalid video index: ${newIndex}, current: ${currentVideoIndex}, max: ${validVideos.length - 1}`);
             return;
         }
         
-        // Always use the latest request (cancel previous queued switches)
         switchQueue = [newIndex];
     }
     
     function processSwitchQueue() {
         if (switchQueue.length === 0 || isProcessingSwitch) return;
         
-        const targetIndex = switchQueue.pop(); // Get latest request
-        switchQueue = []; // Clear queue
+        const targetIndex = switchQueue.pop();
+        switchQueue = [];
         
         executeVideoSwitch(targetIndex);
     }
     
-    // MOBILE-OPTIMIZED VIDEO SWITCH
     function executeVideoSwitch(newIndex) {
         if (newIndex === currentVideoIndex || isProcessingSwitch) return;
-        if (newIndex >= validVideos.length || newIndex < 0) {
-            console.error(`Video switch failed: invalid index ${newIndex}`);
-            return;
-        }
+        if (newIndex >= validVideos.length || newIndex < 0) return;
         
         isProcessingSwitch = true;
         console.log(`Switching from video ${currentVideoIndex} to video ${newIndex}`);
@@ -2840,40 +4107,32 @@ if (typeof showNotification === 'undefined') {
         const nextVideo = videos[newIndex];
         
         if (!currentVideo || !nextVideo) {
-            console.error('Video elements not found for switch');
             isProcessingSwitch = false;
             return;
         }
         
-        // Clear auto-play timer
         clearTimeout(autoPlayTimer);
-        
-        // Update indicators immediately for responsiveness
         updateIndicators(newIndex);
         
-        // Ensure perfect positioning
-        applyVideoStyles(nextVideo, false); // Start hidden
-        applyVideoStyles(currentVideo, true); // Keep current visible
+        // Ensure styling
+        applyVideoStyles(nextVideo, false);
+        applyVideoStyles(currentVideo, true);
         
-        // MOBILE FIX: Ensure video is properly reset
         nextVideo.currentTime = 0;
         
-        // Start next video playing in background
         const playPromise = nextVideo.play();
         
         if (playPromise !== undefined) {
             playPromise.then(() => {
-                // Begin smooth fade transition
                 nextVideo.classList.add('active');
                 nextVideo.style.opacity = '1';
+                nextVideo.style.zIndex = '2';
                 currentVideo.style.opacity = '0';
+                currentVideo.style.zIndex = '1';
                 
-                // Complete transition after fade
                 setTimeout(() => {
-                    // Clean up previous video - MOBILE SAFE
                     currentVideo.classList.remove('active');
                     
-                    // MOBILE FIX: Pause and reset safely
                     try {
                         currentVideo.pause();
                         currentVideo.currentTime = 0;
@@ -2881,26 +4140,20 @@ if (typeof showNotification === 'undefined') {
                         console.warn('Error resetting previous video:', e);
                     }
                     
-                    // Ensure positioning is maintained
                     applyVideoStyles(currentVideo, false);
                     applyVideoStyles(nextVideo, true);
                     
-                    // Update state
                     currentVideoIndex = newIndex;
                     isProcessingSwitch = false;
                     
-                    console.log(`Video switch complete. New index: ${currentVideoIndex}`);
-                    
-                    // Preload next video
                     if (CONFIG.preloadNext) {
-                        const nextIndex = getNextIndex(); // Use safe calculation
+                        const nextIndex = getNextIndex();
                         if (videos[nextIndex] && videos[nextIndex].readyState < 2) {
                             videos[nextIndex].load();
                             videos[nextIndex].currentTime = 0;
                         }
                     }
                     
-                    // Schedule next auto-transition
                     if (CONFIG.autoPlay && !isPaused) {
                         scheduleNextTransition();
                     }
@@ -2909,12 +4162,10 @@ if (typeof showNotification === 'undefined') {
                 
             }).catch((error) => {
                 console.error('Video play error during switch:', error);
-                // MOBILE RECOVERY: Reset on error
                 isProcessingSwitch = false;
                 nextVideo.classList.remove('active');
                 currentVideo.style.opacity = '1';
                 
-                // Try to recover by restarting current video
                 try {
                     currentVideo.currentTime = 0;
                     currentVideo.play().catch(() => {});
@@ -2926,10 +4177,6 @@ if (typeof showNotification === 'undefined') {
                     scheduleNextTransition();
                 }
             });
-        } else {
-            // Fallback if play() doesn't return a promise
-            console.warn('Play promise not supported, using fallback');
-            isProcessingSwitch = false;
         }
     }
     
@@ -2938,11 +4185,9 @@ if (typeof showNotification === 'undefined') {
             if (index === activeIndex) {
                 indicator.classList.add('active');
                 indicator.style.opacity = '1';
-                indicator.style.transform = 'scale(1)';
             } else {
                 indicator.classList.remove('active');
                 indicator.style.opacity = '0.6';
-                indicator.style.transform = 'scale(1)';
             }
         });
     }
@@ -2968,14 +4213,12 @@ if (typeof showNotification === 'undefined') {
         }
     }
     
-    // MOBILE EMERGENCY RECOVERY
     function forceReset() {
         console.log('Force resetting video system');
         isProcessingSwitch = false;
         switchQueue = [];
         clearTimeout(autoPlayTimer);
         
-        // Ensure currentVideoIndex is within bounds
         if (currentVideoIndex >= validVideos.length) {
             currentVideoIndex = 0;
         }
@@ -3017,7 +4260,6 @@ if (typeof showNotification === 'undefined') {
         }, 100);
     }
     
-    // Public API
     window.VideoCycling = {
         next: () => queueVideoSwitch(getNextIndex()),
         previous: () => queueVideoSwitch(getPreviousIndex()),
@@ -3410,6 +4652,13 @@ if (typeof showNotification === 'undefined') {
     init();
     
 })();
+</script>
+<!-- EmailJS SDK -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script type="text/javascript">
+    (function(){
+        emailjs.init("YOUR_PUBLIC_KEY_HERE"); // ⚠️ Replace after setting up EmailJS
+    })();
 </script>
 <script type="module" src="/script.js"></script>
 </body>
