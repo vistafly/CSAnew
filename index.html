@@ -56,6 +56,22 @@
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
+    <body>
+<script>
+// iOS Viewport Height Fix - Must run immediately
+(function() {
+    function setVH() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', vh + 'px');
+    }
+    setVH();
+    window.addEventListener('resize', setVH);
+    window.addEventListener('orientationchange', function() {
+        setTimeout(setVH, 100);
+    });
+})();
+</script>
+   <!-- Loading Screen -->
    <!-- Loading Screen -->
 <div class="loader" id="loader">
     <div class="loader-hero-logo" id="loaderHeroLogo">
@@ -2519,40 +2535,64 @@ function updatePhotoCount() {
 
 // ==================== NAVIGATION & UI ====================
 
-// Header scroll effect
+// Header scroll effect - iOS Compatible
 let lastScrollY = window.scrollY;
+let ticking = false;
 
-// Function to check if device is mobile
 function isMobile() {
-    return window.innerWidth <= 768; // Adjust breakpoint as needed
+    return window.innerWidth <= 768;
 }
 
-window.addEventListener('scroll', () => {
+function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+function updateHeader() {
     const currentScrollY = window.scrollY;
     const header = document.getElementById('header');
     
     if (!header) return;
     
-    // Always apply scrolled class for styling (works on all devices)
+    // Apply scrolled class
     if (currentScrollY > 50) {
         header.classList.add('scrolled');
     } else {
         header.classList.remove('scrolled');
     }
     
-    // Only apply hide/show transform on mobile devices
+    // Mobile header hide/show - iOS compatible
     if (isMobile()) {
         if (currentScrollY > lastScrollY && currentScrollY > 100) {
-            header.style.transform = 'translateY(-100%)';
+            // Use class instead of inline style for iOS
+            header.classList.add('header-hidden');
         } else {
-            header.style.transform = 'translateY(0)';
+            header.classList.remove('header-hidden');
         }
     } else {
-        // Ensure header is always visible on desktop
-        header.style.transform = 'translateY(0)';
+        header.classList.remove('header-hidden');
     }
     
     lastScrollY = currentScrollY;
+    ticking = false;
+}
+
+window.addEventListener('scroll', () => {
+    if (!ticking) {
+        // Use requestAnimationFrame for smoother scrolling on iOS
+        requestAnimationFrame(updateHeader);
+        ticking = true;
+    }
+}, { passive: true });
+
+// Handle orientation change on iOS
+window.addEventListener('orientationchange', () => {
+    setTimeout(() => {
+        const header = document.getElementById('header');
+        if (header) {
+            header.classList.remove('header-hidden');
+        }
+    }, 100);
 });
 
 // Reset header position on window resize to handle orientation changes
@@ -3160,106 +3200,120 @@ function resetHeroElementStyles() {
         }
     });
 }
-    // ===== APPLY PARALLAX EFFECTS =====
-    function applyParallaxEffects(scrollY) {
+    // ===== APPLY PARALLAX EFFECTS - iOS COMPATIBLE =====
+function applyParallaxEffects(scrollY) {
     const windowHeight = window.innerHeight;
     
     if (state.isNavigatingHome) return;
     
-    // Only reset to relative when at the very top
+    // MOBILE FIX: Skip parallax transforms on mobile/iOS
+    if (state.isMobile) {
+        // Only handle opacity changes on mobile, no transforms
+        if (scrollY <= 2) {
+            resetHeroElementStyles();
+        } else if (scrollY > 10) {
+            const startTrigger = windowHeight * 0.1;
+            const endTrigger = windowHeight * 1.2;
+            const progress = Math.max(0, Math.min(1, (scrollY - startTrigger) / (endTrigger - startTrigger)));
+            
+            // Mobile: Only fade elements, no transforms
+            if (elements.heroLogo) {
+                elements.heroLogo.style.opacity = 1 - progress;
+            }
+            if (elements.heroActions) {
+                elements.heroActions.style.opacity = 1 - progress;
+            }
+            if (elements.heroTextContainer) {
+                elements.heroTextContainer.style.opacity = Math.max(0, 1 - (progress * 0.8));
+            }
+            if (elements.scrollIndicator) {
+                elements.scrollIndicator.style.opacity = Math.max(0, 1 - (progress * 1.5));
+            }
+        }
+        return; // Skip desktop parallax logic on mobile
+    }
+    
+    // DESKTOP PARALLAX (unchanged)
     if (scrollY <= 2 && state.stickyApplied) {
         elements.hero.style.position = 'relative';
         elements.hero.style.top = '';
         state.stickyApplied = false;
-        
-        // CRITICAL FIX: Reset all hero element styles when at top
         resetHeroElementStyles();
         return;
     }
     
-    // Also reset styles if we're at the very top even if sticky wasn't applied
     if (scrollY <= 2) {
         resetHeroElementStyles();
     }
+    
+    if (scrollY > 2 && !state.stickyApplied) {
+        elements.hero.style.position = 'sticky';
+        elements.hero.style.top = '0';
+        elements.hero.style.zIndex = '1';
+        state.stickyApplied = true;
+    }
+    
+    if (state.stickyApplied && scrollY > 10) {
+        const startTrigger = windowHeight * CONFIG.parallax.startTrigger;
+        const endTrigger = windowHeight * CONFIG.parallax.endTrigger;
+        const progress = Math.max(0, Math.min(1, (scrollY - startTrigger) / (endTrigger - startTrigger)));
+        const easedProgress = easeOutCubic(progress);
         
-        // Only reset to relative when at the very top
-        if (scrollY <= 2 && state.stickyApplied) {
-            elements.hero.style.position = 'relative';
-            elements.hero.style.top = '';
-            state.stickyApplied = false;
-            return;
-        }
-        
-        // Apply sticky positioning when scrolling
-        if (scrollY > 2 && !state.stickyApplied) {
-            elements.hero.style.position = 'sticky';
-            elements.hero.style.top = '0';
-            elements.hero.style.zIndex = '1';
-            state.stickyApplied = true;
-        }
-        
-        // Apply parallax effects
-        if (state.stickyApplied && scrollY > 10) {
-            const startTrigger = windowHeight * CONFIG.parallax.startTrigger;
-            const endTrigger = windowHeight * CONFIG.parallax.endTrigger;
-            const progress = Math.max(0, Math.min(1, (scrollY - startTrigger) / (endTrigger - startTrigger)));
-            const easedProgress = easeOutCubic(progress);
+        if (progress > 0) {
+            if (elements.heroContent) {
+                const scale = 1 - (easedProgress * 0.02);
+                elements.heroContent.style.transform = `scale(${scale})`;
+                elements.heroContent.style.transition = 'none';
+            }
             
-            if (progress > 0) {
-                if (elements.heroContent) {
-                    const scale = 1 - (easedProgress * 0.02);
-                    elements.heroContent.style.transform = `scale(${scale})`;
-                    elements.heroContent.style.transition = 'none';
-                }
-                
-                if (elements.videoContainer) {
-                    const scale = 1 + (easedProgress * 0.03);
-                    const opacity = 1 - (easedProgress * 0.3);
-                    elements.videoContainer.style.transform = `scale(${scale})`;
-                    elements.videoContainer.style.opacity = opacity;
-                    elements.videoContainer.style.transition = 'none';
-                }
-                
-                if (elements.heroLogo) {
-                    const opacity = 1 - easedProgress;
-                    const scale = 1 - (easedProgress * 0.03);
-                    elements.heroLogo.style.opacity = opacity;
-                    elements.heroLogo.style.transform = `scale(${scale})`;
-                    elements.heroLogo.style.transition = 'none';
-                }
-                
-                if (elements.heroActions) {
-                    const opacity = 1 - easedProgress;
-                    const scale = 1 - (easedProgress * 0.02);
-                    elements.heroActions.style.opacity = opacity;
-                    elements.heroActions.style.transform = `scale(${scale})`;
-                    elements.heroActions.style.transition = 'none';
-                }
-                
-                if (elements.heroTextContainer) {
-                    const scale = 1 - (easedProgress * 0.02);
-                    const opacity = 1 - (easedProgress * 0.8);
-                    elements.heroTextContainer.style.transform = `scale(${scale})`;
-                    elements.heroTextContainer.style.opacity = Math.max(0, opacity);
-                    elements.heroTextContainer.style.transition = 'none';
-                }
-                
-                if (elements.scrollIndicator) {
-                    const opacity = 1 - (easedProgress * 1.5);
-                    const scale = 1 - (easedProgress * 0.05);
-                    elements.scrollIndicator.style.opacity = Math.max(0, opacity);
-                    elements.scrollIndicator.style.transform = `translateX(-50%) scale(${scale})`;
-                    elements.scrollIndicator.style.transition = 'none';
-                }
-                
-                if (elements.heroOverlay) {
-                    const overlayOpacity = 0.5 + (easedProgress * 0.3);
-                    elements.heroOverlay.style.backgroundColor = `rgba(0, 0, 0, ${overlayOpacity})`;
-                    elements.heroOverlay.style.transition = 'none';
-                }
+            if (elements.videoContainer) {
+                const scale = 1 + (easedProgress * 0.03);
+                const opacity = 1 - (easedProgress * 0.3);
+                elements.videoContainer.style.transform = `scale(${scale})`;
+                elements.videoContainer.style.opacity = opacity;
+                elements.videoContainer.style.transition = 'none';
+            }
+            
+            if (elements.heroLogo) {
+                const opacity = 1 - easedProgress;
+                const scale = 1 - (easedProgress * 0.03);
+                elements.heroLogo.style.opacity = opacity;
+                elements.heroLogo.style.transform = `scale(${scale})`;
+                elements.heroLogo.style.transition = 'none';
+            }
+            
+            if (elements.heroActions) {
+                const opacity = 1 - easedProgress;
+                const scale = 1 - (easedProgress * 0.02);
+                elements.heroActions.style.opacity = opacity;
+                elements.heroActions.style.transform = `scale(${scale})`;
+                elements.heroActions.style.transition = 'none';
+            }
+            
+            if (elements.heroTextContainer) {
+                const scale = 1 - (easedProgress * 0.02);
+                const opacity = 1 - (easedProgress * 0.8);
+                elements.heroTextContainer.style.transform = `scale(${scale})`;
+                elements.heroTextContainer.style.opacity = Math.max(0, opacity);
+                elements.heroTextContainer.style.transition = 'none';
+            }
+            
+            if (elements.scrollIndicator) {
+                const opacity = 1 - (easedProgress * 1.5);
+                const scale = 1 - (easedProgress * 0.05);
+                elements.scrollIndicator.style.opacity = Math.max(0, opacity);
+                elements.scrollIndicator.style.transform = `translateX(-50%) scale(${scale})`;
+                elements.scrollIndicator.style.transition = 'none';
+            }
+            
+            if (elements.heroOverlay) {
+                const overlayOpacity = 0.5 + (easedProgress * 0.3);
+                elements.heroOverlay.style.backgroundColor = `rgba(0, 0, 0, ${overlayOpacity})`;
+                elements.heroOverlay.style.transition = 'none';
             }
         }
     }
+}
     
     // ===== MOBILE: CONTINUOUS RAF LOOP =====
     // This ensures smooth updates even during scroll inertia on mobile
@@ -3979,9 +4033,10 @@ if (typeof showNotification === 'undefined') {
 })();
 </script>
 <script>
-// MOBILE VIDEO CYCLING FIX - Replace the video cycling script in your index.html
-
-// MOBILE-OPTIMIZED VIDEO CONTROLLER - Fixes Last Video Crash
+/**
+ * BULLETPROOF VIDEO CONTROLLER - iOS Compatible
+ * Handles rapid user input, prevents race conditions, memory efficient
+ */
 (function() {
     'use strict';
     
@@ -3995,31 +4050,53 @@ if (typeof showNotification === 'undefined') {
             './videos/video6.mp4',
             './videos/video7.mp4'
         ],
-        videoDuration: 8000,        // Time to show each video (ms)
-        fadeTransitionTime: 1200,   // Crossfade duration (ms)
-        autoPlay: true,
-        preloadAhead: 2             // Preload this many videos ahead
+        videoDuration: { desktop: 8000, mobile: 6000 },
+        transitionDuration: { desktop: 800, mobile: 300 },
+        userInputDebounce: 250,
+        maxTransitionTime: 2000,
+        preloadNext: true
     };
     
-    // State
-    let currentVideoIndex = 0;
-    let videos = [];
+    const state = {
+        currentIndex: 0,
+        isTransitioning: false,
+        isPaused: false,
+        isMobile: false,
+        isInitialized: false,
+        pendingIndex: null,
+        lastUserInput: 0,
+        autoPlayTimer: null,
+        transitionTimer: null,
+        safetyTimer: null,
+        debounceTimer: null
+    };
+    
     let videoContainer = null;
     let videoControls = null;
+    let videos = [];
     let indicators = [];
-    let autoPlayTimer = null;
-    let isPaused = false;
-    let isTransitioning = false;
-    let isMobileDevice = false;
     
-    // Detect mobile
-    function detectMobile() {
-        isMobileDevice = window.innerWidth <= 768 || 
-            /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        return isMobileDevice;
+    function isMobileDevice() {
+        return window.innerWidth <= 768 || 
+            /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+            ('ontouchstart' in window);
     }
     
-    // Initialize
+    function isIOS() {
+        return /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+            (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    }
+    
+    function getConfig(key) {
+        const value = CONFIG[key];
+        if (typeof value === 'object' && value.desktop !== undefined) {
+            return state.isMobile ? value.mobile : value.desktop;
+        }
+        return value;
+    }
+    
+    function now() { return performance.now(); }
+    
     function init() {
         videoContainer = document.getElementById('videoContainer');
         videoControls = document.getElementById('videoControls');
@@ -4029,129 +4106,82 @@ if (typeof showNotification === 'undefined') {
             return;
         }
         
-        detectMobile();
-        console.log(`🎬 Video Controller: ${isMobileDevice ? 'Mobile' : 'Desktop'} mode`);
+        state.isMobile = isMobileDevice();
+        console.log('Video Controller:', state.isMobile ? 'Mobile' : 'Desktop');
         
-        // Clear container and create videos immediately
         videoContainer.innerHTML = '';
-        createAllVideos();
+        createVideos();
         createIndicators();
-        setupEventListeners();
-        
-        // Start first video immediately
-        playVideo(0);
-        
-        // Start auto-cycle
-        if (CONFIG.autoPlay) {
-            scheduleNextVideo();
-        }
+        setupEvents();
+        activateVideo(0, true);
+        scheduleNextVideo();
+        state.isInitialized = true;
     }
     
-    // Create all video elements upfront for instant switching
-    function createAllVideos() {
+    function createVideos() {
         CONFIG.videoFiles.forEach((src, index) => {
             const video = document.createElement('video');
-            
-            // Core attributes
             video.className = 'hero-video';
             video.muted = true;
             video.playsInline = true;
-            video.loop = false;  // We handle looping manually
-            video.preload = index < 3 ? 'auto' : 'metadata'; // Preload first 3 fully
+            video.setAttribute('playsinline', 'true');
+            video.setAttribute('webkit-playsinline', 'true');
+            video.loop = false;
+            video.controls = false;
+            video.preload = index === 0 ? 'auto' : 'none';
             
-            // Mobile-specific attributes
-            if (isMobileDevice) {
-                video.setAttribute('webkit-playsinline', 'true');
-                video.setAttribute('playsinline', 'true');
-                video.controls = false;
-                video.disablePictureInPicture = true;
+            if (isIOS()) {
+                video.setAttribute('x-webkit-airplay', 'deny');
+                video.setAttribute('disableRemotePlayback', 'true');
             }
             
-            // Styling
-            applyVideoStyles(video, index === 0);
+            const transition = getConfig('transitionDuration');
+            Object.assign(video.style, {
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                minWidth: '100%',
+                minHeight: '100%',
+                width: 'auto',
+                height: 'auto',
+                transform: 'translate(-50%, -50%) translateZ(0)',
+                WebkitTransform: 'translate(-50%, -50%) translateZ(0)',
+                objectFit: 'cover',
+                opacity: '0',
+                zIndex: '1',
+                transition: `opacity ${transition}ms ease`,
+                WebkitTransition: `opacity ${transition}ms ease`,
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden'
+            });
             
-            // Add source
             const source = document.createElement('source');
             source.src = src;
             source.type = 'video/mp4';
             video.appendChild(source);
             
-            // Event handlers
-            setupVideoEvents(video, index);
+            video.addEventListener('ended', () => {
+                if (index === state.currentIndex && !state.isTransitioning && !state.isPaused) {
+                    requestVideoChange(getNextIndex());
+                }
+            });
             
-            // Add to DOM
+            video.addEventListener('error', () => {
+                if (index === state.currentIndex) {
+                    setTimeout(() => forceVideoChange(getNextIndex()), 500);
+                }
+            });
+            
             videoContainer.appendChild(video);
             videos.push(video);
-            
-            // Start loading
-            video.load();
         });
         
-        // Mark first video as active
         if (videos[0]) {
             videos[0].classList.add('active');
+            videos[0].style.opacity = '1';
+            videos[0].style.zIndex = '2';
+            videos[0].load();
         }
-        
-        console.log(`✅ Created ${videos.length} video elements`);
-    }
-    
-    function applyVideoStyles(video, isActive) {
-        video.style.position = 'absolute';
-        video.style.top = '50%';
-        video.style.left = '50%';
-        video.style.transform = 'translate(-50%, -50%)';
-        video.style.minWidth = '100%';
-        video.style.minHeight = '100%';
-        video.style.width = 'auto';
-        video.style.height = 'auto';
-        video.style.objectFit = 'cover';
-        video.style.opacity = isActive ? '1' : '0';
-        video.style.transition = `opacity ${CONFIG.fadeTransitionTime}ms ease-in-out`;
-        video.style.zIndex = isActive ? '2' : '1';
-        video.style.willChange = 'opacity';
-        video.style.backfaceVisibility = 'hidden';
-    }
-    
-    function setupVideoEvents(video, index) {
-        // When video can play
-        video.addEventListener('canplay', () => {
-            console.log(`Video ${index} ready to play`);
-        });
-        
-        // When video ends - SIMPLIFIED for mobile compatibility
-        video.addEventListener('ended', () => {
-            console.log(`Video ${index} ended`);
-            
-            // Only handle if this is the current active video
-            if (index === currentVideoIndex) {
-                // Simply move to next video
-                const nextIndex = getNextIndex();
-                switchToVideo(nextIndex);
-            }
-        });
-        
-        // Error handling
-        video.addEventListener('error', (e) => {
-            console.warn(`Video ${index} error:`, e);
-            // On error, try next video
-            if (index === currentVideoIndex) {
-                const nextIndex = getNextIndex();
-                switchToVideo(nextIndex);
-            }
-        });
-        
-        // Stall recovery
-        video.addEventListener('stalled', () => {
-            console.log(`Video ${index} stalled, attempting recovery`);
-            if (index === currentVideoIndex) {
-                setTimeout(() => {
-                    if (video.readyState < 2) {
-                        video.load();
-                        video.play().catch(() => {});
-                    }
-                }, 500);
-            }
-        });
     }
     
     function createIndicators() {
@@ -4165,127 +4195,138 @@ if (typeof showNotification === 'undefined') {
             indicator.className = 'video-indicator';
             if (index === 0) indicator.classList.add('active');
             
-            // Click/touch handler
-            const handleSelect = (e) => {
+            indicator.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                if (!isTransitioning && index !== currentVideoIndex) {
-                    switchToVideo(index);
-                }
-            };
+                requestVideoChange(index);
+            });
             
-            indicator.addEventListener('click', handleSelect);
-            indicator.addEventListener('touchend', handleSelect, { passive: false });
+            indicator.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                requestVideoChange(index);
+            }, { passive: false });
             
             videoControls.appendChild(indicator);
             indicators.push(indicator);
         });
     }
     
-    function setupEventListeners() {
-        // Keyboard controls (desktop only)
-        if (!isMobileDevice) {
-            document.addEventListener('keydown', (e) => {
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-                
-                switch(e.key) {
-                    case 'ArrowRight':
-                        e.preventDefault();
-                        switchToVideo(getNextIndex());
-                        break;
-                    case 'ArrowLeft':
-                        e.preventDefault();
-                        switchToVideo(getPreviousIndex());
-                        break;
-                    case ' ':
-                        e.preventDefault();
-                        toggleAutoPlay();
-                        break;
-                }
-            });
-        }
+    function setupEvents() {
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (e.key === 'ArrowRight') { e.preventDefault(); requestVideoChange(getNextIndex()); }
+            if (e.key === 'ArrowLeft') { e.preventDefault(); requestVideoChange(getPrevIndex()); }
+            if (e.key === ' ') { e.preventDefault(); togglePause(); }
+        });
         
-        // Visibility change
         document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                pauseAutoPlay();
-            } else if (CONFIG.autoPlay && !isPaused) {
-                resumeAutoPlay();
-            }
+            if (document.hidden) pausePlayback();
+            else resumePlayback();
         });
         
-        // Resize handler
+        let resizeTimer;
         window.addEventListener('resize', () => {
-            detectMobile();
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                state.isMobile = isMobileDevice();
+            }, 250);
         });
     }
     
-    // Play a specific video
-    function playVideo(index) {
-        const video = videos[index];
-        if (!video) return;
+    // CORE: Debounced request handler - prevents rapid-fire breaking
+    function requestVideoChange(targetIndex) {
+        if (targetIndex < 0 || targetIndex >= videos.length) targetIndex = 0;
+        if (targetIndex === state.currentIndex && !state.isTransitioning) return;
         
-        video.currentTime = 0;
+        const currentTime = now();
+        state.pendingIndex = targetIndex;
         
-        const playPromise = video.play();
-        if (playPromise !== undefined) {
-            playPromise.catch((error) => {
-                console.warn(`Video ${index} autoplay blocked:`, error);
-                // Set up click-to-play fallback
-                const playOnInteraction = () => {
-                    video.play().catch(() => {});
-                    document.removeEventListener('click', playOnInteraction);
-                    document.removeEventListener('touchstart', playOnInteraction);
-                };
-                document.addEventListener('click', playOnInteraction, { once: true });
-                document.addEventListener('touchstart', playOnInteraction, { once: true });
-            });
-        }
-    }
-    
-    // Switch to a specific video - CORE FUNCTION
-    function switchToVideo(newIndex) {
-        // Validate index
-        if (newIndex < 0 || newIndex >= videos.length) {
-            newIndex = 0; // Wrap to first video
-        }
+        if (state.debounceTimer) clearTimeout(state.debounceTimer);
         
-        // Don't switch to same video or during transition
-        if (newIndex === currentVideoIndex || isTransitioning) {
+        if (state.isTransitioning) {
+            console.log('Queued:', targetIndex);
             return;
         }
         
-        console.log(`🔄 Switching: video ${currentVideoIndex} → video ${newIndex}`);
+        const timeSinceLastInput = currentTime - state.lastUserInput;
+        if (timeSinceLastInput < CONFIG.userInputDebounce) {
+            state.debounceTimer = setTimeout(() => {
+                processVideoChange(state.pendingIndex);
+            }, CONFIG.userInputDebounce - timeSinceLastInput);
+            return;
+        }
         
-        isTransitioning = true;
-        clearTimeout(autoPlayTimer);
+        state.lastUserInput = currentTime;
+        processVideoChange(targetIndex);
+    }
+    
+    function processVideoChange(targetIndex) {
+        if (targetIndex === state.currentIndex) {
+            checkPendingRequests();
+            return;
+        }
         
-        const currentVideo = videos[currentVideoIndex];
-        const nextVideo = videos[newIndex];
+        if (state.isTransitioning) {
+            state.pendingIndex = targetIndex;
+            return;
+        }
         
-        // Prepare next video
+        console.log('Switching:', state.currentIndex, '→', targetIndex);
+        
+        state.isTransitioning = true;
+        state.pendingIndex = null;
+        clearTimeout(state.autoPlayTimer);
+        
+        const currentVideo = videos[state.currentIndex];
+        const nextVideo = videos[targetIndex];
+        
+        if (!currentVideo || !nextVideo) {
+            state.isTransitioning = false;
+            return;
+        }
+        
+        clearTimeout(state.safetyTimer);
+        state.safetyTimer = setTimeout(() => {
+            console.warn('Safety timer: forcing complete');
+            completeTransition(currentVideo, nextVideo, targetIndex);
+        }, CONFIG.maxTransitionTime);
+        
+        // Prepare and play next video
+        if (nextVideo.preload === 'none' || nextVideo.readyState < 2) {
+            nextVideo.preload = 'auto';
+            nextVideo.load();
+        }
         nextVideo.currentTime = 0;
         
-        // Start playing next video BEFORE fade
-        const playPromise = nextVideo.play();
+        const doTransition = () => {
+            const playPromise = nextVideo.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => executeCrossfade(currentVideo, nextVideo, targetIndex))
+                           .catch(() => executeCrossfade(currentVideo, nextVideo, targetIndex));
+            } else {
+                executeCrossfade(currentVideo, nextVideo, targetIndex);
+            }
+        };
         
-        if (playPromise !== undefined) {
-            playPromise.then(() => {
-                // Play started successfully - do the crossfade
-                performCrossfade(currentVideo, nextVideo, newIndex);
-            }).catch((error) => {
-                console.warn('Play failed during switch:', error);
-                // Still try to do the visual switch
-                performCrossfade(currentVideo, nextVideo, newIndex);
-            });
+        if (nextVideo.readyState >= 2) {
+            doTransition();
         } else {
-            // Old browser - just do the switch
-            performCrossfade(currentVideo, nextVideo, newIndex);
+            const onReady = () => {
+                nextVideo.removeEventListener('canplay', onReady);
+                doTransition();
+            };
+            nextVideo.addEventListener('canplay', onReady);
+            setTimeout(() => {
+                nextVideo.removeEventListener('canplay', onReady);
+                if (state.isTransitioning) doTransition();
+            }, 1000);
         }
     }
     
-    function performCrossfade(currentVideo, nextVideo, newIndex) {
-        // Visual transition
+    function executeCrossfade(currentVideo, nextVideo, targetIndex) {
+        const transitionTime = getConfig('transitionDuration');
+        
         nextVideo.classList.add('active');
         nextVideo.style.opacity = '1';
         nextVideo.style.zIndex = '2';
@@ -4293,272 +4334,178 @@ if (typeof showNotification === 'undefined') {
         currentVideo.style.opacity = '0';
         currentVideo.style.zIndex = '1';
         
-        // Update indicators
-        updateIndicators(newIndex);
+        updateIndicators(targetIndex);
         
-        // Cleanup after transition completes
-        setTimeout(() => {
-            currentVideo.classList.remove('active');
-            currentVideo.pause();
-            currentVideo.currentTime = 0;
-            
-            // Update state
-            const previousIndex = currentVideoIndex;
-            currentVideoIndex = newIndex;
-            isTransitioning = false;
-            
-            console.log(`✅ Now playing video ${currentVideoIndex}`);
-            
-            // Preload upcoming videos
-            preloadUpcoming();
-            
-            // Schedule next auto-transition
-            if (CONFIG.autoPlay && !isPaused) {
-                scheduleNextVideo();
+        clearTimeout(state.transitionTimer);
+        state.transitionTimer = setTimeout(() => {
+            completeTransition(currentVideo, nextVideo, targetIndex);
+        }, transitionTime + 50);
+    }
+    
+    function completeTransition(currentVideo, nextVideo, targetIndex) {
+        clearTimeout(state.safetyTimer);
+        clearTimeout(state.transitionTimer);
+        
+        currentVideo.classList.remove('active');
+        currentVideo.pause();
+        currentVideo.currentTime = 0;
+        
+        if (state.isMobile) {
+            videos.forEach((video, index) => {
+                const isNeeded = index === targetIndex || index === getNextIndex() || index === getPrevIndex();
+                if (!isNeeded && video.preload !== 'none') {
+                    video.preload = 'none';
+                }
+            });
+        }
+        
+        state.currentIndex = targetIndex;
+        state.isTransitioning = false;
+        
+        // Preload next
+        const nextIdx = getNextIndex();
+        if (videos[nextIdx] && videos[nextIdx].preload === 'none') {
+            videos[nextIdx].preload = 'auto';
+            videos[nextIdx].load();
+        }
+        
+        checkPendingRequests();
+        
+        if (!state.isPaused) scheduleNextVideo();
+    }
+    
+    function checkPendingRequests() {
+        if (state.pendingIndex !== null && state.pendingIndex !== state.currentIndex) {
+            const pending = state.pendingIndex;
+            state.pendingIndex = null;
+            setTimeout(() => {
+                if (!state.isTransitioning) processVideoChange(pending);
+            }, 50);
+        }
+    }
+    
+    function forceVideoChange(targetIndex) {
+        clearTimeout(state.autoPlayTimer);
+        clearTimeout(state.transitionTimer);
+        clearTimeout(state.safetyTimer);
+        clearTimeout(state.debounceTimer);
+        
+        state.isTransitioning = false;
+        state.pendingIndex = null;
+        
+        videos.forEach((video, index) => {
+            if (index === targetIndex) {
+                video.classList.add('active');
+                video.style.opacity = '1';
+                video.style.zIndex = '2';
+                video.currentTime = 0;
+                video.play().catch(() => {});
+            } else {
+                video.classList.remove('active');
+                video.style.opacity = '0';
+                video.style.zIndex = '1';
+                video.pause();
             }
-        }, CONFIG.fadeTransitionTime);
+        });
+        
+        state.currentIndex = targetIndex;
+        updateIndicators(targetIndex);
+        if (!state.isPaused) scheduleNextVideo();
+    }
+    
+    function activateVideo(index, isInitial = false) {
+        const video = videos[index];
+        if (!video) return;
+        
+        video.classList.add('active');
+        video.style.opacity = '1';
+        video.style.zIndex = '2';
+        
+        if (isInitial) video.load();
+        
+        video.play().catch(() => {
+            const playOnInteraction = () => {
+                video.play().catch(() => {});
+                document.removeEventListener('click', playOnInteraction);
+                document.removeEventListener('touchstart', playOnInteraction);
+            };
+            document.addEventListener('click', playOnInteraction, { once: true });
+            document.addEventListener('touchstart', playOnInteraction, { once: true });
+        });
+        
+        state.currentIndex = index;
+        updateIndicators(index);
     }
     
     function updateIndicators(activeIndex) {
         indicators.forEach((indicator, index) => {
-            if (index === activeIndex) {
-                indicator.classList.add('active');
-                indicator.style.opacity = '1';
-            } else {
-                indicator.classList.remove('active');
-                indicator.style.opacity = '0.6';
-            }
+            indicator.classList.toggle('active', index === activeIndex);
         });
-    }
-    
-    function preloadUpcoming() {
-        // Preload next few videos
-        for (let i = 1; i <= CONFIG.preloadAhead; i++) {
-            const preloadIndex = (currentVideoIndex + i) % videos.length;
-            const video = videos[preloadIndex];
-            
-            if (video && video.preload !== 'auto') {
-                video.preload = 'auto';
-                video.load();
-            }
-        }
-    }
-    
-    function getNextIndex() {
-        return (currentVideoIndex + 1) % videos.length;
-    }
-    
-    function getPreviousIndex() {
-        return (currentVideoIndex - 1 + videos.length) % videos.length;
     }
     
     function scheduleNextVideo() {
-        clearTimeout(autoPlayTimer);
+        clearTimeout(state.autoPlayTimer);
+        if (state.isPaused) return;
         
-        autoPlayTimer = setTimeout(() => {
-            if (!isPaused && !isTransitioning) {
-                switchToVideo(getNextIndex());
+        state.autoPlayTimer = setTimeout(() => {
+            if (!state.isPaused && !state.isTransitioning) {
+                requestVideoChange(getNextIndex());
             }
-        }, CONFIG.videoDuration);
+        }, getConfig('videoDuration'));
     }
     
-    function pauseAutoPlay() {
-        isPaused = true;
-        clearTimeout(autoPlayTimer);
+    function pausePlayback() {
+        state.isPaused = true;
+        clearTimeout(state.autoPlayTimer);
+        if (videos[state.currentIndex]) videos[state.currentIndex].pause();
     }
     
-    function resumeAutoPlay() {
-        isPaused = false;
-        if (CONFIG.autoPlay) {
-            scheduleNextVideo();
-        }
+    function resumePlayback() {
+        state.isPaused = false;
+        if (videos[state.currentIndex]) videos[state.currentIndex].play().catch(() => {});
+        scheduleNextVideo();
     }
     
-    function toggleAutoPlay() {
-        if (isPaused) {
-            resumeAutoPlay();
-        } else {
-            pauseAutoPlay();
-        }
+    function togglePause() {
+        if (state.isPaused) resumePlayback();
+        else pausePlayback();
     }
     
-    // Public API
+    function getNextIndex() { return (state.currentIndex + 1) % videos.length; }
+    function getPrevIndex() { return (state.currentIndex - 1 + videos.length) % videos.length; }
+    
     window.VideoController = {
-        next: () => switchToVideo(getNextIndex()),
-        previous: () => switchToVideo(getPreviousIndex()),
-        goTo: (index) => switchToVideo(index),
-        pause: pauseAutoPlay,
-        resume: resumeAutoPlay,
-        toggle: toggleAutoPlay,
-        getCurrentIndex: () => currentVideoIndex,
+        next: () => requestVideoChange(getNextIndex()),
+        previous: () => requestVideoChange(getPrevIndex()),
+        goTo: (index) => requestVideoChange(index),
+        pause: pausePlayback,
+        resume: resumePlayback,
+        toggle: togglePause,
+        forceGoTo: forceVideoChange,
+        getCurrentIndex: () => state.currentIndex,
         getVideoCount: () => videos.length,
-        isPlaying: () => !isPaused,
+        isPlaying: () => !state.isPaused,
+        isTransitioning: () => state.isTransitioning,
+        recover: () => forceVideoChange(state.currentIndex),
         debug: () => {
-            console.log('=== Video Controller Debug ===');
-            console.log('Current index:', currentVideoIndex);
-            console.log('Is transitioning:', isTransitioning);
-            console.log('Is paused:', isPaused);
-            console.log('Is mobile:', isMobileDevice);
-            console.log('Videos loaded:', videos.length);
-            videos.forEach((v, i) => {
-                console.log(`  Video ${i}: readyState=${v.readyState}, paused=${v.paused}, currentTime=${v.currentTime.toFixed(1)}`);
-            });
+            console.log('Current:', state.currentIndex, 'Transitioning:', state.isTransitioning, 'Pending:', state.pendingIndex);
         }
     };
     
-    // Initialize when DOM is ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        // Small delay to ensure container exists
-        setTimeout(init, 50);
+    function startInit() {
+        if (document.getElementById('videoContainer')) init();
+        else setTimeout(startInit, 100);
     }
     
-    // Backup initialization
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', startInit);
+    } else {
+        startInit();
+    }
+    
     window.addEventListener('load', () => {
-        if (videos.length === 0) {
-            console.log('Backup video init triggered');
-            init();
-        }
+        if (!state.isInitialized) startInit();
     });
-    
-})();
-// Mobile Video Position Fix - Add this after your video cycling script
-(function() {
-    'use strict';
-    
-    function isMobile() {
-        return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    }
-    
-    function fixMobileVideoPosition() {
-        const videos = document.querySelectorAll('.hero-video');
-        const hero = document.querySelector('.hero');
-        
-        if (isMobile()) {
-            // Fix video positioning on mobile
-            videos.forEach(video => {
-                video.style.position = 'fixed';
-                video.style.top = '0';
-                video.style.left = '0';
-                video.style.transform = 'none';
-                video.style.width = '100vw';
-                video.style.height = '100vh';
-                video.style.zIndex = '-1';
-                video.style.objectFit = 'cover';
-            });
-            
-            // Ensure hero doesn't interfere
-            if (hero) {
-                hero.style.position = 'relative';
-                hero.style.zIndex = '1';
-            }
-            
-            // Force repaint to fix disappearing elements
-            const contact = document.querySelector('.contact');
-            const footer = document.querySelector('.footer');
-            
-            if (contact) {
-                contact.style.transform = 'translateZ(0)';
-                contact.style.isolation = 'isolate';
-            }
-            
-            if (footer) {
-                footer.style.transform = 'translateZ(0)';
-                footer.style.isolation = 'isolate';
-            }
-            
-        } else {
-            // Desktop behavior - allow controlled bleed through
-            videos.forEach(video => {
-                video.style.position = 'absolute';
-                video.style.top = '50%';
-                video.style.left = '50%';
-                video.style.transform = 'translate(-50%, -50%)';
-                video.style.width = 'auto';
-                video.style.height = 'auto';
-                video.style.minWidth = '100%';
-                video.style.minHeight = '100%';
-                video.style.zIndex = '1';
-            });
-            
-            if (hero) {
-                hero.style.position = 'sticky';
-                hero.style.zIndex = '1';
-            }
-        }
-    }
-    
-    // Fix video positioning when videos are created
-    function observeVideoChanges() {
-        const videoContainer = document.getElementById('videoContainer');
-        if (!videoContainer) return;
-        
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.type === 'childList') {
-                    mutation.addedNodes.forEach((node) => {
-                        if (node.nodeType === 1 && (node.tagName === 'VIDEO' || node.classList.contains('hero-video'))) {
-                            setTimeout(fixMobileVideoPosition, 100);
-                        }
-                    });
-                }
-            });
-        });
-        
-        observer.observe(videoContainer, {
-            childList: true,
-            subtree: true
-        });
-    }
-    
-    // Initialize fixes
-    function initMobileFixes() {
-        fixMobileVideoPosition();
-        observeVideoChanges();
-        
-        // Fix on resize
-        window.addEventListener('resize', () => {
-            setTimeout(fixMobileVideoPosition, 100);
-        });
-        
-        // Fix on orientation change
-        window.addEventListener('orientationchange', () => {
-            setTimeout(fixMobileVideoPosition, 500);
-        });
-        
-        // Periodic fix for mobile issues
-        if (isMobile()) {
-            setInterval(() => {
-                const contact = document.querySelector('.contact');
-                const footer = document.querySelector('.footer');
-                
-                // Check if elements are disappearing and force visibility
-                if (contact && contact.style.display === 'none') {
-                    contact.style.display = 'block';
-                    contact.style.visibility = 'visible';
-                }
-                
-                if (footer && footer.style.display === 'none') {
-                    footer.style.display = 'block';
-                    footer.style.visibility = 'visible';
-                }
-            }, 1000);
-        }
-    }
-    
-    // Wait for video system to initialize
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(initMobileFixes, 500);
-        });
-    } else {
-        setTimeout(initMobileFixes, 500);
-    }
-    
-    // Backup initialization
-    setTimeout(initMobileFixes, 2000);
-    
 })();
 </script>
 <!-- ULTIMATE SCROLL-TRIGGERED STATS COUNTER -->
