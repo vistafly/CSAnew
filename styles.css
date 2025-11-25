@@ -131,7 +131,7 @@ p {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -49%) scale(.929);
+        transform: translate(-50%, -49%) scale(.718) !important;
     z-index: 1;
     overflow: visible;
 }
@@ -224,11 +224,11 @@ p {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 300px;
-    height: 300px;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
     overflow: hidden;
-    border: 4px solid rgba(255, 255, 255, 0.2);
+    border: 3px solid rgba(255, 255, 255, 0.13);
     z-index: 2;
     background: rgba(255, 255, 255, 0.02);
     backdrop-filter: blur(10px);
@@ -251,7 +251,7 @@ p {
     position: relative;
     border-radius: 50%;
     overflow: hidden;
-    border: 4px solid rgba(255, 255, 255, 0.2);
+    border: 3px solid rgba(255, 255, 255, 0.13);
     margin-bottom: 4rem;
 }
 
@@ -285,12 +285,6 @@ p {
 
 .loader-logo-image:error + .loader-logo-fallback {
     display: flex;
-}
-
-/* Hide actual hero logo during loading */
-body.loading .hero-logo {
-    opacity: 0;
-    visibility: hidden;
 }
 
 .hero-logo {
@@ -419,7 +413,7 @@ body.loading .hero-logo {
     }
     
     .loader-hero-logo.move-to-position {
-        top: calc(50vh - 110px) !important;
+        top: calc(50vh - 122px) !important;
     }
     
     .logo-container {
@@ -452,7 +446,7 @@ body.loading .hero-logo {
     }
     
     .progress-container {
-        transform: translate(-50%, -49%) scale(.68) !important;
+        transform: translate(-50%, -49%) scale(.5);
     }
     
     /* Adjusted glow effects for iPhone Pro - Same as tablet */
@@ -694,7 +688,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     }
     
     .progress-container {
-        transform: translate(-50%, -49%) scale(.5);
+        transform: translate(-50%, -49%) scale(.52) !important;
     }
     
     /* Further scaled down glow effects */
@@ -1499,6 +1493,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
         border: none;
         padding: 0;
         margin-bottom: 6px;
+        font-size: x-large;
     }
 }
 
@@ -2565,7 +2560,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     padding: 100px 0px 120px;
     background-color: #f8f9fa;
     box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
-    padding: 120px 0 12rem;
+    padding: 150px 0 12rem;
 }
 
 .contact-content {
@@ -3213,11 +3208,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     .hero-title {
         font-size: 36px;
     }
-    
-    .hero-subtitle {
-        font-size: 18px;
-    }
-    
+
     .hero-actions {
         flex-direction: row;
         align-items: center;
@@ -3491,7 +3482,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     .hero-actions {
         flex-direction: row;
         align-items: center;
-        gap: 0.75rem;
+        gap: 40px;
     }
     
     .hero-actions .btn-primary,
@@ -3658,8 +3649,8 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     }
     
     .video-indicator {
-        min-width: 44px;
-        min-height: 44px;
+        min-width: 25px;
+        min-height: 25px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -3895,7 +3886,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 .program-filters {
     background: white;
     border-radius: 12px;
-    padding: 0px;
+    padding: 0px 0px 10px;
     margin: 0px auto 0px;
     max-width: none;
     border: 1px solid #f0f0f0;
@@ -3903,7 +3894,11 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 }
 
 .filter-section {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    margin-left: 150px;
+    margin-right: 150px;
+    margin-top: 10px;
+    
 }
 
 .filter-section:last-child {
@@ -4112,6 +4107,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     
     .filter-section {
         margin-bottom: 24px;
+        margin: 10px;
     }
     
     .category-tabs {
@@ -4261,7 +4257,6 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     }
 }
 /* Single Row Horizontal Scroll Mode - Space Saving */
-/* Single Row Horizontal Scroll Mode - Space Saving */
 .programs-grid.horizontal-scroll {
     display: flex !important;
     flex-direction: row !important;
@@ -4269,23 +4264,24 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     overflow-x: auto !important;
     overflow-y: visible !important;
     scroll-behavior: smooth;
-    justify-content: flex-start;
+    justify-content: flex-start !important; /* ✅ CHANGED: Use flex-start to prevent cutoff */
     align-items: stretch;
-    padding: 20px 0 10px;
-    margin-left: 30px;
-    gap: 24px; /* Desktop gap */
+    padding: 40px 60px 30px 60px !important; /* ✅ Padding creates safe space on left/right */
+    margin-left: 0 !important;
+    gap: 24px;
     
-    /* Remove grid properties completely */
+    /* ✅ ADDED: Scroll padding prevents cards from touching edges */
+    scroll-padding-left: 60px !important;
+    scroll-padding-right: 60px !important;
+    
     grid-template-columns: unset !important;
     justify-items: unset !important;
     
-    /* iOS Momentum Scrolling */
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
     transform: translateZ(0);
     will-change: scroll-position;
     
-    /* CRITICAL FIX: Ensure immediate proper layout */
     visibility: visible !important;
 }
 
@@ -4294,9 +4290,12 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 /* Tablet & Mobile - General adjustments */
 @media (max-width: 768px) {
     .programs-grid.horizontal-scroll {
-        gap: 16px; /* Tighter gap on mobile */
-        padding: 15px 0 20px;
-        margin-left: 20px; /* Consistent mobile margin */
+        gap: 16px;
+        padding: 30px 40px 20px 40px !important;
+        margin-left: 0 !important;
+        justify-content: flex-start !important; /* ✅ CHANGED: from center to flex-start */
+        scroll-padding-left: 40px !important; /* ✅ ADDED */
+        scroll-padding-right: 40px !important; /* ✅ ADDED */
     }
     
     .programs-grid.horizontal-scroll .program-card {
@@ -4304,6 +4303,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
         min-width: 280px !important;
         max-width: 280px !important;
         width: 280px !important;
+        margin: 8px 0 !important;
     }
 }
 
@@ -4311,8 +4311,11 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 @media (max-width: 480px) {
     .programs-grid.horizontal-scroll {
         gap: 12px;
-        margin-left: 15px;
-        padding: 10px 0 15px;
+        padding: 25px 30px 15px 30px !important;
+        margin-left: 0 !important;
+        justify-content: flex-start !important; /* ✅ CHANGED: from center to flex-start */
+        scroll-padding-left: 30px !important; /* ✅ ADDED */
+        scroll-padding-right: 30px !important; /* ✅ ADDED */
     }
     
     .programs-grid.horizontal-scroll .program-card {
@@ -4320,9 +4323,14 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
         min-width: 260px !important;
         max-width: 260px !important;
         width: 260px !important;
+        margin: 6px 0 !important;
     }
 }
-
+@media (max-width: 480px) {
+    .player-logo {
+    width: 60px;
+    }
+}
 /* Extra Small Mobile - Compact view */
 @media (max-width: 375px) {
     .programs-grid.horizontal-scroll {
@@ -4349,10 +4357,12 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     scroll-snap-stop: normal;
     transform: translateZ(0);
     will-change: transform;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Only transition hover effects */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     opacity: 1;
     visibility: visible;
+    margin: 10px 0 !important; /* ✅ ADDED: Prevent hover cutoff */
 }
+
 
 /* CRITICAL FIX: Fast hide transition for filtered cards */
 .programs-grid.horizontal-scroll .program-card.hidden {
@@ -4682,11 +4692,21 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     }
     }
     @media (max-width: 395px) {
+    .programs-grid.horizontal-scroll {
+        gap: 10px;
+        padding: 20px 25px 15px 25px !important;
+        margin-left: 0 !important;
+        justify-content: flex-start !important; /* ✅ CHANGED: from center to flex-start */
+        scroll-padding-left: 25px !important; /* ✅ ADDED */
+        scroll-padding-right: 25px !important; /* ✅ ADDED */
+    }
+    
     .programs-grid.horizontal-scroll .program-card {
-        flex: 0 0 275px !important;
-        min-width: 305px !important;
-        max-width: 275px !important;
-        width: 275px !important;
+        flex: 0 0 350px !important;
+        min-width: 350px !important;
+        max-width: 350px !important;
+        width: 350px !important;
+        margin: 5px 0 !important;
     }
     
     .view-toggle {
@@ -4792,10 +4812,10 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     }
 }
 .programs .container {
-    max-width: 90%;
-    width: 90%;
-    margin: auto;
-    padding: 0 0px;
+    max-width: 100% !important; /* ✅ CHANGED: from 1400px to 100% */
+    margin: 0 auto;
+    padding: 0 !important; /* ✅ CHANGED: removed padding */
+    overflow: visible !important; /* ✅ ADDED */
 }
 
 @media (max-width: 768px) {
@@ -5928,7 +5948,7 @@ select option {
     --text-primary: #ffffff;
     --text-secondary-player: #b3b3b3;
     --text-tertiary-player: #6a6a6a;
-    --sidebar-width: 420px;
+    --sidebar-width: 600px;
     --transition-smooth: cubic-bezier(0.4, 0.0, 0.2, 1);
     --transition-elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -6060,7 +6080,7 @@ select option {
 
 /* Player Header */
 .player-header {
-    padding: 24px;
+    padding: 15px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -6074,11 +6094,17 @@ select option {
     display: flex;
     align-items: center;
     gap: 12px;
+    z-index: 1; /* Keep icon clickable above centered text */
+    margin-left: 3%;
 }
-
+@media (max-width: 768px) {
+.player-logo {
+ margin-left: .5%;
+}
+}
 .player-logo-icon {
-    width: 60px;
-    height: 60px;
+    width: 95px;
+    height: 95px;
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -6091,11 +6117,18 @@ select option {
     height: 180%;
     object-fit: contain;
 }
+
+/* CENTERED TEXT - Absolutely positioned in center of header */
 .player-logo-text {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     font-weight: 700;
     font-size: 18px;
     letter-spacing: 1px;
     color: var(--text-primary);
+    white-space: nowrap;
+    text-align: center;
 }
 
 .player-close {
@@ -6109,6 +6142,7 @@ select option {
     align-items: center;
     justify-content: center;
     transition: all 0.3s var(--transition-smooth);
+    margin-right: 2%;
 }
 
 .player-close:hover {
@@ -6125,7 +6159,7 @@ select option {
 
 /* Now Playing Section */
 .audio-player-sidebar .now-playing {
-    padding: 32px 24px;
+    padding: 15px 24px;
     position: relative;
     z-index: 2;
 }
@@ -6137,12 +6171,13 @@ select option {
     aspect-ratio: 1;
     border-radius: 16px;
     overflow: hidden;
-    margin-bottom: 28px;
+    margin: auto;
+    margin-bottom: 20px;
     box-shadow: 
         0 20px 60px rgba(0, 0, 0, 0.5),
         0 10px 30px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
     transition: transform 0.4s var(--transition-elastic);
+    max-width: 250px;
 }
 
 .album-art-container:hover {
@@ -6163,30 +6198,21 @@ select option {
 /* Vinyl overlay effect when playing */
 .vinyl-overlay {
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 50%;
     width: 60%;
     height: 60%;
     transform: translate(-50%, -50%);
     border-radius: 50%;
-    background: 
-        radial-gradient(circle at center, 
-            transparent 20%, 
-            rgba(0,0,0,0.3) 21%, 
-            rgba(0,0,0,0.3) 30%,
-            transparent 31%,
-            transparent 40%,
-            rgba(0,0,0,0.2) 41%,
-            rgba(0,0,0,0.2) 50%,
-            transparent 51%);
+    background: url('/images/icons/vinyl.png') center/contain no-repeat;
     opacity: 0;
     transition: opacity 0.5s ease;
     pointer-events: none;
 }
 
 .audio-player-sidebar.playing .vinyl-overlay {
-    opacity: 1;
-    animation: vinylSpin 8s linear infinite;
+    opacity: .45;
+    animation: vinylSpin 3s linear infinite;
 }
 
 @keyframes vinylSpin {
@@ -6204,8 +6230,8 @@ select option {
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    gap: 3px;
-    padding: 0 20px 20px;
+    gap: 4.5px;
+    padding: 0 0px 0px;
     background: linear-gradient(transparent, rgba(0,0,0,0.8));
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -6265,6 +6291,12 @@ select option {
     margin-bottom: 24px;
 }
 
+@media (max-width: 768px) {
+.audio-player-sidebar .progress-section.player-progress {
+    padding: 0 20px;
+    margin-bottom: 5px;
+}
+}
 .audio-player-sidebar .progress-container {
     position: relative;
     height: 6px;
@@ -6314,7 +6346,7 @@ select option {
 .audio-player-sidebar .time-display {
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
+    margin-top: 30px;
     font-family: 'Space Mono', monospace;
     font-size: 12px;
     color: var(--text-tertiary-player);
@@ -6326,7 +6358,7 @@ select option {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    gap: 50px;
 }
 
 .audio-player-sidebar .control-btn {
@@ -6415,6 +6447,11 @@ select option {
     gap: 12px;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     background: var(--player-bg-secondary);
+}
+@media (max-width: 768px) {
+.audio-player-sidebar .volume-section {
+    padding: 10px 24px;
+    }
 }
 
 .audio-player-sidebar .volume-btn {
@@ -6739,7 +6776,7 @@ select option {
 
     .audio-player-sidebar .controls-section {
         padding: 0 20px 20px;
-        gap: 16px;
+        gap: 40px;
     }
 
     .audio-player-sidebar .control-btn.play-pause {
@@ -6751,7 +6788,11 @@ select option {
         display: none;
     }
 }
-
+@media (max-width: 900px) {
+    .hero-subtitle {
+        font-size: small;
+    }
+}
 @media (max-width: 395px) {
     .album-art-container {
         max-width: 150px;
@@ -6808,4 +6849,21 @@ select option {
         -webkit-transform: translateZ(0);
         transform: translateZ(0);
     }
+}
+.programs {
+    overflow: visible !important;
+}
+
+.programs .container {
+    overflow: visible !important;
+}
+
+/* Ensure proper z-index stacking on hover */
+.program-card {
+    position: relative;
+    z-index: 1;
+}
+
+.program-card:hover {
+    z-index: 10 !important;
 }

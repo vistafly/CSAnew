@@ -132,7 +132,6 @@
         </div>
         
         <!-- Company Name Text -->
-        <div class="company-name-text">CSA Entertainment</div>
     </div>
 </div>
     <!-- Header -->
@@ -204,7 +203,7 @@
         <div class="player-logo-icon">
             <img src="images/logo.png" alt="CSA Logo">
         </div>
-        <span class="player-logo-text">CSA PLAYER</span>
+        <span class="player-logo-text">Live Student Recordings</span>
     </div>
     <button class="player-close" id="playerClose" aria-label="Close Player">
         <svg viewBox="0 0 24 24" fill="none">
@@ -229,7 +228,6 @@
     <!-- Progress Bar -->
     <section class="progress-section player-progress">
         <div class="progress-container" id="audioProgressContainer">
-            <div class="progress-buffered"></div>
             <div class="progress-bar" id="audioProgressBar"></div>
         </div>
         <div class="time-display">
@@ -239,36 +237,26 @@
     </section>
 
     <!-- Playback Controls -->
-    <section class="controls-section">
-        <button class="control-btn secondary" id="shuffleBtn" title="Shuffle">
-            <svg viewBox="0 0 24 24">
-                <path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/>
-            </svg>
-        </button>
-        <button class="control-btn skip" id="audioPrevBtn" title="Previous">
-            <svg viewBox="0 0 24 24">
-                <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
-            </svg>
-        </button>
-        <button class="control-btn play-pause" id="audioPlayPauseBtn" title="Play/Pause">
-            <svg class="play-icon" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z"/>
-            </svg>
-            <svg class="pause-icon" viewBox="0 0 24 24">
-                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-            </svg>
-        </button>
-        <button class="control-btn skip" id="audioNextBtn" title="Next">
-            <svg viewBox="0 0 24 24">
-                <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
-            </svg>
-        </button>
-        <button class="control-btn secondary" id="repeatBtn" title="Repeat">
-            <svg viewBox="0 0 24 24">
-                <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/>
-            </svg>
-        </button>
-    </section>
+<section class="controls-section">
+    <button class="control-btn skip" id="audioPrevBtn" title="Previous">
+        <svg viewBox="0 0 24 24">
+            <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+        </svg>
+    </button>
+    <button class="control-btn play-pause" id="audioPlayPauseBtn" title="Play/Pause">
+        <svg class="play-icon" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+        </svg>
+        <svg class="pause-icon" viewBox="0 0 24 24">
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+        </svg>
+    </button>
+    <button class="control-btn skip" id="audioNextBtn" title="Next">
+        <svg viewBox="0 0 24 24">
+            <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+        </svg>
+    </button>
+</section>
 
     <!-- Volume Control -->
     <section class="volume-section">
@@ -551,7 +539,7 @@
     <div class="container">
         <div class="section-header">
             <h2>The CSA Way!</h2>
-            <p class="section-subtitle">We've taken the initiative to empower the youth through music & sports. Partnered with elementary schools to deliver exceptional sports and music programs with expert instructors and proven results.</p>
+            <p class="section-subtitle">We've taken the initiative to empower the youth through music & sports. </p>
         </div>
         
         <div class="about-content">
@@ -849,7 +837,7 @@
     <div class="modal-overlay" id="loginModal">
         <div class="modal">
             <div class="modal-header">
-                <h3>Sign In to CSA Gallery</h3>
+                <h3>Parent Portal</h3>
                 <button class="modal-close" id="modalClose">&times;</button>
             </div>
             <div class="modal-body">
@@ -1635,7 +1623,7 @@
         <div class="role-select-prompt" id="roleSelectPrompt">
             <div class="prompt-content">
                 <div class="prompt-icon">👆</div>
-                <p>Please select your role above to continue</p>
+                <p>Please select from the dropdown menu to continue.</p>
             </div>
         </div>
     </form>
@@ -1677,7 +1665,6 @@
                 <div class="footer-section">
     <h4>Contact Info</h4>
     <ul class="footer-links">
-        <li><a href="tel:+1234567890">+1 (234) 567-8900</a></li>
         <li><a href="mailto:contact@yourcompany.com">contact@CSA.com</a></li>
     </ul>
 </div>
@@ -1700,7 +1687,7 @@
     <!-- Scripts -->
 <!-- Loader Script -->
 <script>
-// ULTRA-OPTIMIZED BUTTERY SMOOTH LOADER - MAXIMUM PERFORMANCE WITH PERFECT POSITIONING
+// FIXED LOADER - Hero logo visible, loader fades over it
 (function() {
     'use strict';
     
@@ -1711,287 +1698,230 @@
     let isComplete = false;
     let originalScrollPosition = 0;
     
-    // High-performance variables
     let lastFrameTime = 0;
     let progressBar, progressRing, companyText, progressContainer;
     const circumference = 2 * Math.PI * 150;
     
-    // Ultra-fast scroll prevention
+    // Responsive sizes - must match CSS
+    const SIZES = {
+        desktop: { size: 300, border: 3 },
+        tablet: { size: 220, border: 3 },
+        iphonePro: { size: 220, border: 3 },
+        mobile: { size: 180, border: 2 },
+        small: { size: 160, border: 2 },
+        xsmall: { size: 140, border: 2 }
+    };
+    
+    function getCurrentLogoSize() {
+        const width = window.innerWidth;
+        if (width <= 320) return SIZES.xsmall;
+        if (width <= 375) return SIZES.small;
+        if (width >= 390 && width <= 480) return SIZES.iphonePro;
+        if (width <= 480) return SIZES.mobile;
+        if (width <= 768) return SIZES.tablet;
+        return SIZES.desktop;
+    }
+    
     function preventScrolling() {
         originalScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-        
-        // Safely add classes and styles
-        if (document.documentElement) {
-            document.documentElement.classList.add('loading-active');
-        }
+        if (document.documentElement) document.documentElement.classList.add('loading-active');
         if (document.body) {
             document.body.classList.add('loading-active');
             document.body.style.top = `-${originalScrollPosition}px`;
         }
-        
-        if ('scrollRestoration' in history) {
-            history.scrollRestoration = 'manual';
-        }
-        
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
         document.addEventListener('wheel', preventScroll, { passive: false });
         document.addEventListener('touchmove', preventScroll, { passive: false });
         document.addEventListener('keydown', preventScrollKeys, { passive: false });
     }
     
     function allowScrolling() {
-        if (document.documentElement) {
-            document.documentElement.classList.remove('loading-active');
-        }
+        if (document.documentElement) document.documentElement.classList.remove('loading-active');
         if (document.body) {
             document.body.classList.remove('loading-active');
             document.body.style.top = '';
         }
-        
         window.scrollTo(0, originalScrollPosition);
-        
-        if ('scrollRestoration' in history) {
-            history.scrollRestoration = 'auto';
-        }
-        
+        if ('scrollRestoration' in history) history.scrollRestoration = 'auto';
         document.removeEventListener('wheel', preventScroll);
         document.removeEventListener('touchmove', preventScroll);
         document.removeEventListener('keydown', preventScrollKeys);
     }
     
-    function preventScroll(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-    }
-    
+    function preventScroll(e) { e.preventDefault(); e.stopPropagation(); return false; }
     function preventScrollKeys(e) {
         const scrollKeys = [32, 33, 34, 35, 36, 37, 38, 39, 40];
-        if (scrollKeys.includes(e.keyCode)) {
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
-        }
+        if (scrollKeys.includes(e.keyCode)) { e.preventDefault(); e.stopPropagation(); return false; }
     }
     
-    // PRECISE HERO POSITIONING
+    // Get exact hero logo position
     function getHeroPosition() {
-        const actualHeroLogo = document.querySelector('.hero-logo');
-        if (actualHeroLogo) {
-            const rect = actualHeroLogo.getBoundingClientRect();
+        const heroLogo = document.querySelector('.hero-logo');
+        if (heroLogo) {
+            const rect = heroLogo.getBoundingClientRect();
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             return {
                 top: rect.top + scrollTop + (rect.height / 2),
                 left: rect.left + (rect.width / 2)
             };
         }
-        return {
-            top: window.innerHeight / 2,
-            left: window.innerWidth / 2
-        };
+        return { top: window.innerHeight / 2, left: window.innerWidth / 2 };
     }
     
-    // LIGHTNING-FAST progress animation with 60fps smoothness
     function updateProgressInstant(newTarget) {
         targetProgress = newTarget;
-        
-        if (!animationId) {
-            animationId = requestAnimationFrame(ultraSmoothProgress);
-        }
+        if (!animationId) animationId = requestAnimationFrame(ultraSmoothProgress);
     }
     
     function ultraSmoothProgress(currentTime) {
-        if (currentTime - lastFrameTime < 16.67) { // 60fps cap
+        if (currentTime - lastFrameTime < 16.67) {
             animationId = requestAnimationFrame(ultraSmoothProgress);
             return;
         }
         lastFrameTime = currentTime;
         
-        // ULTRA-FAST interpolation - catches up in 8 frames max
         const diff = targetProgress - progressValue;
-        const speed = Math.abs(diff) > 20 ? 0.25 : 0.15; // Faster for big jumps
-        
+        const speed = Math.abs(diff) > 20 ? 0.25 : 0.15;
         progressValue += diff * speed;
         
-        // Lightning-fast progress bar update
         if (progressBar) {
             const offset = circumference - (progressValue / 100) * circumference;
             progressBar.style.strokeDashoffset = offset;
         }
         
-        // Continue animation if not at target
         if (Math.abs(diff) > 0.1) {
             animationId = requestAnimationFrame(ultraSmoothProgress);
         } else {
             progressValue = targetProgress;
             animationId = null;
-            
-            // Trigger emissive instantly at 100%
-            if (targetProgress >= 100) {
-                triggerEmissiveInstant();
-            }
+            if (targetProgress >= 100) triggerEmissiveInstant();
         }
     }
     
-    // Create dynamic lightning success effect
-    function createSuccessLightning() {
-        const lightning = document.createElement('div');
-        lightning.className = 'success-lightning';
-        lightning.innerHTML = `
-            <div class="lightning-flash"></div>
-            <div class="lightning-particles"></div>
-            <div class="success-pulse"></div>
-        `;
-        if (progressContainer) {
-            progressContainer.appendChild(lightning);
-            setTimeout(() => lightning.classList.add('active'), 50);
-        }
-        return lightning;
-    }
-    
-    // INSTANT emissive state activation with success effects
     function triggerEmissiveInstant() {
         if (!progressBar || !progressContainer) return;
         
-        // Immediate emissive activation
-        progressBar.classList.add('emissive', 'success-mode');
-        progressContainer.classList.add('emissive', 'success-active');
-        
-        // Add success ring animation
+        progressBar.classList.add('emissive');
+        progressContainer.classList.add('emissive');
         if (progressRing) {
             progressRing.classList.remove('animating');
             progressRing.classList.add('success-complete');
         }
         
-        // Create lightning effect
-        const lightning = createSuccessLightning();
-        
-        // Fast text reveal - starts immediately
         if (companyText) {
             companyText.style.animation = 'ultraFastReveal 600ms cubic-bezier(0.19, 1, 0.22, 1) forwards';
             companyText.style.opacity = '1';
-            
-            // Quick glow activation
-            setTimeout(() => {
-                companyText.classList.add('glow-active');
-            }, 200);
+            setTimeout(() => companyText.classList.add('glow-active'), 200);
         }
         
-        // Fast exit sequence - much shorter duration
-        setTimeout(() => {
-            startFastExit();
-            // Clean up lightning effect
-            if (lightning && lightning.parentNode) {
-                lightning.parentNode.removeChild(lightning);
-            }
-        }, 1500); // Reduced from 2800ms
+        setTimeout(() => startFastExit(), 1500);
     }
     
-    // LIGHTNING-FAST exit sequence with perfect positioning
     function startFastExit() {
-        // Instant text fade
         if (companyText) {
             companyText.classList.remove('glow-active');
             companyText.style.animation = 'ultraFastExit 400ms cubic-bezier(0.19, 1, 0.22, 1) forwards';
         }
         
-        // Instant progress fade
         setTimeout(() => {
             if (progressBar && progressContainer) {
-                progressBar.style.transition = 'opacity 300ms cubic-bezier(0.19, 1, 0.22, 1)';
-                progressContainer.style.transition = 'opacity 300ms cubic-bezier(0.19, 1, 0.22, 1)';
+                progressBar.style.transition = 'opacity 300ms ease';
+                progressContainer.style.transition = 'opacity 300ms ease';
                 progressBar.style.opacity = '0';
                 progressContainer.style.opacity = '0';
             }
         }, 100);
         
-        // Fast completion
-        setTimeout(() => {
-            completeLoadingInstant();
-        }, 300);
+        setTimeout(() => completeLoadingInstant(), 300);
     }
     
-    // INSTANT completion with precise hero positioning
     function completeLoadingInstant() {
         if (isComplete) return;
         isComplete = true;
         
         const loader = document.getElementById('loader');
         const loaderHeroLogo = document.getElementById('loaderHeroLogo');
+        const currentSize = getCurrentLogoSize();
         
-        // PERFECT POSITIONING - Get hero position and apply precise scaling
         if (loaderHeroLogo) {
             const heroPos = getHeroPosition();
             
-            // Apply the perfect positioning and scaling
+            // Move loader logo to exact hero position
             loaderHeroLogo.style.top = heroPos.top + 'px';
             loaderHeroLogo.style.left = heroPos.left + 'px';
-            loaderHeroLogo.style.transform = 'translate(-50%, -50%) scale(1.03)';
-            loaderHeroLogo.style.transition = 'all 300ms cubic-bezier(0.19, 1, 0.22, 1)';
-            loaderHeroLogo.classList.add('success-transition');
+            loaderHeroLogo.style.transform = 'translate(-50%, -50%) scale(1)';
+            loaderHeroLogo.style.width = currentSize.size + 'px';
+            loaderHeroLogo.style.height = currentSize.size + 'px';
+            loaderHeroLogo.style.transition = 'all 400ms cubic-bezier(0.23, 1, 0.32, 1)';
             loaderHeroLogo.classList.add('move-to-position');
+            
+            const logoContainer = loaderHeroLogo.querySelector('.logo-container');
+            if (logoContainer) {
+                logoContainer.style.width = currentSize.size + 'px';
+                logoContainer.style.height = currentSize.size + 'px';
+                logoContainer.style.borderWidth = currentSize.border + 'px';
+            }
         }
         
-        // Instant final fade
+        // Fade out loader - hero is already visible underneath
         setTimeout(() => {
             if (loader) {
-                loader.style.transition = 'opacity 600ms cubic-bezier(0.19, 1, 0.22, 1)';
+                loader.style.transition = 'opacity 600ms ease';
                 loader.classList.add('fade-out');
                 
                 setTimeout(() => {
-                    if (loader && loader.parentNode) {
-                        loader.parentNode.removeChild(loader);
-                    }
+                    if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
                     allowScrolling();
                 }, 600);
             }
-        }, 150);
+        }, 300);
     }
     
-    // OPTIMIZED initialization - cache elements immediately
     function initializeUltraFast() {
         preventScrolling();
         
-        // Cache all elements for performance
         progressBar = document.querySelector('.progress-bar');
         progressRing = document.querySelector('.progress-ring');
         companyText = document.querySelector('.company-name-text');
-        progressContainer = document.querySelector('.progress-container');
+        progressContainer = document.querySelector('.loader .progress-container');
         const loaderHeroLogo = document.getElementById('loaderHeroLogo');
         
-        // Setup progress bar for maximum performance
         if (progressBar) {
             progressBar.style.strokeDasharray = circumference;
             progressBar.style.strokeDashoffset = circumference;
             progressBar.style.willChange = 'stroke-dashoffset';
         }
         
-        // Instant logo appearance
+        const currentSize = getCurrentLogoSize();
+        if (loaderHeroLogo) {
+            loaderHeroLogo.style.width = currentSize.size + 'px';
+            loaderHeroLogo.style.height = currentSize.size + 'px';
+            
+            const logoContainer = loaderHeroLogo.querySelector('.logo-container');
+            if (logoContainer) {
+                logoContainer.style.width = currentSize.size + 'px';
+                logoContainer.style.height = currentSize.size + 'px';
+                logoContainer.style.borderWidth = currentSize.border + 'px';
+            }
+        }
+        
         if (loaderHeroLogo) {
             setTimeout(() => {
-                loaderHeroLogo.style.transition = 'all 400ms cubic-bezier(0.19, 1, 0.22, 1)';
+                loaderHeroLogo.style.transition = 'opacity 400ms ease';
                 loaderHeroLogo.classList.add('animate-in');
             }, 100);
         }
         
-        // Start progress ring animation immediately
         if (progressRing) {
             hasStarted = true;
             progressRing.classList.add('animating');
-            
-            // Add vibrant mode for color cycling
-            if (progressBar) {
-                progressBar.classList.add('vibrant-mode');
-            }
+            if (progressBar) progressBar.classList.add('vibrant-mode');
         }
         
-        // Show company text during progress - faster timing
         setTimeout(() => {
-            if (companyText) {
-                companyText.style.animation = 'dramaticReveal 1.8s ease-out forwards';
-            }
+            if (companyText) companyText.style.animation = 'dramaticReveal 1.8s ease-out forwards';
         }, 300);
         
-        // AGGRESSIVE loading sequence - much faster progression
         const fastSteps = [
             { progress: 25, delay: 200 },
             { progress: 50, delay: 400 },
@@ -2001,42 +1931,26 @@
         ];
         
         fastSteps.forEach(step => {
-            setTimeout(() => {
-                updateProgressInstant(step.progress);
-            }, step.delay);
+            setTimeout(() => updateProgressInstant(step.progress), step.delay);
         });
     }
     
-    // Wait for body to exist before initializing
     function waitForBodyAndInit() {
-        if (document.body) {
-            initializeUltraFast();
-        } else {
-            setTimeout(waitForBodyAndInit, 10);
-        }
+        if (document.body) initializeUltraFast();
+        else setTimeout(waitForBodyAndInit, 10);
     }
     
-    // Initialize when ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', waitForBodyAndInit);
     } else {
         waitForBodyAndInit();
     }
     
-    // Emergency bailout
-    setTimeout(() => {
-        if (!isComplete) {
-            completeLoadingInstant();
-        }
-    }, 4000);
+    setTimeout(() => { if (!isComplete) completeLoadingInstant(); }, 4000);
     
-    // Handle visibility
     document.addEventListener('visibilitychange', () => {
-        if (document.hidden && !isComplete) {
-            setTimeout(completeLoadingInstant, 50);
-        }
+        if (document.hidden && !isComplete) setTimeout(completeLoadingInstant, 50);
     });
-    
 })();
 </script>
 
