@@ -497,37 +497,28 @@ class FixedHorizontalScrollManager {
     }
     
     checkScrollNeed() {
-        // CRITICAL FIX: Prevent recursive calls
-        if (this.isTransitioning || this.isCheckingLayout) return;
-        
-        this.isCheckingLayout = true;
-        
-        const visibleCards = this.getVisibleCards();
-        const containerWidth = this.programsGrid.offsetWidth;
-        const cardWidth = this.getCardWidth();
-        const gap = this.getGapSize();
-        const cardsPerRow = Math.floor(containerWidth / (cardWidth + gap));
-        
-        console.log(`📊 Scroll check: ${visibleCards.length} cards, ${cardsPerRow} per row, threshold: ${this.scrollThreshold}`);
-        
-        const shouldUseScroll = visibleCards.length > Math.max(this.scrollThreshold, cardsPerRow);
-        
-        if (shouldUseScroll && !this.isScrollMode && !this.isManualToggle) {
-            this.enableScrollMode();
-        } else if (!shouldUseScroll && this.isScrollMode && !this.isManualToggle) {
-            this.disableScrollMode();
-        } else if (!this.isScrollMode) {
-            // CRITICAL: Always enforce grid layout when not in scroll mode
-            this.forceGridLayout();
-        }
-        
-        this.updateCardCount(visibleCards.length);
-        
-        // Reset flag after a delay
-        setTimeout(() => {
-            this.isCheckingLayout = false;
-        }, 200);
+    // CRITICAL FIX: Prevent recursive calls
+    if (this.isTransitioning || this.isCheckingLayout) return;
+    
+    this.isCheckingLayout = true;
+    
+    const visibleCards = this.getVisibleCards();
+    
+    console.log(`📊 Scroll check: ${visibleCards.length} cards`);
+    
+    // CRITICAL: Once scroll mode is enabled, NEVER auto-disable it during filtering
+    // Only enable scroll mode if we're not already in it
+    if (!this.isScrollMode && !this.isManualToggle) {
+        this.enableScrollMode();
     }
+    
+    this.updateCardCount(visibleCards.length);
+    
+    // Reset flag after a delay
+    setTimeout(() => {
+        this.isCheckingLayout = false;
+    }, 200);
+}
     
     getVisibleCards() {
         return Array.from(this.programsGrid.querySelectorAll('.program-card:not(.hidden):not([style*="display: none"]):not([style*="visibility: hidden"])'));
@@ -818,7 +809,6 @@ class FixedHorizontalScrollManager {
     // CRITICAL: Handle filtering properly with better debouncing
 handleFilterChange() {
     if (this.isCheckingLayout) {
-        // Already checking, skip this call
         return;
     }
     
@@ -826,27 +816,22 @@ handleFilterChange() {
         clearTimeout(this.filterTimeout);
     }
     
-    // Optimized debounce time
     this.filterTimeout = setTimeout(() => {
-        console.log('🔍 Filter change detected, checking layout...');
+        console.log('🔍 Filter change detected, maintaining scroll mode...');
         
         const visibleCards = this.getVisibleCards();
-        const shouldBeScrollMode = visibleCards.length > this.scrollThreshold;
         
-        // Maintain layout mode during filtering
-        if (shouldBeScrollMode && this.isScrollMode) {
-            // Already in correct mode, just update
+        // CRITICAL: ALWAYS maintain scroll mode during filtering
+        if (this.isScrollMode) {
+            // Just update counts and buttons, DON'T check if we should switch modes
             this.updateCardCount(visibleCards.length);
             this.updateScrollButtons();
-        } else if (!shouldBeScrollMode && !this.isScrollMode) {
-            // Already in correct mode, just update
-            this.forceGridLayout();
-            this.updateCardCount(visibleCards.length);
+            this.updateScrollProgress();
         } else {
-            // Need to switch modes
-            this.checkScrollNeed();
+            // In grid mode, just update count
+            this.updateCardCount(visibleCards.length);
         }
-    }, 200); // Balanced timing
+    }, 200);
 }
     
     // Observer for DOM changes (filter updates) - WITH BETTER FILTERING
@@ -2247,3 +2232,122 @@ window.addEventListener('resize', () => {
         }
     }, 250);
 });
+document.addEventListener('DOMContentLoaded', () => {
+    const emailBtn = document.querySelector('.contact-icon-btn.email');
+    
+    if (emailBtn) {
+        emailBtn.addEventListener('click', function(e) {
+            // Stop the event from bubbling up to parent elements
+            e.stopPropagation();
+            
+            // The mailto link will work by default - we just prevent interference
+            console.log('📧 Opening email client...');
+        }, true); // Use capture phase to handle it first
+    }
+});
+/* ============================================ */
+/* INTERACTIVE GRADIENT TEXT - MOUSE TRACKING  */
+/* ============================================ */
+
+class InteractiveGradientText {
+    constructor() {
+        this.titles = document.querySelectorAll('.section-header h2');
+        this.init();
+    }
+    
+    init() {
+        if (!this.titles.length) {
+            console.warn('No gradient titles found');
+            return;
+        }
+        
+        this.titles.forEach(title => {
+            // Store original text in data attribute for ::after
+            title.setAttribute('data-text', title.textContent);
+            
+            // Track mouse movement with throttling
+            let rafId = null;
+            
+            title.addEventListener('mousemove', (e) => {
+                if (rafId) {
+                    cancelAnimationFrame(rafId);
+                }
+                
+                rafId = requestAnimationFrame(() => {
+                    this.updateGradientPosition(title, e);
+                });
+            });
+            
+            // Reset on mouse leave
+            title.addEventListener('mouseleave', () => {
+                this.resetGradientPosition(title);
+            });
+            
+            console.log('✨ Interactive gradient added to:', title.textContent.substring(0, 20));
+        });
+        
+        console.log(`✅ Interactive gradient text initialized on ${this.titles.length} titles`);
+    }
+    
+    updateGradientPosition(element, event) {
+        const rect = element.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        
+        // Convert to percentage
+        const xPercent = (x / rect.width) * 100;
+        const yPercent = (y / rect.height) * 100;
+        
+        // Clamp values
+        const clampedX = Math.max(0, Math.min(100, xPercent));
+        const clampedY = Math.max(0, Math.min(100, yPercent));
+        
+        // Update CSS variables
+        element.style.setProperty('--mouse-x', `${clampedX}%`);
+        element.style.setProperty('--mouse-y', `${clampedY}%`);
+    }
+    
+    resetGradientPosition(element) {
+        // Smooth reset to center
+        element.style.setProperty('--mouse-x', '50%');
+        element.style.setProperty('--mouse-y', '50%');
+    }
+}
+
+// Initialize when DOM is ready - with multiple fallbacks
+function initInteractiveGradient() {
+    if (!window.interactiveGradientText) {
+        console.log('🎨 Initializing interactive gradient text...');
+        window.interactiveGradientText = new InteractiveGradientText();
+    }
+}
+
+// Try multiple initialization methods
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(initInteractiveGradient, 100);
+    });
+} else {
+    // DOM already loaded
+    setTimeout(initInteractiveGradient, 100);
+}
+
+// Backup initialization
+setTimeout(() => {
+    if (!window.interactiveGradientText) {
+        console.log('🔄 Backup gradient initialization...');
+        initInteractiveGradient();
+    }
+}, 1000);
+
+// Debug helper
+window.testGradientInteraction = () => {
+    const titles = document.querySelectorAll('.section-header h2');
+    console.log('Found titles:', titles.length);
+    titles.forEach((title, i) => {
+        console.log(`Title ${i}:`, title.textContent);
+        console.log(`  - Has data-text:`, title.hasAttribute('data-text'));
+        console.log(`  - Mouse X:`, title.style.getPropertyValue('--mouse-x'));
+        console.log(`  - Mouse Y:`, title.style.getPropertyValue('--mouse-y'));
+    });
+};
