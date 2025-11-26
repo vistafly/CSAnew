@@ -43,7 +43,7 @@ p {
 /* Small mobile devices */
 @media (max-width: 480px) {
   .container {
-    padding: 0 26px;
+    padding: 0 24px;
   }
 }
 
@@ -131,7 +131,7 @@ p {
     position: absolute;
     top: 50%;
     left: 50%;
-        transform: translate(-50%, -49%) scale(.718) !important;
+    transform: translate(-50%, -49%) scale(.96);  /* REMOVED !important */
     z-index: 1;
     overflow: visible;
 }
@@ -331,10 +331,6 @@ p {
         transform: scale(1.83);
     }
     
-    .progress-container {
-        transform: translate(-50%, -49%) scale(.68);
-    }
-    
     /* Scaled down glow effects for tablet */
     .progress-container.emissive::before {
         width: 294px;
@@ -385,10 +381,6 @@ p {
         width: 103%;
         height: 108%;
         transform: scale(1.5);
-    }
-    
-    .progress-container {
-        transform: translate(-50%, -49%) scale(.56);
     }
     
     /* Scaled down glow effects for mobile */
@@ -445,10 +437,6 @@ p {
         transform: scale(1.83) !important;  /* ⭐ Adjusted scale to match tablet */
     }
     
-    .progress-container {
-        transform: translate(-50%, -49%) scale(.5);
-    }
-    
     /* Adjusted glow effects for iPhone Pro - Same as tablet */
     .progress-container.emissive::before {
         width: 294px !important;
@@ -499,10 +487,6 @@ p {
         transform: scale(1.33);
     }
     
-    .progress-container {
-        transform: translate(-50%, -49%) scale(.5);
-    }
-    
     /* Further scaled down glow effects */
     .progress-container.emissive::before {
         width: 213px;
@@ -551,10 +535,6 @@ p {
         width: 103%;
         height: 108%;
         transform: scale(1.17);
-    }
-    
-    .progress-container {
-        transform: translate(-50%, -49%) scale(.43);
     }
     
     /* Smallest glow effects */
@@ -631,10 +611,6 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
         transform: scale(1.5);
     }
     
-    .progress-container {
-        transform: translate(-50%, -49%) scale(.56);
-    }
-    
     /* Scaled down glow effects for mobile */
     .progress-container.emissive::before {
         width: 240px;
@@ -685,10 +661,6 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
         width: 103%;
         height: 108%;
         transform: scale(1.33);
-    }
-    
-    .progress-container {
-        transform: translate(-50%, -49%) scale(.52) !important;
     }
     
     /* Further scaled down glow effects */
@@ -743,10 +715,6 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
         transform: scale(1.17);
     }
     
-    .progress-container {
-        transform: translate(-50%, -49%) scale(.43);
-    }
-    
     /* Smallest glow effects */
     .progress-container.emissive::before {
         width: 187px;
@@ -795,7 +763,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     padding: .75rem 2rem;
     position: relative;
 }
-@media (max-width: 1230px) {
+@media (max-width: 1350px) {
     .nav {
         display: flex;
         align-items: center;
@@ -1454,9 +1422,9 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 }
 
 .hero-text-container {
-    background: rgba(0, 0, 0, 0.199);
+    background: rgba(255, 255, 255, 0.075);
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px); /* Safari/Webkit support */
+    -webkit-backdrop-filter: blur(50px); /* Safari/Webkit support */
     border-radius: 12px;
     padding: 20px 40px;
     margin-bottom: 4.3rem;
@@ -1813,7 +1781,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 .section-header .section-subtitle {
     font-size: 18px;
     color: #666;
-    max-width: 600px;
+    max-width: 650px;
     margin: 0 auto;
     text-align: center;
     line-height: 1.6;
@@ -1919,15 +1887,21 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     font-size: 14px;
     margin-bottom: 8px;
     position: relative;
-    padding-left: 20px;
+    padding-left: 30px;
 }
 
 .program-features li::before {
-    content: '✓';
+    content: '';
     position: absolute;
     left: 0;
-    color: #d32f2f;
-    font-weight: 600;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background-image: url('./images/icons/check.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 /* Gallery Section */
@@ -1982,18 +1956,16 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 }
 
 .gallery-filters {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
-    align-items: end;
     justify-content: center;
-    margin-bottom: 48px;
-    padding: 32px;
+    padding: 20px;
     background: white;
     border-radius: 12px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
     max-width: 900px;
-    margin: auto;
+    margin: 0 auto 48px auto;
 }
 
 .filter-group {
@@ -2025,6 +1997,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 }
 
 .filter-reset {
+    grid-column: 1 / -1; /* NEW - Makes button full width */
     background-color: #666;
     color: white;
     border: none;
@@ -2035,6 +2008,11 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     cursor: pointer;
     transition: background-color 0.3s ease;
     height: fit-content;
+    margin-top: 8px; /* NEW */
+}
+
+.filter-reset:hover {
+    background-color: #555;
 }
 
 .filter-reset:hover {
@@ -2234,7 +2212,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 }
 
 .modal-body {
-    padding: 40px 40px 48px;
+    padding: 25px 25px;
     min-height: 380px;
 }
 
@@ -2945,9 +2923,14 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 }
 
 .footer .logo-image:hover {
-    transform: scale(1.05);
+    transform: scale(1.2);
 }
 
+@media (max-width: 1024px) {
+.footer .logo-image:hover {
+    transform: scale(1.25);
+}
+}
 /* Footer Sections */
 .footer-section {
     position: relative;
@@ -3045,7 +3028,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 
 .logo-image {
     /* Adjust size for footer - typically smaller than hero */
-    height: 260px; /* or whatever size fits your footer */
+    height: 280px; /* or whatever size fits your footer */
     width: auto;
     margin: 7px;
 }
@@ -3169,7 +3152,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     }
 }
 
-@media (max-width: 1230px) {
+@media (max-width: 1350px) {
     .nav-toggle {
         display: flex;
     }
@@ -3232,12 +3215,6 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     .testimonials-grid {
         grid-template-columns: 1fr;
         gap: 24px;
-    }
-    
-    .gallery-filters {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 16px;
     }
     
     .filter-group {
@@ -3371,11 +3348,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     .gallery {
         padding: 60px 0;
     }
-    
-    .gallery-filters {
-        padding: 20px;
-    }
-    
+
     .gallery-grid {
         gap: 16px;
     }
@@ -3397,12 +3370,12 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     }
     
     .modal-body {
-        padding: 20px 15px 15px;
+        padding: 10px 12px;
     }
     
     .modal-header {
         padding: 20px 15px 15px;
-        margin-bottom: 30px;
+        margin-bottom: 0px;
     }
     
     .footer {
@@ -3415,12 +3388,16 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     }
     
     .footer .logo {
-        margin: 0 auto;
-        display: block;
-    }
+    width: 300px;
+    height: 260px;
+    margin: 0 auto;
+    display: block;
+}
     
     .footer .logo-image {
-        height: 200px;
+        width: calc(100% - 11px);
+        height: calc(100% - 11px);
+        object-fit: cover;
         margin: 5.5px 5.5px;
         display: block;
     }
@@ -3787,7 +3764,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     
     .video-controls {
         position: absolute !important;
-        top: 80px !important;
+        top: 150px !important;
         bottom: auto !important;
         left: 50% !important;
         right: auto !important;
@@ -3880,6 +3857,19 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     .section-header .section-subtitle {
         font-size: 15px;
         margin-bottom: 40px;
+    }
+}
+@media (max-width: 430px) {
+    .video-controls {
+        position: absolute !important;
+        top: auto !important;
+        bottom: 20px !important;
+        left: auto !important;
+        right: 20px !important;
+        transform: none !important;
+        padding: 0.5rem 0.75rem;
+        gap: 0.75rem;
+        z-index: 20;
     }
 }
 /* ===== CLEAN PROGRAM FILTERING STYLES ===== */
@@ -4253,7 +4243,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 }
 @media (max-width: 768px) {
 .programs-grid:not(.horizontal-scroll) {
-    padding: 30px;
+    padding: 20px;
     }
 }
 /* Single Row Horizontal Scroll Mode - Space Saving */
@@ -4266,7 +4256,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     scroll-behavior: smooth;
     justify-content: flex-start !important; /* ✅ CHANGED: Use flex-start to prevent cutoff */
     align-items: stretch;
-    padding: 40px 60px 30px 60px !important; /* ✅ Padding creates safe space on left/right */
+    padding: 40px 60px 60px 60px !important; /* ✅ Padding creates safe space on left/right */
     margin-left: 0 !important;
     gap: 24px;
     
@@ -4288,7 +4278,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 /* ===== CLEAN MOBILE RESPONSIVE STYLES ===== */
 
 /* Tablet & Mobile - General adjustments */
-@media (max-width: 768px) {
+@media (max-width: 920px) {
     .programs-grid.horizontal-scroll {
         gap: 16px;
         padding: 30px 40px 20px 40px !important;
@@ -4421,9 +4411,8 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     margin: 0 -32px;
     position: relative;
     transition: all 0.4s ease;
-
- 
-}
+    padding-top: 15px;
+ }
 
 .results-info {
     display: flex !important;
@@ -4658,7 +4647,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     }
 
     .scroll-progress {
-        width: 150px;
+        width: 220px;
         height: 5px;
         margin: 0 8px;
     }
@@ -4702,10 +4691,10 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     }
     
     .programs-grid.horizontal-scroll .program-card {
-        flex: 0 0 350px !important;
-        min-width: 350px !important;
-        max-width: 350px !important;
-        width: 350px !important;
+        flex: 0 0 335px !important;
+        min-width: 335px !important;
+        max-width: 335px !important;
+        width: 335px !important;
         margin: 5px 0 !important;
     }
     
@@ -4728,7 +4717,6 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     display: flex;
     flex-direction: column;
     gap: 15px;
-    padding: 30px 0 0;
 }
 
 .results-container {
@@ -4758,8 +4746,8 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 }
 @media (max-width: 768px) {
     .clear-all {
-        margin-right: 30px;
-        top: 31px;
+        margin-right: 50px;
+        top: 22px;
         padding: 3px 9px;
     }
 }
@@ -4805,6 +4793,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     .results-container {
         flex-direction: column;
         align-items: center;
+        margin-left: 10px;
     }
     .scroll-arrow {
         width: 40px;
@@ -6099,12 +6088,12 @@ select option {
 }
 @media (max-width: 768px) {
 .player-logo {
- margin-left: .5%;
+ margin-left: 1%;
 }
 }
 .player-logo-icon {
-    width: 95px;
-    height: 95px;
+    width: 60px;
+    height: 60px;
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -6123,9 +6112,9 @@ select option {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    font-weight: 700;
-    font-size: 18px;
-    letter-spacing: 1px;
+    font-weight: 600;
+    font-size: 16.5px;
+    letter-spacing: .6px;
     color: var(--text-primary);
     white-space: nowrap;
     text-align: center;
@@ -6813,7 +6802,7 @@ select option {
 }
 @media (max-width: 768px) {
 .audio-player-sidebar .now-playing {
-        padding: 5px 10px 10px;
+        padding: 5px 0px 0px;
     }
     }
 /* END AUDIO PLAYER SIDEBAR */
@@ -6867,3 +6856,490 @@ select option {
 .program-card:hover {
     z-index: 10 !important;
 }
+@media (max-width: 1024px) {
+    .audio-player-sidebar .volume-section {
+        display: none !important;
+    }
+}
+@media (max-width: 1230px) {
+    .gallery-filters {
+        max-width: 700px;
+        padding: 24px;
+        gap: 18px;
+    }
+}
+
+@media (max-width: 768px) {
+    .gallery-filters {
+        padding: 10px 10px;
+        gap: 8px;
+        border-radius: 8px;
+    }
+    
+    .filter-group {
+        min-width: 100%;
+        gap: 6px;
+    }
+    
+    .filter-group label {
+        font-size: 13px;
+        font-weight: 600;
+    }
+    
+    .filter-select {
+        padding: 5px 7px;
+        font-size: 13px;
+        border-radius: 8px;
+        -webkit-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 36px;
+    }
+    
+    .filter-reset {
+        padding: 10px 4px;
+        font-size: 15px;
+        margin-top: 8px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+}
+/* Tablet */
+@media (max-width: 768px) {
+    .progress-container {
+        transform: translate(-50%, -49%) scale(.715) !important;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .progress-container {
+        transform: translate(-50%, -49%) scale(.56) !important;
+    }
+}
+
+/* iPhone Pro */
+@media (min-width: 390px) and (max-width: 480px) {
+    .progress-container {
+        transform: translate(-50%, -49%) scale(.715) !important;
+    }
+}
+
+/* Small */
+@media (max-width: 375px) {
+    .progress-container {
+        transform: translate(-50%, -49%) scale(.52) !important;
+    }
+}
+
+/* Extra Small */
+@media (max-width: 320px) {
+    .progress-container {
+        transform: translate(-50%, -49%) scale(.43) !important;
+    }
+}
+/* ============================================ */
+/* TESTIMONIALS CAROUSEL - iOS Optimized       */
+/* ============================================ */
+
+.testimonials {
+    padding: 80px 0;
+    background: #f8f9fa;
+    overflow: hidden;
+}
+
+.testimonials-carousel-wrapper {
+    position: relative;
+    margin-top: 48px;
+}
+
+/* Desktop Grid Layout */
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.testimonial-card {
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-4px);
+}
+
+.testimonial-content {
+    flex: 1;
+}
+
+.testimonial-text {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #333;
+    font-style: italic;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.author-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.author-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.author-info {
+    flex: 1;
+}
+
+.author-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 4px 0;
+}
+
+.author-title {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+/* Navigation Buttons - Hidden on Desktop */
+.testimonial-nav {
+    display: none;
+}
+
+/* Dot Indicators - Hidden on Desktop */
+.testimonial-dots {
+    display: none;
+}
+
+/* ============================================ */
+/* MOBILE/TABLET - Carousel Mode (900px & below) */
+/* ============================================ */
+
+@media (max-width: 900px) {
+    .testimonials {
+        padding: 60px 0;
+    }
+    
+    .testimonials-carousel-wrapper {
+        position: relative;
+        padding: 0 60px; /* Space for nav buttons */
+    }
+    
+    /* iOS-Optimized Carousel Grid */
+    .testimonials-grid {
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
+        gap: 20px;
+        padding: 20px 0 40px 0;
+        
+        /* Hide scrollbar on iOS */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE/Edge */
+    }
+    
+    .testimonials-grid::-webkit-scrollbar {
+        display: none; /* Chrome/Safari */
+    }
+    
+    /* Card Sizing */
+    .testimonial-card {
+        flex: 0 0 calc(100% - 40px);
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
+        max-width: 500px;
+    }
+    
+    /* Navigation Buttons */
+    .testimonial-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 48px;
+        height: 48px;
+        background: white;
+        border: 2px solid #d32f2f;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        
+        /* iOS tap optimization */
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+    
+    .testimonial-nav svg {
+        color: #d32f2f;
+        transition: color 0.3s ease;
+    }
+    
+    .testimonial-nav-left {
+        left: -10px;
+    }
+    
+    .testimonial-nav-right {
+        right: 0;
+    }
+    
+    .testimonial-nav:hover,
+    .testimonial-nav:active {
+        background: #d32f2f;
+        transform: translateY(-50%) scale(1.05);
+    }
+    
+    .testimonial-nav:hover svg,
+    .testimonial-nav:active svg {
+        color: white;
+    }
+    
+    .testimonial-nav:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+        margin-left: -10px;
+    }
+    
+    /* Dot Indicators */
+    .testimonial-dots {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin-top: 24px;
+    }
+    
+    .testimonial-dots .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #ccc;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        padding: 0;
+        
+        /* iOS tap optimization */
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        
+        /* Make tap target larger for iOS (44x44px minimum) */
+        position: relative;
+    }
+    
+    .testimonial-dots .dot::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 44px;
+        height: 44px;
+    }
+    
+    .testimonial-dots .dot.active {
+        background: #d32f2f;
+        width: 28px;
+        border-radius: 5px;
+    }
+    
+    .testimonial-dots .dot:hover,
+    .testimonial-dots .dot:active {
+        background: #b71c1c;
+    }
+}
+
+/* Tablet Adjustments */
+@media (max-width: 768px) {
+    .testimonials-carousel-wrapper {
+        padding: 0 50px;
+    }
+    
+    .testimonial-card {
+        padding: 24px;
+    }
+    
+    .testimonial-nav {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 480px) {
+    .testimonials-carousel-wrapper {
+        padding: 0 30px;
+    }
+    
+    .testimonial-card {
+        flex: 0 0 calc(100% - 20px);
+        padding: 20px;
+    }
+    
+    .testimonial-text {
+        font-size: 15px;
+    }
+    
+    .author-name {
+        font-size: 15px;
+    }
+    
+    .author-title {
+        font-size: 13px;
+    }
+    
+    .testimonial-nav {
+        width: 40px;
+        height: 40px;
+        right: -10px;
+    }
+    
+    .testimonial-nav svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+/* Logo Loop - Overlays on hero video */
+.logo-loop-container {
+    position: absolute;
+    top: 75px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    overflow: hidden;
+    background: transparent;
+    padding: 0px 0;
+    z-index: 2;
+    pointer-events: none;
+    /* ✅ PREVENT SCROLLBAR GLITCH */
+    overflow-x: clip;
+}
+
+.logo-loop-track {
+    display: flex;
+    gap: 350px;
+    animation: logo-scroll-infinite 90s linear infinite; /* ✅ SLOWER: 60s → 90s */
+    width: fit-content;
+    will-change: transform;
+    /* ✅ ANTI-JITTER FIXES */
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    perspective: 1000;
+    /* ✅ SMOOTH PAUSE TRANSITION */
+    transition: none;
+}
+
+.logo-loop-item {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70px;
+    opacity: 0.35;
+    transition: opacity 0.3s ease;
+    pointer-events: auto;
+    /* ✅ PREVENT BLUR ON ANIMATION */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+.logo-loop-item:hover {
+    opacity: 0.8;
+}
+
+.logo-loop-item img {
+    max-height: 100%;
+    max-width: 140px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: grayscale(100%) brightness(1.4);
+    transition: filter 0.3s ease;
+    display: block;
+    /* ✅ CRISP IMAGE RENDERING */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+.logo-loop-item:hover img {
+    filter: grayscale(0%) brightness(1);
+}
+
+/* ✅ HARDWARE-ACCELERATED SEAMLESS LOOP */
+@keyframes logo-scroll-infinite {
+    0% {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+    100% {
+        -webkit-transform: translate3d(-25%, 0, 0);
+        transform: translate3d(-25%, 0, 0);
+    }
+}
+
+/* ✅ OPTIMIZED PAUSE - NO GLITCH */
+.logo-loop-container:hover .logo-loop-track {
+    animation-play-state: paused;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .logo-loop-container {
+        top: 70px;
+        padding: 15px 0;
+    }
+    
+    .logo-loop-track {
+        gap: 160px;
+        animation: logo-scroll-infinite 95s linear infinite; /* ✅ SLOWER: 45s → 70s */
+    }
+    
+    .logo-loop-item {
+        height: 35px;
+        opacity: 0.3;
+    }
+    
+    .logo-loop-item img {
+        max-width: 100px;
+        max-height: 60px;
+    }
+}
+

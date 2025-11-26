@@ -286,17 +286,26 @@ document.addEventListener('DOMContentLoaded', () => {
             // Navigate to gallery if authenticated
             if (typeof currentUser !== 'undefined' && currentUser) {
                 // Apply filter to gallery if it exists
-                if (document.getElementById('programFilter')) {
-                    document.getElementById('programFilter').value = program || 'all';
+                const programFilter = document.getElementById('programFilter');
+                if (programFilter) {
+                    programFilter.value = program || 'all';
+                    
+                    // Trigger the change event to update the gallery
+                    const changeEvent = new Event('change', { bubbles: true });
+                    programFilter.dispatchEvent(changeEvent);
+                    
+                    // Also call filterGallery directly as backup
                     if (typeof filterGallery === 'function') {
                         filterGallery();
                     }
                 }
                 
-                // Scroll to gallery
+                // Scroll to gallery with a small delay to ensure filtering completes
                 const gallery = document.getElementById('gallery');
                 if (gallery) {
-                    gallery.scrollIntoView({ behavior: 'smooth' });
+                    setTimeout(() => {
+                        gallery.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
                 }
             } else {
                 // Show login modal
@@ -2035,4 +2044,206 @@ window.stopAllAudio = () => {
     window.csaAudioPlayer?.emergencyStop();
 };
 
-/* END CSA AUDIO PLAYER - OPTIMIZED VERSION */
+/* ============================================ */
+/* TESTIMONIALS CAROUSEL - iOS Optimized       */
+/* ============================================ */
+
+class TestimonialsCarousel {
+    constructor() {
+        this.grid = document.getElementById('testimonialsGrid');
+        this.prevBtn = document.getElementById('testimonialPrev');
+        this.nextBtn = document.getElementById('testimonialNext');
+        this.dotsContainer = document.getElementById('testimonialDots');
+        this.dots = [];
+        this.currentIndex = 0;
+        this.isAnimating = false;
+        
+        if (!this.grid) return;
+        
+        this.cards = Array.from(this.grid.querySelectorAll('.testimonial-card'));
+        this.totalCards = this.cards.length;
+        
+        this.init();
+    }
+    
+    init() {
+        // Only enable carousel on mobile
+        if (window.innerWidth > 900) return;
+        
+        console.log('📱 Testimonials Carousel initialized');
+        
+        this.setupDots();
+        this.bindEvents();
+        this.updateUI();
+    }
+    
+    setupDots() {
+        if (!this.dotsContainer) return;
+        
+        this.dots = Array.from(this.dotsContainer.querySelectorAll('.dot'));
+    }
+    
+    bindEvents() {
+        // Navigation buttons
+        if (this.prevBtn) {
+            this.prevBtn.addEventListener('click', () => this.prev());
+        }
+        
+        if (this.nextBtn) {
+            this.nextBtn.addEventListener('click', () => this.next());
+        }
+        
+        // Dots
+        this.dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => this.goTo(index));
+        });
+        
+        // Scroll detection for iOS
+        let scrollTimeout;
+        this.grid.addEventListener('scroll', () => {
+            if (scrollTimeout) clearTimeout(scrollTimeout);
+            
+            scrollTimeout = setTimeout(() => {
+                this.detectCurrentCard();
+            }, 150);
+        }, { passive: true });
+        
+        // Handle resize
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            if (resizeTimeout) clearTimeout(resizeTimeout);
+            
+            resizeTimeout = setTimeout(() => {
+                if (window.innerWidth <= 900) {
+                    this.updateUI();
+                }
+            }, 250);
+        });
+        
+        // Touch gestures for iOS
+        this.setupTouchGestures();
+    }
+    
+    setupTouchGestures() {
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        this.grid.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        this.grid.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            this.handleSwipe(touchStartX, touchEndX);
+        }, { passive: true });
+    }
+    
+    handleSwipe(startX, endX) {
+        const swipeThreshold = 50;
+        const diff = startX - endX;
+        
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                // Swiped left - go to next
+                this.next();
+            } else {
+                // Swiped right - go to prev
+                this.prev();
+            }
+        }
+    }
+    
+    detectCurrentCard() {
+        const scrollLeft = this.grid.scrollLeft;
+        const cardWidth = this.cards[0]?.offsetWidth || 0;
+        const gap = 20;
+        
+        const newIndex = Math.round(scrollLeft / (cardWidth + gap));
+        
+        if (newIndex !== this.currentIndex && newIndex >= 0 && newIndex < this.totalCards) {
+            this.currentIndex = newIndex;
+            this.updateUI();
+        }
+    }
+    
+    prev() {
+        if (this.isAnimating || this.currentIndex === 0) return;
+        
+        this.currentIndex--;
+        this.scrollToCard(this.currentIndex);
+    }
+    
+    next() {
+        if (this.isAnimating || this.currentIndex === this.totalCards - 1) return;
+        
+        this.currentIndex++;
+        this.scrollToCard(this.currentIndex);
+    }
+    
+    goTo(index) {
+        if (this.isAnimating || index === this.currentIndex) return;
+        
+        this.currentIndex = index;
+        this.scrollToCard(this.currentIndex);
+    }
+    
+    scrollToCard(index) {
+        if (!this.cards[index]) return;
+        
+        this.isAnimating = true;
+        
+        const card = this.cards[index];
+        const cardWidth = card.offsetWidth;
+        const gap = 20;
+        const scrollPosition = index * (cardWidth + gap);
+        
+        this.grid.scrollTo({
+            left: scrollPosition,
+            behavior: 'smooth'
+        });
+        
+        setTimeout(() => {
+            this.isAnimating = false;
+            this.updateUI();
+        }, 400);
+    }
+    
+    updateUI() {
+        // Update navigation buttons
+        if (this.prevBtn) {
+            this.prevBtn.disabled = this.currentIndex === 0;
+        }
+        
+        if (this.nextBtn) {
+            this.nextBtn.disabled = this.currentIndex === this.totalCards - 1;
+        }
+        
+        // Update dots
+        this.dots.forEach((dot, index) => {
+            if (index === this.currentIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    // Wait a bit to ensure all elements are ready
+    setTimeout(() => {
+        window.testimonialsCarousel = new TestimonialsCarousel();
+    }, 100);
+});
+
+// Reinitialize on resize if needed
+let resizeTimeout;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        if (window.innerWidth <= 900 && !window.testimonialsCarousel) {
+            window.testimonialsCarousel = new TestimonialsCarousel();
+        }
+    }, 250);
+});
