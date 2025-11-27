@@ -765,7 +765,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 .nav {
     display: flex;
     align-items: center;
-    padding: .58rem 2rem .5rem;
+    padding: .65rem 2rem .6rem;
     position: relative;
 }
 @media (max-width: 1350px) {
