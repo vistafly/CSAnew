@@ -43,7 +43,12 @@ p {
 /* Small mobile devices */
 @media (max-width: 480px) {
   .container {
-    padding: 0 24px;
+    padding: 0 20px;
+  }
+}
+@media (max-width: 400px) {
+  .container {
+    padding: 0 15px;
   }
 }
 
@@ -760,7 +765,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 .nav {
     display: flex;
     align-items: center;
-    padding: .75rem 2rem;
+    padding: .58rem 2rem .5rem;
     position: relative;
 }
 @media (max-width: 1350px) {
@@ -883,7 +888,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 
 /* Active section indicator - Desktop */
 .nav-link.active {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.25);
     box-shadow: 
         0 3px 12px rgba(0, 0, 0, 0.12),
         0 1px 4px rgba(0, 0, 0, 0.16),
@@ -918,7 +923,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     left: 50%;
     width: 0;
     height: 2px;
-    background: #333;
+    background: #9b9b9b;
     transition: all 0.2s ease;
     transform: translateX(-50%);
     opacity: 0;
@@ -1078,7 +1083,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     font-size: 14px;
     font-weight: 600;
     border-radius: 6px;
-    border: 2px solid #8f8c8c;
+    border: 2.6px solid #8f8c8c;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(255, 255, 255, 0.411);
 }
@@ -1566,13 +1571,12 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 
 /* Primary button enhancement */
 .hero-actions .btn-primary {
-    background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+    background: rgba(255, 255, 255, 0.15);
     border-radius: 50px;
     padding: 16px 32px;
     border: 2px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
     box-shadow: 
-        0 8px 24px rgba(211, 47, 47, 0.4),
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
     transition: all 0.3s ease;
     font-weight: 600;
@@ -1580,12 +1584,10 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 }
 
 .hero-actions .btn-primary:hover {
-    background: linear-gradient(135deg, #b71c1c 0%, #8e0000 100%);
-    transform: translateY(-3px);
-    box-shadow: 
-        0 12px 32px rgba(211, 47, 47, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
-    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
 }
 
 /* Secondary button enhancement */
@@ -1899,12 +1901,11 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     transform: translateY(-50%);
     width: 16px;
     height: 16px;
-    background-image: url('./images/icons/check.png');
+    background-image: url('/images/icons/check.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
 }
-
 /* Gallery Section */
 .gallery {
     background-color: #f8f9fa;
@@ -2331,7 +2332,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 
 .form-group input:focus {
     outline: none;
-    border-color: #333333;
+    border-color: #5c5c5c;
     background-color: white;
     box-shadow: 
         inset 0 2px 4px rgba(0, 0, 0, 0.05),
@@ -2734,7 +2735,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 
 .educator-check select:focus {
     outline: none;
-    border-color: #d32f2f;
+    border-color: #666666;
 }
 
 .form-fields {
@@ -2781,7 +2782,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #d32f2f;
+    border-color: #5c5c5c;
 }
 
 .form-group textarea {
@@ -3317,22 +3318,18 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
         gap: 10px;
     }
     
-    .testimonials-grid {
-        grid-template-columns: 1fr;
-        gap: 24px;
-    }
-    
+   
     .filter-group {
         min-width: unset;
     }
     
     .gallery-grid {
-        grid-template-columns: 1fr;
         gap: 20px;
     }
     
     .gallery-stats {
         gap: 24px;
+        margin-top: 30px;
     }
     
     .form-row {
@@ -3456,6 +3453,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 
     .gallery-grid {
         gap: 16px;
+        margin: 0px 0px 0px;
     }
     
     .gallery-item img {
@@ -3969,7 +3967,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
         left: auto !important;
         right: 20px !important;
         transform: none !important;
-        padding: 0.5rem 0.75rem;
+        padding: 0.35rem 0.5rem;
         gap: 0.75rem;
         z-index: 20;
     }
@@ -3983,6 +3981,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     max-width: none;
     border: 1px solid #f0f0f0;
     overflow: hidden;
+    margin-top: 20px;
 }
 
 .filter-section {
@@ -4121,10 +4120,6 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     pointer-events: auto;
 }
 
-.clear-all:hover {
-    background: #cf6838;
-}
-
 /* Program Card States */
 .program-card {
     transition: all 0.4s ease;
@@ -4209,13 +4204,14 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     }
     
     .filter-section {
-        margin-bottom: 24px;
-        margin: 10px;
+        margin-bottom: 10px;
     }
     
     .category-tabs {
-        flex-direction: column;
-        gap: 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
     }
     
     .category-tab {
@@ -4369,7 +4365,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     scroll-behavior: smooth;
     justify-content: flex-start !important; /* ✅ CHANGED: Use flex-start to prevent cutoff */
     align-items: stretch;
-    padding: 40px 60px 60px 60px !important; /* ✅ Padding creates safe space on left/right */
+    padding: 10px 60px 20px 60px !important; /* ✅ Padding creates safe space on left/right */
     margin-left: 0 !important;
     gap: 24px;
     
@@ -4414,7 +4410,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 @media (max-width: 480px) {
     .programs-grid.horizontal-scroll {
         gap: 12px;
-        padding: 25px 30px 15px 30px !important;
+        padding: 5px 30px 15px 30px !important;
         margin-left: 0 !important;
         justify-content: flex-start !important; /* ✅ CHANGED: from center to flex-start */
         scroll-padding-left: 30px !important; /* ✅ ADDED */
@@ -4481,31 +4477,66 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     z-index: 2;
 }
 
-/* Professional Scrollbar Styling */
+/* Apple Metallic Glass Scrollbar */
 .programs-grid.horizontal-scroll::-webkit-scrollbar {
-    height: 12px;
-    background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.05), transparent);
+    height: 14px;
+    background: transparent;
 }
 
 .programs-grid.horizontal-scroll::-webkit-scrollbar-track {
-    background: rgba(248, 249, 250, 0.8);
-    border-radius: 6px;
+    background: linear-gradient(180deg, 
+        rgba(0, 0, 0, 0.06) 0%,
+        rgba(0, 0, 0, 0.1) 100%);
+    border-radius: 10px;
     margin: 0 20px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.15),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.4);
 }
 
 .programs-grid.horizontal-scroll::-webkit-scrollbar-thumb {
-    background: linear-gradient(90deg, #d32f2f, #b71c1c, #d32f2f);
-    border-radius: 6px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(180deg,
+        rgba(255, 255, 255, 0.9) 0%,
+        rgba(235, 235, 235, 0.95) 20%,
+        rgba(200, 200, 200, 0.98) 50%,
+        rgba(170, 170, 170, 1) 80%,
+        rgba(150, 150, 150, 1) 100%);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px) saturate(180%);
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.2),
+        0 8px 20px rgba(0, 0, 0, 0.12),
+        inset 0 1px 1px rgba(255, 255, 255, 0.8),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
 }
 
 .programs-grid.horizontal-scroll::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(90deg, #b71c1c, #8d0101, #b71c1c);
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-    transform: scaleY(1.1);
+    background: linear-gradient(180deg,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(245, 245, 245, 1) 20%,
+        rgba(215, 215, 215, 1) 50%,
+        rgba(185, 185, 185, 1) 80%,
+        rgba(165, 165, 165, 1) 100%);
+    box-shadow: 
+        0 6px 16px rgba(0, 0, 0, 0.25),
+        0 10px 28px rgba(0, 0, 0, 0.15),
+        inset 0 1px 2px rgba(255, 255, 255, 1),
+        inset 0 -1px 3px rgba(0, 0, 0, 0.25);
+    transform: translateY(-1px) scale(1.05);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.programs-grid.horizontal-scroll::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(180deg,
+        rgba(240, 240, 240, 1) 0%,
+        rgba(200, 200, 200, 1) 50%,
+        rgba(160, 160, 160, 1) 100%);
+    box-shadow: 
+        inset 0 2px 6px rgba(0, 0, 0, 0.3),
+        0 2px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(0);
 }
 
 /* FIXED Filter Results Layout */
@@ -4709,7 +4740,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 
 .scroll-progress-bar {
     height: 100%;
-    background: linear-gradient(90deg, #353535, #7a7a7a, #c5c5c5);
+background: linear-gradient(90deg, #9a8e8f, #998f8c, #938e9a, #9d9a8d, #8e989d, #8e9a91);
     border-radius: 3px;
     transition: width 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
     width: 0%;
@@ -4847,17 +4878,28 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 
 .clear-all {
     padding: 8px 16px;
-    background: #cc5630;
+    background: linear-gradient(135deg, #cc572b 0%, #cc572b 100%);
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
-        position: absolute;
+    position: absolute;
     right: 0;
     top: 25px;
     margin-right: 110px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background-size: 200% 200%;
 }
+
+.clear-all:hover {
+    background: linear-gradient(135deg, #cc572b 0%, #fcb326 100%);
+    background-size: 200% 200%;
+    background-position: right center;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(204, 87, 43, 0.3);
+}
+
 @media (max-width: 768px) {
     .clear-all {
         margin-right: 50px;
@@ -5036,7 +5078,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 .career-form .form-group select:focus,
 .career-form .form-group textarea:focus {
     outline: none;
-    border-color: #d32f2f;
+    border-color: #5c5c5c;
     background-color: white;
     box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
 }
@@ -6050,8 +6092,8 @@ select option {
     --player-bg-tertiary: #181818;
     --player-bg-elevated: #1e1e1e;
     --player-bg-hover: #282828;
-    --accent-glow: rgba(211, 47, 47, 0.6);
-    --accent-gradient: linear-gradient(135deg, #d32f2f 0%, #ff5252 50%, #ff8a80 100%);
+--accent-glow: rgba(44, 166, 231, 0.4);
+--accent-gradient: linear-gradient(135deg, #2ca6e7 0%, #804097 100%);  /* Blue to purple */
     --text-primary: #ffffff;
     --text-secondary-player: #b3b3b3;
     --text-tertiary-player: #6a6a6a;
@@ -6060,7 +6102,7 @@ select option {
     --transition-elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Floating Player Trigger Button */
+/* Floating Player Trigger Button - Glass & Metallic */
 .player-trigger {
     position: fixed;
     bottom: 30px;
@@ -6068,57 +6110,150 @@ select option {
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    background: var(--accent-gradient);
-    border: none;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.25) 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(0, 0, 0, 0.15) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px) saturate(180%);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
     cursor: pointer;
     z-index: 9998;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 
-        0 8px 32px var(--accent-glow),
-        0 4px 16px rgba(0, 0, 0, 0.4);
-    transition: all 0.4s var(--transition-elastic);
-    animation: playerPulseGlow 3s ease-in-out infinite;
+    transition: transform 0.4s var(--transition-elastic), background 0.3s ease, border 0.3s ease, backdrop-filter 0.3s ease;
+    animation: buttonGlowMorph 12s linear infinite;
+    will-change: box-shadow;
+    transform: translateZ(0);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Subtle depth when scrolled - still glass-like */
+.player-trigger.scrolled {
+    background: linear-gradient(
+        135deg,
+        rgba(180, 180, 180, 0.4) 0%,
+        rgba(140, 140, 140, 0.25) 50%,
+        rgba(40, 40, 40, 0.35) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(12px) saturate(200%);
+    -webkit-backdrop-filter: blur(12px) saturate(200%);
 }
 
 .player-trigger:hover {
-    transform: scale(1.1) rotate(5deg);
-    box-shadow: 
-        0 12px 48px var(--accent-glow),
-        0 6px 24px rgba(0, 0, 0, 0.5);
+    transform: scale(1.1) rotate(5deg) translateZ(0);
 }
 
 .player-trigger.active {
-    transform: scale(0.9) rotate(180deg);
-    background: var(--player-bg-elevated);
+    transform: scale(0.9) rotate(180deg) translateZ(0);
+    background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.3) 0%,
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(0, 0, 0, 0.25) 100%
+    );
 }
 
 .player-trigger svg {
     width: 28px;
     height: 28px;
-    fill: white;
     transition: transform 0.4s var(--transition-elastic);
+    animation: colorMorph 12s linear infinite;
+    will-change: fill, filter;
 }
 
 .player-trigger.active svg {
     transform: rotate(-180deg);
 }
 
-@keyframes playerPulseGlow {
-    0%, 100% {
-        box-shadow: 
-            0 8px 32px var(--accent-glow),
-            0 4px 16px rgba(0, 0, 0, 0.4);
+/* Synchronized Smooth Color Morphing Animations */
+@keyframes colorMorph {
+    0% {
+        fill: #f31b28;
+        filter: drop-shadow(0 2px 8px rgba(243, 27, 40, 0.8));
+    }
+    16.66% {
+        fill: #cc572b;
+        filter: drop-shadow(0 2px 8px rgba(204, 87, 43, 0.8));
+    }
+    33.33% {
+        fill: #804097;
+        filter: drop-shadow(0 2px 8px rgba(128, 64, 151, 0.8));
     }
     50% {
-        box-shadow: 
-            0 8px 48px var(--accent-glow),
-            0 4px 24px rgba(0, 0, 0, 0.5),
-            0 0 60px var(--accent-glow);
+        fill: #fcb326;
+        filter: drop-shadow(0 2px 8px rgba(252, 179, 38, 0.8));
+    }
+    66.66% {
+        fill: #2ca6e7;
+        filter: drop-shadow(0 2px 8px rgba(44, 166, 231, 0.8));
+    }
+    83.33% {
+        fill: #3cb34d;
+        filter: drop-shadow(0 2px 8px rgba(60, 179, 77, 0.8));
+    }
+    100% {
+        fill: #f31b28;
+        filter: drop-shadow(0 2px 8px rgba(243, 27, 40, 0.8));
     }
 }
 
+@keyframes buttonGlowMorph {
+    0% {
+        box-shadow: 
+            0 8px 32px rgba(243, 27, 40, 0.5),
+            0 4px 16px rgba(243, 27, 40, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.5),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    }
+    16.66% {
+        box-shadow: 
+            0 8px 32px rgba(204, 87, 43, 0.5),
+            0 4px 16px rgba(204, 87, 43, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.5),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    }
+    33.33% {
+        box-shadow: 
+            0 8px 32px rgba(128, 64, 151, 0.5),
+            0 4px 16px rgba(128, 64, 151, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.5),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    }
+    50% {
+        box-shadow: 
+            0 8px 32px rgba(252, 179, 38, 0.5),
+            0 4px 16px rgba(252, 179, 38, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.5),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    }
+    66.66% {
+        box-shadow: 
+            0 8px 32px rgba(44, 166, 231, 0.5),
+            0 4px 16px rgba(44, 166, 231, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.5),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    }
+    83.33% {
+        box-shadow: 
+            0 8px 32px rgba(60, 179, 77, 0.5),
+            0 4px 16px rgba(60, 179, 77, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.5),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    }
+    100% {
+        box-shadow: 
+            0 8px 32px rgba(243, 27, 40, 0.5),
+            0 4px 16px rgba(243, 27, 40, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.5),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    }
+}
 /* Player Overlay */
 .player-overlay {
     position: fixed;
@@ -6168,23 +6303,28 @@ select option {
     top: 0;
     left: 0;
     right: 0;
-    height: 300px;
-    background: radial-gradient(ellipse at top, var(--accent-glow) 0%, transparent 70%);
-    opacity: 0.3;
+    height: 400px;
+    background: radial-gradient(
+        ellipse at top, 
+        rgba(255, 255, 255, 0.4) 0%, 
+        rgba(255, 255, 255, 0.2) 30%,
+        rgba(255, 255, 255, 0.1) 50%,
+        transparent 80%
+    );
+    opacity: 0.2;
     pointer-events: none;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.8s ease;
 }
 
 .audio-player-sidebar.playing::before {
-    opacity: 0.6;
+    opacity: 0.5;
     animation: playerAmbientPulse 4s ease-in-out infinite;
 }
 
 @keyframes playerAmbientPulse {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 0.7; }
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
 }
-
 /* Player Header */
 .player-header {
     padding: 15px;
@@ -6233,9 +6373,68 @@ select option {
     font-weight: 600;
     font-size: 16.5px;
     letter-spacing: .6px;
-    color: var(--text-primary);
     white-space: nowrap;
     text-align: center;
+    cursor: default;
+    
+    /* Animated rainbow gradient */
+    background: linear-gradient(
+    90deg,
+    #6b6b6b 0%,
+    #8a8a8a 16.66%,
+    #a8a8a8 33.33%,
+    #c0c0c0 50%,
+    #9e9e9e 66.66%,
+    #7a7a7a 83.33%,
+    #6b6b6b 100%
+);
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    animation: gradientTextFlow 15s linear infinite;
+    
+    /* Mouse position variables */
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+    
+    /* Add filter for glow effect */
+    filter: drop-shadow(0 0 0px rgba(255, 255, 255, 0));
+    transition: filter 0.3s ease;
+}
+
+/* Interactive glow on hover */
+.player-logo-text:hover {
+    filter: drop-shadow(0 0 6px rgba(243, 27, 40, 0.3))
+            drop-shadow(0 0 12px rgba(60, 179, 77, 0.2));
+}
+
+/* Radial highlight overlay */
+.player-logo-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+        circle 80px at var(--mouse-x) var(--mouse-y),
+        rgba(255, 255, 255, 0.6) 0%,
+        rgba(255, 255, 255, 0.3) 20%,
+        transparent 50%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+}
+
+.player-logo-text:hover::after {
+    opacity: 1;
 }
 
 .player-close {
@@ -6350,10 +6549,20 @@ select option {
 
 .wave-bar {
     width: 4px;
-    background: var(--accent-gradient);
     border-radius: 2px;
     transform-origin: bottom;
     animation: waveAnimation 0.8s ease-in-out infinite;
+    
+    /* Simple metallic glass look */
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.85) 0%,
+        rgba(180, 180, 220, 0.7) 50%,
+        rgba(120, 120, 180, 0.8) 100%
+    );
+    box-shadow: 
+        inset 1px 0 1px rgba(255, 255, 255, 0.5),
+        0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 @keyframes waveAnimation {
@@ -6395,7 +6604,7 @@ select option {
 /* Progress Bar */
 .audio-player-sidebar .progress-section.player-progress {
     padding: 0 24px;
-    margin-bottom: 24px;
+    margin-bottom: 15px;
 }
 
 @media (max-width: 768px) {
@@ -6415,13 +6624,12 @@ select option {
 
 .audio-player-sidebar .progress-bar {
     height: 100%;
-    background: var(--accent-gradient);
+    background: linear-gradient(to right, #bbb, #222);
     border-radius: 3px;
     width: 0%;
     position: relative;
     transition: width 0.1s linear;
 }
-
 .audio-player-sidebar .progress-bar::after {
     content: '';
     position: absolute;
@@ -6453,7 +6661,7 @@ select option {
 .audio-player-sidebar .time-display {
     display: flex;
     justify-content: space-between;
-    margin-top: 30px;
+    margin-top: 60px;
     font-family: 'Space Mono', monospace;
     font-size: 12px;
     color: var(--text-tertiary-player);
@@ -6466,6 +6674,7 @@ select option {
     align-items: center;
     justify-content: center;
     gap: 50px;
+    margin-top: -25px;
 }
 
 .audio-player-sidebar .control-btn {
@@ -6514,13 +6723,15 @@ select option {
 .audio-player-sidebar .control-btn.play-pause {
     width: 64px;
     height: 64px;
-    background: var(--accent-gradient);
-    box-shadow: 0 4px 24px var(--accent-glow);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .audio-player-sidebar .control-btn.play-pause:hover {
     transform: scale(1.1);
-    box-shadow: 0 8px 32px var(--accent-glow);
+    box-shadow: 0 8px 32px rgba(255, 255, 255, 0.3);
 }
 
 .audio-player-sidebar .control-btn.play-pause svg {
@@ -6722,8 +6933,8 @@ select option {
     left: 0;
     top: 0;
     bottom: 0;
-    width: 3px;
-    background: var(--accent-gradient);
+    width: 3.5px;
+    background: white;
 }
 
 .audio-player-sidebar .playlist-item.playing .item-number {
@@ -6753,7 +6964,7 @@ select option {
 
 .playing-bar {
     width: 3px;
-    background: #d32f2f;
+    background: #8a8a8a;
     border-radius: 1px;
     animation: playingBars 0.8s ease-in-out infinite;
 }
@@ -6937,8 +7148,8 @@ select option {
 /* iOS touch optimizations */
 @media (pointer: coarse) {
     .video-indicator {
-        min-width: 15px;
-        min-height: 15px;
+        min-width: 12px;
+        min-height: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -7154,7 +7365,11 @@ select option {
 .testimonial-dots {
     display: none;
 }
-
+@media (max-width: 1400px) {
+.testimonials-grid {
+    gap: 20px;
+    }
+    }
 /* ============================================ */
 /* MOBILE/TABLET - Carousel Mode (900px & below) */
 /* ============================================ */
@@ -7446,7 +7661,7 @@ select option {
     }
     
     .logo-loop-track {
-        gap: 160px;
+        gap: 135px;
         animation: logo-scroll-infinite 95s linear infinite; /* ✅ SLOWER: 45s → 70s */
     }
     
@@ -7466,7 +7681,7 @@ select option {
 /* ============================================ */
 
 .section-header h2 {
-    font-size: 36px;
+    font-size: 42px;
     font-weight: 700;
     margin-bottom: 10px;
     position: relative;
@@ -7559,6 +7774,77 @@ select option {
 
 @media (max-width: 480px) {
     .section-header h2 {
-        font-size: 24px;
+        font-size: 30px;
     }
+}
+@media (max-width: 676px) {
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px;
+        margin: 40px 0px 60px;
+    }
+    
+    .gallery-item {
+        width: 100%;
+    }
+    
+    .gallery-item img {
+        aspect-ratio: 1/1;
+        object-fit: cover;
+        height: auto !important;
+    }
+}
+@media (max-width: 676px) {
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px;
+        margin: 40px 0px 60px;
+    }
+    
+    .gallery-item {
+        width: 100%;
+    }
+    
+    .gallery-item img {
+        aspect-ratio: 1/1;
+        object-fit: cover;
+        height: auto !important;
+    }
+    
+    .gallery-info h4 {
+        font-size: 14px;
+        margin-bottom: 2px;
+    }
+    
+    .gallery-info p {
+        font-size: 9px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .gallery-overlay {
+        padding: 16px;
+    }
+}
+/* Update existing rule to include h3 */
+.form-group label,
+.form-group h3 {
+    display: block;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+    font-size: 15px;
+    letter-spacing: 0.2px;
+}
+.audio-player-sidebar .volume-slider {
+    flex: 1;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--player-bg-tertiary);
+    border-radius: 2px;
+    outline: none;
+    position: relative;
+    transition: background 0.15s cubic-bezier(0.4, 0.0, 0.2, 1); /* Smooth color transition */
 }

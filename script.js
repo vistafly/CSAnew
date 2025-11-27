@@ -1490,12 +1490,16 @@ class CSAAudioPlayer {
     }
     
     async playTrack(index) {
-        if (index === this.state.currentTrackIndex) {
-            await this.togglePlay();
-        } else {
-            await this.loadTrack(index, true);
-        }
+    // CRITICAL FIX: Mark user interaction to enable playback
+    // Without this, clicking playlist items won't work until play button is pressed first
+    this.state.hasUserInteracted = true;
+    
+    if (index === this.currentTrackIndex) {
+        await this.togglePlay();
+    } else {
+        await this.loadTrack(index, true);
     }
+}
     
     async loadTrack(index, autoPlay = false) {
         // Validate index
@@ -1700,35 +1704,63 @@ class CSAAudioPlayer {
     // ==================== PLAYLIST MANAGEMENT ====================
     
     loadAllTrackDurations() {
-        // Cleanup any existing temp elements
-        this.cleanupTempAudioElements();
-        
-        this.playlist.forEach((track, index) => {
-            const tempAudio = new Audio();
-            tempAudio.preload = 'metadata';
-            
-            // Track for cleanup
-            this.tempAudioElements.push(tempAudio);
-            
-            const onLoaded = () => {
-                this.playlistDurations[index] = tempAudio.duration;
-                this.updatePlaylistItemDuration(index, tempAudio.duration);
-                
-                // Cleanup this specific temp audio
-                tempAudio.src = '';
-            };
-            
-            const onError = () => {
-                console.warn(`⚠️ Could not load metadata for track ${index}`);
-                tempAudio.src = '';
-            };
-            
-            tempAudio.addEventListener('loadedmetadata', onLoaded, { once: true });
-            tempAudio.addEventListener('error', onError, { once: true });
-            
-            tempAudio.src = track.src;
-        });
+    // Cleanup any existing temp elements
+    this.cleanupTempAudioElements();
+    
+    // Load durations sequentially with delays to avoid overwhelming the browser
+    this.playlist.forEach((track, index) => {
+        // Stagger the loads by 100ms each
+        setTimeout(() => {
+            this.loadSingleTrackDuration(track, index);
+        }, index * 100);
+    });
+}
+
+loadSingleTrackDuration(track, index) {
+    const tempAudio = new Audio();
+    tempAudio.preload = 'metadata';
+    
+    // Track for cleanup
+    this.tempAudioElements.push(tempAudio);
+    
+    // Set a timeout to prevent infinite waiting
+    const loadTimeout = setTimeout(() => {
+        console.log(`⏱️ Track ${index} metadata load timeout - using placeholder`);
+        cleanup();
+    }, 5000);
+    
+    const onLoaded = () => {
+        clearTimeout(loadTimeout);
+        this.playlistDurations[index] = tempAudio.duration;
+        this.updatePlaylistItemDuration(index, tempAudio.duration);
+        console.log(`✅ Track ${index} duration: ${this.formatTime(tempAudio.duration)}`);
+        cleanup();
+    };
+    
+    const onError = (e) => {
+        clearTimeout(loadTimeout);
+        console.log(`ℹ️ Track ${index} metadata not preloaded (will load on demand)`);
+        cleanup();
+    };
+    
+    const cleanup = () => {
+        try {
+            tempAudio.src = '';
+            tempAudio.load();
+        } catch (e) {}
+    };
+    
+    tempAudio.addEventListener('loadedmetadata', onLoaded, { once: true });
+    tempAudio.addEventListener('error', onError, { once: true });
+    
+    try {
+        tempAudio.src = track.src;
+        tempAudio.load();
+    } catch (error) {
+        console.log(`ℹ️ Track ${index}: ${error.message}`);
+        cleanup();
     }
+}
     
     cleanupTempAudioElements() {
         this.tempAudioElements.forEach(temp => {
@@ -1860,12 +1892,31 @@ class CSAAudioPlayer {
         this.updateVolumeIcon();
     }
     
-    updateVolumeSliderBackground() {
-        if (!this.volumeSlider) return;
-        
-        const value = this.state.volume;
-        this.volumeSlider.style.background = `linear-gradient(to right, #d32f2f 0%, #d32f2f ${value}%, #181818 ${value}%, #181818 100%)`;
+updateVolumeSliderBackground() {
+    if (!this.volumeSlider) return;
+    
+    const value = this.state.volume;
+    
+    // Smooth color interpolation using your exact brand colors
+    let fillColor;
+    if (value <= 50) {
+        // Blend from green (#3cb34d) to gold (#fcb326)
+        const ratio = value / 50;
+        const r = Math.round(60 + (252 - 60) * ratio);
+        const g = Math.round(179 + (179 - 179) * ratio);
+        const b = Math.round(77 + (38 - 77) * ratio);
+        fillColor = `rgb(${r}, ${g}, ${b})`;
+    } else {
+        // Blend from gold (#fcb326) to red (#f31b28)
+        const ratio = (value - 50) / 50;
+        const r = Math.round(252 + (243 - 252) * ratio);
+        const g = Math.round(179 + (27 - 179) * ratio);
+        const b = Math.round(38 + (40 - 38) * ratio);
+        fillColor = `rgb(${r}, ${g}, ${b})`;
     }
+    
+    this.volumeSlider.style.background = `linear-gradient(to right, ${fillColor} 0%, ${fillColor} ${value}%, #181818 ${value}%, #181818 100%)`;
+}
     
     updateVolumeIcon() {
         const icon = document.getElementById('audioVolumeIcon');
@@ -2351,3 +2402,176 @@ window.testGradientInteraction = () => {
         console.log(`  - Mouse Y:`, title.style.getPropertyValue('--mouse-y'));
     });
 };
+/* ============================================ */
+/* GALLERY FILTERING WITH LIVE COUNT UPDATE    */
+/* ============================================ */
+
+class GalleryFilter {
+    constructor() {
+        // Filter elements
+        this.categoryFilter = document.getElementById('categoryFilter');
+        this.programFilter = document.getElementById('programFilter');
+        this.locationFilter = document.getElementById('locationFilter');
+        this.dateFilter = document.getElementById('dateFilter');
+        this.resetBtn = document.getElementById('filterReset');
+        
+        // Gallery elements
+        this.galleryGrid = document.getElementById('galleryGrid');
+        this.galleryItems = [];
+        
+        // Count elements
+        this.visibleCount = document.getElementById('visibleCount');
+        this.totalCount = document.getElementById('totalCount');
+        
+        this.init();
+    }
+    
+    init() {
+        if (!this.galleryGrid) {
+            console.log('Gallery not found on this page');
+            return;
+        }
+        
+        // Get all gallery items
+        this.galleryItems = Array.from(this.galleryGrid.querySelectorAll('.gallery-item'));
+        
+        // Set total count
+        if (this.totalCount) {
+            this.totalCount.textContent = this.galleryItems.length;
+        }
+        
+        // Bind filter events
+        this.bindEvents();
+        
+        // Initial count update
+        this.updateVisibleCount();
+        
+        console.log(`🖼️ Gallery filter initialized with ${this.galleryItems.length} photos`);
+    }
+    
+    bindEvents() {
+        // Filter change events
+        [this.categoryFilter, this.programFilter, this.locationFilter, this.dateFilter].forEach(filter => {
+            if (filter) {
+                filter.addEventListener('change', () => this.applyFilters());
+            }
+        });
+        
+        // Reset button
+        if (this.resetBtn) {
+            this.resetBtn.addEventListener('click', () => this.resetFilters());
+        }
+    }
+    
+    applyFilters() {
+        const category = this.categoryFilter?.value || 'all';
+        const program = this.programFilter?.value || 'all';
+        const location = this.locationFilter?.value || 'all';
+        const date = this.dateFilter?.value || 'all';
+        
+        let visibleCount = 0;
+        
+        this.galleryItems.forEach(item => {
+            const itemCategories = (item.dataset.category || '').split(',').map(c => c.trim());
+            const itemSubcategory = item.dataset.subcategory || '';
+            const itemLocation = item.dataset.location || '';
+            const itemDate = item.dataset.date || '';
+            
+            // Check each filter
+            const categoryMatch = category === 'all' || itemCategories.includes(category);
+            const programMatch = program === 'all' || itemSubcategory === program;
+            const locationMatch = location === 'all' || itemLocation === location;
+            const dateMatch = date === 'all' || itemDate === date;
+            
+            // Show/hide based on all filters
+            if (categoryMatch && programMatch && locationMatch && dateMatch) {
+                item.classList.remove('hidden');
+                visibleCount++;
+            } else {
+                item.classList.add('hidden');
+            }
+        });
+        
+        // Update visible count
+        this.updateVisibleCount(visibleCount);
+        
+        console.log(`🔍 Filters applied: ${visibleCount} photos visible`);
+    }
+    
+    resetFilters() {
+        // Reset all dropdowns to "all"
+        if (this.categoryFilter) this.categoryFilter.value = 'all';
+        if (this.programFilter) this.programFilter.value = 'all';
+        if (this.locationFilter) this.locationFilter.value = 'all';
+        if (this.dateFilter) this.dateFilter.value = 'all';
+        
+        // Show all items
+        this.galleryItems.forEach(item => {
+            item.classList.remove('hidden');
+        });
+        
+        // Update count
+        this.updateVisibleCount(this.galleryItems.length);
+        
+        console.log('🔄 Filters reset - all photos visible');
+    }
+    
+    updateVisibleCount(count = null) {
+        if (!this.visibleCount) return;
+        
+        // If count not provided, calculate it
+        if (count === null) {
+            count = this.galleryItems.filter(item => !item.classList.contains('hidden')).length;
+        }
+        
+        // Update the display with smooth animation
+        this.visibleCount.style.opacity = '0.5';
+        
+        setTimeout(() => {
+            this.visibleCount.textContent = count;
+            this.visibleCount.style.opacity = '1';
+        }, 150);
+    }
+}
+
+// Initialize Gallery Filter
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        window.galleryFilter = new GalleryFilter();
+    }, 200);
+});
+
+// Backup initialization
+setTimeout(() => {
+    if (!window.galleryFilter) {
+        console.log('🔄 Backup gallery filter initialization...');
+        window.galleryFilter = new GalleryFilter();
+    }
+}, 1500);
+
+// Debug helper
+window.debugGallery = () => {
+    if (window.galleryFilter) {
+        console.log('🖼️ Gallery Debug Info:');
+        console.log('Total items:', window.galleryFilter.galleryItems.length);
+        console.log('Visible items:', window.galleryFilter.galleryItems.filter(i => !i.classList.contains('hidden')).length);
+    }
+};
+// Add this JavaScript to detect scroll and darken the player trigger
+const playerTrigger = document.getElementById('playerTrigger');
+
+function updatePlayerTriggerOnScroll() {
+    const scrollY = window.scrollY || window.pageYOffset;
+    
+    if (scrollY > 50) {
+        playerTrigger.classList.add('scrolled');
+    } else {
+        playerTrigger.classList.remove('scrolled');
+    }
+}
+
+// Listen for scroll events
+window.addEventListener('scroll', updatePlayerTriggerOnScroll, { passive: true });
+
+// Run on page load
+updatePlayerTriggerOnScroll();
