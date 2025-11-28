@@ -270,7 +270,7 @@ if (document.readyState === 'loading') {
     }
 }
 
-// Enhanced program card interactions
+// Enhanced program card interactions - only active when authenticated
 document.addEventListener('DOMContentLoaded', () => {
     const programCards = document.querySelectorAll('.program-card');
     
@@ -278,13 +278,14 @@ document.addEventListener('DOMContentLoaded', () => {
         card.addEventListener('click', function() {
             if (this.classList.contains('hidden')) return;
             
-            const program = this.dataset.subcategory;
-            const title = this.querySelector('.program-title')?.textContent;
-            
-            console.log('Program clicked:', title);
-            
-            // Navigate to gallery if authenticated
+            // ONLY handle clicks if user is authenticated
+            // If not authenticated, do nothing - just let CSS hover effects work
             if (typeof currentUser !== 'undefined' && currentUser) {
+                const program = this.dataset.subcategory;
+                const title = this.querySelector('.program-title')?.textContent;
+                
+                console.log('Program clicked:', title);
+                
                 // Apply filter to gallery if it exists
                 const programFilter = document.getElementById('programFilter');
                 if (programFilter) {
@@ -307,15 +308,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         gallery.scrollIntoView({ behavior: 'smooth' });
                     }, 100);
                 }
-            } else {
-                // Show login modal
-                if (typeof showModal === 'function') {
-                    showModal('loginModal');
-                }
-                if (typeof showNotification === 'function') {
-                    showNotification('Please sign in to view gallery content', 'error');
-                }
             }
+            // Not authenticated: no action, no modal, no notification - hover effects only
         });
     });
 });

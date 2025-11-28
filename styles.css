@@ -2794,6 +2794,13 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     min-height: 0;
 }
 
+@media (max-width: 676px) {
+    .form-group input,
+.form-group select,
+.form-group textarea {
+     font-size: 13.5px;
+    }
+}
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
@@ -5629,8 +5636,8 @@ body.modal-open {
 }
 /* Dynamic Form Styles */
 .form-section-header {
-    margin-bottom: 25px;
-    padding-bottom: 15px;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
     border-bottom: 2px solid #f0f0f0;
 }
 
@@ -5836,6 +5843,51 @@ select option {
     box-shadow: 0 2px 8px rgba(255, 183, 11, 0.2);
 }
 
+/* Responsive design for smaller screens */
+@media (max-width: 785px) {
+    .checkbox-item {
+        display: grid !important;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto;
+        gap: 0px !important;
+        padding: 0px;
+        padding-left: 5px;
+        padding-top: 5px;
+        padding-bottom: 10px;
+        align-items: start;
+        position: relative;
+    }
+    
+    .checkbox-item input[type="checkbox"] {
+        grid-column: 1;
+        grid-row: 1;
+        margin-top: 4px;
+        z-index: 2;
+    }
+    
+    .checkbox-emoji {
+        grid-column: 1 / -1;
+        grid-row: 1;
+        text-align: center;
+        font-size: 1.5rem;
+        display: block;
+        padding-top: 0px;
+    }
+    
+    .checkbox-text {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        text-align: center;
+        display: block;
+        width: 100%;
+        margin-top: 5px;
+    }
+    
+    .checkbox-label {
+        display: none;
+    }
+}
+
 /* ============================================ */
 /* CHECKBOX CONTROL BUTTONS                    */
 /* ============================================ */
@@ -5937,45 +5989,6 @@ select option {
 /* MOBILE RESPONSIVE                           */
 /* ============================================ */
 
-@media (max-width: 768px) {
-    .checkbox-grid.two-columns {
-        grid-template-columns: 1fr;
-    }
-    
-    .checkbox-item {
-        padding: 14px;
-    }
-    
-    .checkbox-label {
-        font-size: 1rem;
-    }
-    
-    .checkbox-controls {
-        flex-wrap: wrap;
-    }
-    
-    .checkbox-control-btn {
-        flex: 1;
-        justify-content: center;
-        min-width: 120px;
-    }
-}
-
-@media (max-width: 480px) {
-    .checkbox-grid {
-        padding: 12px;
-        max-height: 350px;
-    }
-    
-    .checkbox-item {
-        padding: 12px;
-    }
-    
-    .checkbox-control-btn {
-        padding: 10px 12px;
-        font-size: 0.8rem;
-    }
-}
 /* ANIMATION CONFLICT FIX */
 
 /* Rename the scroll indicator animation */
@@ -7874,7 +7887,7 @@ select option {
     display: block;
     font-weight: 600;
     color: #1a1a1a;
-    margin-bottom: 16px;
+    margin-bottom: 4px;
     font-size: 15px;
     letter-spacing: 0.2px;
 }
@@ -7889,3 +7902,10 @@ select option {
     position: relative;
     transition: background 0.15s cubic-bezier(0.4, 0.0, 0.2, 1); /* Smooth color transition */
 }
+
+@media (max-width: 676px) {
+.form-group label,
+.form-group h3 {
+    font-size: 14px;
+    }
+    }

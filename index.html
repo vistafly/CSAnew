@@ -1632,66 +1632,80 @@
         <div class="checkbox-group-label">Music Programs</div>
         <label class="checkbox-item">
             <input type="checkbox" name="eduPrograms" value="choir">
-            <span class="checkbox-label">🎵 Choir Programs</span>
+            <span class="checkbox-emoji">🎵</span>
+            <span class="checkbox-text">Choir Programs</span>
         </label>
         <label class="checkbox-item">
             <input type="checkbox" name="eduPrograms" value="percussion">
-            <span class="checkbox-label">🥁 Percussion Programs</span>
+            <span class="checkbox-emoji">🥁</span>
+            <span class="checkbox-text">Percussion Programs</span>
         </label>
         <label class="checkbox-item">
             <input type="checkbox" name="eduPrograms" value="guitar">
-            <span class="checkbox-label">🎸 Guitar Programs</span>
+            <span class="checkbox-emoji">🎸</span>
+            <span class="checkbox-text">Guitar Programs</span>
         </label>
         <label class="checkbox-item">
             <input type="checkbox" name="eduPrograms" value="keyboard">
-            <span class="checkbox-label">🎹 Keyboard & Piano</span>
+            <span class="checkbox-emoji">🎹</span>
+            <span class="checkbox-text">Keyboard & Piano</span>
         </label>
         <label class="checkbox-item">
             <input type="checkbox" name="eduPrograms" value="dj">
-            <span class="checkbox-label">🎧 DJ & Music Production</span>
+            <span class="checkbox-emoji">🎧</span>
+            <span class="checkbox-text">DJ & Music Production</span>
         </label>
         
         <div class="checkbox-group-label">Arts & Movement</div>
         <label class="checkbox-item">
             <input type="checkbox" name="eduPrograms" value="dance">
-            <span class="checkbox-label">💃 Dance Programs</span>
+            <span class="checkbox-emoji">💃</span>
+            <span class="checkbox-text">Dance Programs</span>
         </label>
         <label class="checkbox-item">
             <input type="checkbox" name="eduPrograms" value="sports">
-            <span class="checkbox-label">⚽ Sports Programs</span>
+            <span class="checkbox-emoji">⚽</span>
+            <span class="checkbox-text">Sports Programs</span>
         </label>
         
         <div class="checkbox-group-label">Media & Technology</div>
         <label class="checkbox-item">
             <input type="checkbox" name="eduPrograms" value="podcasting">
-            <span class="checkbox-label">🎙️ Podcasting & Media</span>
+            <span class="checkbox-emoji">🎙️</span>
+            <span class="checkbox-text">Podcasting & Media</span>
         </label>
         
         <div class="checkbox-group-label">Program Types</div>
         <label class="checkbox-item">
             <input type="checkbox" name="eduPrograms" value="after-school">
-            <span class="checkbox-label">📚 After School Programs</span>
+            <span class="checkbox-emoji">📚</span>
+            <span class="checkbox-text">After School Programs</span>
         </label>
         <label class="checkbox-item">
             <input type="checkbox" name="eduPrograms" value="winter-camps">
-            <span class="checkbox-label">❄️ Winter Camps</span>
+            <span class="checkbox-emoji">❄️</span>
+            <span class="checkbox-text">Winter Camps</span>
         </label>
         <label class="checkbox-item">
             <input type="checkbox" name="eduPrograms" value="summer-camps">
-            <span class="checkbox-label">☀️ Summer Camps</span>
+            <span class="checkbox-emoji">☀️</span>
+            <span class="checkbox-text">Summer Camps</span>
         </label>
         <label class="checkbox-item">
             <input type="checkbox" name="eduPrograms" value="concerts">
-            <span class="checkbox-label">🎤 Concert Programs</span>
+            <span class="checkbox-emoji">🎤</span>
+            <span class="checkbox-text">Concert Programs</span>
         </label>
         <label class="checkbox-item">
             <input type="checkbox" name="eduPrograms" value="assemblies">
-            <span class="checkbox-label">🏫 School Assemblies</span>
+            <span class="checkbox-emoji">🏫</span>
+            <span class="checkbox-text">School Assemblies</span>
         </label>
         
         <label class="checkbox-item consultation-option full-width">
             <input type="checkbox" name="eduPrograms" value="consultation">
-            <span class="checkbox-label">💬 Program Consultation - Help me decide</span>
+            <span class="checkbox-emoji">💬</span>
+            <span class="checkbox-text">Program Consultation - Help me decide</span>
         </label>
     </div>
     <p class="field-error" id="eduProgramsError" style="display: none;">Please select at least one program</p>
@@ -2863,23 +2877,37 @@ function setupSmoothScrolling() {
     });
 }
 
-// Program cards
+// Setup program cards - AUTHENTICATION-ONLY routing
 function setupProgramCards() {
     document.querySelectorAll('.program-card').forEach(card => {
         card.addEventListener('click', () => {
-            const program = card.dataset.program;
-            
+            // ONLY handle clicks if user is authenticated
+            // If not authenticated, do nothing - hover effects only
             if (currentUser) {
+                const program = card.dataset.subcategory;  // Changed from dataset.program
+                
                 const filter = document.getElementById('programFilter');
                 if (filter) {
                     filter.value = program || 'all';
-                    filterGallery();
-                    document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Trigger the change event to update the gallery
+                    const changeEvent = new Event('change', { bubbles: true });
+                    filter.dispatchEvent(changeEvent);
+                    
+                    // Also call filterGallery directly as backup
+                    if (typeof filterGallery === 'function') {
+                        filterGallery();
+                    }
                 }
-            } else {
-                showModal('loginModal');
-                showNotification('Please sign in to view gallery', 'error');
+                
+                const gallery = document.getElementById('gallery');
+                if (gallery) {
+                    setTimeout(() => {
+                        gallery.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                }
             }
+            // Not authenticated: no action, no modal, no notification
         });
     });
 }
