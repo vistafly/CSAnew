@@ -2494,7 +2494,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 
 @media (max-width: 2000px) {
 .about {
-    padding: 50px 0 7rem;
+    padding: 60px 0 7rem;
 }
 }
 .about-content {
@@ -2923,7 +2923,6 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     .contact-info {
         background: rgba(255, 255, 255, 0.95);
         border-radius: 12px;
-        padding: 12px;
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
     }
@@ -3432,7 +3431,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 
 @media (max-width: 2000px) {
 .gallery {
-        padding: 50px 0px 70px;
+        padding: 50px 0px 100px;
     }
      }
 
