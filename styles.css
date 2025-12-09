@@ -3045,7 +3045,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 .footer .logo-image {
     display: block;
     border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(128, 128, 128, 0.452);
+    box-shadow: 0px -1px 8px 1px rgba(128, 128, 128, 0.452);
     transition: transform 0.3s ease;
     margin: 0 auto;
 }
@@ -3056,7 +3056,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 
 @media (max-width: 1024px) {
 .footer .logo-image:hover {
-    transform: scale(1.25);
+    transform: scale(1.1);
 }
 }
 /* Footer Sections */
@@ -3468,7 +3468,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     }
     
     .contact {
-        padding: 40px 0px 3rem;
+        padding: 50px 0px 4rem;
     }
     
     .contact-form-container {
@@ -4157,6 +4157,14 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     margin: 0px auto 60px auto;
     border: 2px dashed #e0e0e0;
     max-width: 550px;
+}
+
+@media (max-width: 768px) {
+.programs-empty-state {
+    padding: 30px;
+    margin: 20px;
+
+}
 }
 
 .programs-empty-state.show {
@@ -7555,7 +7563,7 @@ select option {
     
     .testimonial-dots .dot:hover,
     .testimonial-dots .dot:active {
-        background: #b71c1c;
+        background: #777676;
     }
 }
 
@@ -7689,12 +7697,12 @@ select option {
 /* Mobile adjustments */
 @media (max-width: 768px) {
     .logo-loop-container {
-        top: 70px;
-        padding: 40px 0;
+        top: 55px;
+        padding: 42px 0;
     }
     
     .logo-loop-track {
-        gap: 13rem;
+        gap: 11.5rem;
         animation: logo-scroll-infinite 95s linear infinite; /* ✅ SLOWER: 45s → 70s */
     }
     
