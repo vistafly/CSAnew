@@ -2748,9 +2748,11 @@ function updatePhotoCount() {
 
 // ==================== NAVIGATION & UI ====================
 
-// Header scroll effect - iOS Compatible
+// Header scroll effect - iOS Compatible with Anti-Flicker
 let lastScrollY = window.scrollY;
 let ticking = false;
+let consecutiveDownScrolls = 0;
+let consecutiveUpScrolls = 0;
 
 function isMobile() {
     return window.innerWidth <= 768;
@@ -2767,6 +2769,8 @@ function updateHeader() {
     
     if (!header) return;
     
+    const scrollDelta = currentScrollY - lastScrollY;
+    
     // Apply scrolled class
     if (currentScrollY > 50) {
         header.classList.add('scrolled');
@@ -2774,16 +2778,39 @@ function updateHeader() {
         header.classList.remove('scrolled');
     }
     
-    // Mobile header hide/show - iOS compatible
+    // Mobile header hide/show - iOS compatible with anti-flicker
     if (isMobile()) {
-        if (currentScrollY > lastScrollY && currentScrollY > 100) {
-            // Use class instead of inline style for iOS
-            header.classList.add('header-hidden');
-        } else {
+        // Scrolling DOWN (reading content)
+        if (scrollDelta > 5) {
+            consecutiveDownScrolls++;
+            consecutiveUpScrolls = 0;
+            
+            // Hide header after consistent downward scrolling
+            if (consecutiveDownScrolls >= 4 && currentScrollY > 150) {
+                header.classList.add('header-hidden');
+            }
+        } 
+        // Scrolling UP (wants to navigate)
+        else if (scrollDelta < -5) {
+            consecutiveUpScrolls++;
+            consecutiveDownScrolls = 0;
+            
+            // Show header after consistent upward scrolling
+            if (consecutiveUpScrolls >= 2) {
+                header.classList.remove('header-hidden');
+            }
+        }
+        
+        // Always show header near top
+        if (currentScrollY < 100) {
             header.classList.remove('header-hidden');
+            consecutiveDownScrolls = 0;
+            consecutiveUpScrolls = 0;
         }
     } else {
         header.classList.remove('header-hidden');
+        consecutiveDownScrolls = 0;
+        consecutiveUpScrolls = 0;
     }
     
     lastScrollY = currentScrollY;
@@ -2792,7 +2819,6 @@ function updateHeader() {
 
 window.addEventListener('scroll', () => {
     if (!ticking) {
-        // Use requestAnimationFrame for smoother scrolling on iOS
         requestAnimationFrame(updateHeader);
         ticking = true;
     }
@@ -2804,19 +2830,33 @@ window.addEventListener('orientationchange', () => {
         const header = document.getElementById('header');
         if (header) {
             header.classList.remove('header-hidden');
+            consecutiveDownScrolls = 0;
+            consecutiveUpScrolls = 0;
         }
     }, 100);
 });
 
-// Reset header position on window resize to handle orientation changes
+// Reset header position on window resize
 window.addEventListener('resize', () => {
     const header = document.getElementById('header');
     if (!header) return;
     
     if (!isMobile()) {
-        header.style.transform = 'translateY(0)';
+        header.classList.remove('header-hidden');
+        consecutiveDownScrolls = 0;
+        consecutiveUpScrolls = 0;
     }
 });
+
+// Reset counters when user stops scrolling
+let scrollEndTimeout;
+window.addEventListener('scroll', () => {
+    clearTimeout(scrollEndTimeout);
+    scrollEndTimeout = setTimeout(() => {
+        consecutiveDownScrolls = 0;
+        consecutiveUpScrolls = 0;
+    }, 200);
+}, { passive: true });
 
 // Mobile navigation
 function setupMobileNav() {
