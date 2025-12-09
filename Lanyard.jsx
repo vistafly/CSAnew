@@ -9,7 +9,6 @@ import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 // Assets from public folder
 import cardGLB from '/lanyard/card.glb?url';
 import lanyardTexture from '/lanyard/lanyard.png';
-// YOUR CUSTOM VIP STAGE PASS TEXTURE
 import cardLogo from '/lanyard/card-logo.png';
 
 import * as THREE from 'three';
@@ -26,21 +25,19 @@ export default function Lanyard({ position = [0, 0, 30], gravity = [0, -40, 0], 
   }, []);
 
   return (
-    <div className="lanyard-wrapper" style={{ touchAction: 'none' }}>
+    <div className="lanyard-wrapper">
       <Canvas
         camera={{ position: position, fov: fov }}
         dpr={[1, isMobile ? 1.5 : 2]}
         gl={{ alpha: transparent }}
         onCreated={({ gl }) => {
           gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1);
-          // Prevent default touch behavior on canvas
-          gl.domElement.style.touchAction = 'none';
+          gl.domElement.style.touchAction = 'pan-y';
+          gl.domElement.style.pointerEvents = 'auto';
         }}
-        style={{ touchAction: 'none' }}
       >
-        {/* Reduced ambient light for less brightness */}
         <ambientLight intensity={Math.PI * 0.5} />
-        <Physics gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
+        <Physics key={isMobile ? 'mobile' : 'desktop'} gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
           <Band isMobile={isMobile} />
         </Physics>
         <Environment blur={0.75}>
@@ -79,6 +76,36 @@ export default function Lanyard({ position = [0, 0, 30], gravity = [0, -40, 0], 
 }
 
 function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }) {
+  // ==========================================
+  // 🎮 EASY CONTROL PARAMETERS - ADJUST HERE
+  // ==========================================
+  const LANYARD_CONFIG = {
+    // Vertical Position (Y-axis)
+    // Higher = lanyard starts higher on screen
+    // Lower = lanyard starts lower on screen
+    desktopVerticalPosition: 4,      // Desktop/tablet position
+    mobileVerticalPosition: 4.5,     // Mobile position (768px and below)
+    
+    // Horizontal Position (X-axis)
+    // Positive = moves right, Negative = moves left
+    horizontalPosition: 0,
+    
+    // Depth Position (Z-axis) 
+    // Typically leave at 0
+    depthPosition: 0,
+    
+    // Card scale (size of the badge)
+    cardScale: 2.25,
+    
+    // Card vertical offset relative to rope
+    cardVerticalOffset: -1.2,
+    
+    // Scroll prevention delay (milliseconds)
+    // Higher = more stable dragging, may feel slightly less responsive
+    scrollPreventDelay: 100
+  };
+  // ==========================================
+
   const band = useRef(),
     fixed = useRef(),
     j1 = useRef(),
@@ -92,11 +119,8 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }) {
   const segmentProps = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 4, linearDamping: 4 };
   const { nodes, materials } = useGLTF(cardGLB);
   const texture = useTexture(lanyardTexture);
-  
-  // Load your custom VIP Stage Pass texture
   const logoTexture = useTexture(cardLogo);
   
-  // Configure the texture properly
   useMemo(() => {
     if (logoTexture) {
       logoTexture.flipY = false;
@@ -112,8 +136,9 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }) {
   const [dragged, drag] = useState(false);
   const [hovered, hover] = useState(false);
   
-  // Store current pointer position for continuous tracking
   const pointerPos = useRef({ x: 0, y: 0 });
+  const isDraggingRef = useRef(false);
+  const releaseTimeoutRef = useRef(null);
 
   useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
@@ -123,19 +148,55 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }) {
     [0, 1.5, 0]
   ]);
 
+  const { gl } = useThree();
+
+  // Cursor management
   useEffect(() => {
     if (hovered) {
       document.body.style.cursor = dragged ? 'grabbing' : 'grab';
-      return () => void (document.body.style.cursor = 'auto');
+    } else {
+      document.body.style.cursor = 'auto';
     }
   }, [hovered, dragged]);
 
-  // Get access to Three.js state
-  const { gl } = useThree();
+  // Touch event prevention for smooth dragging
+  useEffect(() => {
+    const canvas = gl.domElement;
+    
+    const handleTouchMove = (e) => {
+      if (isDraggingRef.current) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+    
+    const handleTouchStart = (e) => {
+      if (isDraggingRef.current) {
+        e.preventDefault();
+      }
+    };
+    
+    canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+    canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+    
+    return () => {
+      canvas.removeEventListener('touchmove', handleTouchMove);
+      canvas.removeEventListener('touchstart', handleTouchStart);
+    };
+  }, [gl]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (releaseTimeoutRef.current) {
+        clearTimeout(releaseTimeoutRef.current);
+        releaseTimeoutRef.current = null;
+      }
+    };
+  }, []);
 
   useFrame((state, delta) => {
     if (dragged) {
-      // Use our tracked pointer position instead of state.pointer
       vec.set(pointerPos.current.x, pointerPos.current.y, 0.5).unproject(state.camera);
       dir.copy(vec).sub(state.camera.position).normalize();
       vec.add(dir.multiplyScalar(state.camera.position.length()));
@@ -162,7 +223,6 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }) {
     }
   });
 
-  // Convert screen coordinates to normalized device coordinates
   const updatePointerPos = useCallback((clientX, clientY) => {
     const canvas = gl.domElement;
     const rect = canvas.getBoundingClientRect();
@@ -170,65 +230,86 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }) {
     pointerPos.current.y = -((clientY - rect.top) / rect.height) * 2 + 1;
   }, [gl]);
 
-  // Handle pointer down - start dragging
   const handlePointerDown = useCallback((e) => {
     e.stopPropagation();
     
-    // Prevent default to stop scrolling on touch
-    if (e.nativeEvent) {
-      e.nativeEvent.preventDefault?.();
+    // Clear any pending release timeout
+    if (releaseTimeoutRef.current) {
+      clearTimeout(releaseTimeoutRef.current);
+      releaseTimeoutRef.current = null;
     }
     
-    // Set pointer capture for continuous tracking
-    if (e.target && e.target.setPointerCapture) {
+    isDraggingRef.current = true;
+    
+    // Capture pointer
+    if (e.target?.setPointerCapture) {
       try {
         e.target.setPointerCapture(e.pointerId);
       } catch (err) {
-        // Ignore errors
+        // Silently handle capture errors
       }
     }
     
-    // Update initial pointer position
     updatePointerPos(e.clientX, e.clientY);
     
-    // Calculate drag offset
     const dragOffset = new THREE.Vector3().copy(e.point).sub(vec.copy(card.current.translation()));
     drag(dragOffset);
   }, [updatePointerPos]);
 
-  // Handle pointer move - update position while dragging
   const handlePointerMove = useCallback((e) => {
-    if (!dragged) return;
+    if (!dragged || !isDraggingRef.current) return;
     
     e.stopPropagation();
-    
-    // Prevent default to stop scrolling on touch
-    if (e.nativeEvent) {
-      e.nativeEvent.preventDefault?.();
-    }
-    
     updatePointerPos(e.clientX, e.clientY);
   }, [dragged, updatePointerPos]);
 
-  // Handle pointer up - stop dragging
   const handlePointerUp = useCallback((e) => {
+    if (!isDraggingRef.current) return;
+    
     e.stopPropagation();
     
     // Release pointer capture
-    if (e.target && e.target.releasePointerCapture) {
+    if (e.target?.releasePointerCapture) {
       try {
         e.target.releasePointerCapture(e.pointerId);
       } catch (err) {
-        // Ignore if pointer capture wasn't set
+        // Silently handle release errors
       }
     }
     
     drag(false);
-  }, []);
+    
+    // Delay resetting isDraggingRef to prevent scroll bleed
+    if (releaseTimeoutRef.current) {
+      clearTimeout(releaseTimeoutRef.current);
+    }
+    releaseTimeoutRef.current = setTimeout(() => {
+      isDraggingRef.current = false;
+      releaseTimeoutRef.current = null;
+    }, LANYARD_CONFIG.scrollPreventDelay);
+  }, [LANYARD_CONFIG.scrollPreventDelay]);
 
-  // Handle pointer cancel (touch interrupted)
   const handlePointerCancel = useCallback(() => {
     drag(false);
+    
+    // Delay resetting isDraggingRef
+    if (releaseTimeoutRef.current) {
+      clearTimeout(releaseTimeoutRef.current);
+    }
+    releaseTimeoutRef.current = setTimeout(() => {
+      isDraggingRef.current = false;
+      releaseTimeoutRef.current = null;
+    }, LANYARD_CONFIG.scrollPreventDelay);
+  }, [LANYARD_CONFIG.scrollPreventDelay]);
+
+  const handlePointerOver = useCallback(() => {
+    hover(true);
+  }, []);
+
+  const handlePointerOut = useCallback(() => {
+    if (!isDraggingRef.current) {
+      hover(false);
+    }
   }, []);
 
   curve.curveType = 'chordal';
@@ -236,7 +317,11 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }) {
 
   return (
     <>
-      <group position={[0, 4, 0]}>
+      <group position={[
+        LANYARD_CONFIG.horizontalPosition,
+        isMobile ? LANYARD_CONFIG.mobileVerticalPosition : LANYARD_CONFIG.desktopVerticalPosition,
+        LANYARD_CONFIG.depthPosition
+      ]}>
         <RigidBody ref={fixed} {...segmentProps} type="fixed" />
         <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps}>
           <BallCollider args={[0.1]} />
@@ -250,17 +335,16 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }) {
         <RigidBody position={[2, 0, 0]} ref={card} {...segmentProps} type={dragged ? 'kinematicPosition' : 'dynamic'}>
           <CuboidCollider args={[0.8, 1.125, 0.01]} />
           <group
-            scale={2.25}
-            position={[0, -1.2, -0.05]}
-            onPointerOver={() => hover(true)}
-            onPointerOut={() => hover(false)}
+            scale={LANYARD_CONFIG.cardScale}
+            position={[0, LANYARD_CONFIG.cardVerticalOffset, -0.05]}
+            onPointerOver={handlePointerOver}
+            onPointerOut={handlePointerOut}
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
             onPointerCancel={handlePointerCancel}
             onPointerLeave={handlePointerUp}
           >
-            {/* VIP Stage Pass Card - matte plastic look */}
             <mesh geometry={nodes.card.geometry}>
               <meshStandardMaterial
                 map={logoTexture}
@@ -269,7 +353,6 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }) {
                 envMapIntensity={0.3}
               />
             </mesh>
-            {/* Clip and clamp - metallic silver */}
             <mesh geometry={nodes.clip.geometry}>
               <meshStandardMaterial
                 color="#888888"

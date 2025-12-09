@@ -2515,6 +2515,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     display: flex;
     flex-direction: column;
     gap: 24px;
+    padding-left: 15px;
 }
 
 .feature-item {
@@ -3480,7 +3481,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     }
     
     .gallery {
-        padding: 60px 0;
+        padding: 70px 0 110px;
     }
 
     .gallery-grid {
@@ -4215,7 +4216,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 15px;
+        gap: 26px;
     }
     
     .category-tab {
@@ -4797,7 +4798,7 @@ background: linear-gradient(90deg, #9a8e8f, #998f8c, #938e9a, #9d9a8d, #8e989d, 
     
     .filter-results {
         flex-direction: column !important;
-        gap: 16px !important;
+        gap: 10px !important;
         padding: 16px 20px;
         margin: 0 -20px;
         padding-left: 20px;
@@ -7436,7 +7437,8 @@ select option {
         scroll-behavior: smooth;
         -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
         gap: 20px;
-        padding: 20px 0 40px 0;
+        padding: 40px 20px 40px 10px;
+        padding-left: 20px;
         
         /* Hide scrollbar on iOS */
         scrollbar-width: none; /* Firefox */
@@ -7506,7 +7508,7 @@ select option {
         opacity: 0.4;
         cursor: not-allowed;
         pointer-events: none;
-        margin-left: -10px;
+        margin: -2px;
     }
     
     /* Dot Indicators */
@@ -7577,7 +7579,7 @@ select option {
 /* Mobile Adjustments */
 @media (max-width: 480px) {
     .testimonials-carousel-wrapper {
-        padding: 0 30px;
+        padding: 0 10px;
     }
     
     .testimonial-card {
@@ -7927,6 +7929,8 @@ select option {
   width: 100% !important;
   height: 100% !important;
   display: block;
+  pointer-events: auto !important;
+  touch-action: pan-y !important;
 }
 
 /* Override cursor when dragging */
@@ -7992,4 +7996,38 @@ select option {
     bottom: 10%;
     padding: 0 1rem;
   }
+}
+.hero {
+    position: relative !important;
+    top: auto !important;
+    z-index: 1 !important;
+}
+
+/* Reset all hero children to normal state */
+.hero-content,
+.video-container,
+.hero-logo,
+.hero-actions,
+.hero-text-container,
+.scroll-indicator,
+.hero-overlay {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+}
+
+/* Ensure smooth header transition */
+.header {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                background-color 0.3s ease,
+                box-shadow 0.3s ease !important;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* Prevent layout shift when header changes state */
+.header.scrolled {
+    transform: translateZ(0);
 }

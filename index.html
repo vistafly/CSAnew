@@ -3293,490 +3293,7 @@ window.manualStartCounters = function() {
 };
 </script>
 
-<!-- Parallax Script -->
-<script>
-// parallax.js
-// Updated parallax.js - Compatible with Video Cycling
-// Replace your existing parallax.js content with this
 
-(function() {
-    'use strict';
-    
-    // ===== CONFIGURATION =====
-    const CONFIG = {
-        // Animation smoothing (lower = smoother but more lag, higher = more responsive)
-        desktop: {
-            smoothing: 0.12,
-            useRAFLoop: false       // Desktop uses scroll events (working fine)
-        },
-        mobile: {
-            smoothing: 0.15,        // Mobile needs responsive smoothing
-            useRAFLoop: true        // Mobile uses continuous RAF loop for inertia scrolling
-        },
-        mobileBreakpoint: 1024,
-        parallax: {
-            startTrigger: 0.1,
-            endTrigger: 1.2
-        }
-    };
-    
-    // ===== STATE MANAGEMENT =====
-    let state = {
-        stickyApplied: false,
-        isNavigatingHome: false,
-        isMobile: false,
-        rafId: null,
-        currentScrollY: 0,
-        targetScrollY: 0,
-        lastScrollY: 0
-    };
-    
-    // ===== CACHED DOM ELEMENTS =====
-    let elements = {
-        hero: null,
-        programs: null,
-        heroContent: null,
-        videoContainer: null,
-        heroLogo: null,
-        heroActions: null,
-        heroTextContainer: null,
-        scrollIndicator: null,
-        heroOverlay: null
-    };
-    
-    // ===== UTILITY FUNCTIONS =====
-    function isMobileDevice() {
-        return window.innerWidth <= CONFIG.mobileBreakpoint || 
-               /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    }
-    
-    function easeOutCubic(t) {
-        return 1 - Math.pow(1 - t, 3);
-    }
-    
-    function lerp(start, end, factor) {
-        return start + (end - start) * factor;
-    }
-    
-    // ===== CACHE DOM ELEMENTS =====
-    function cacheElements() {
-        elements.hero = document.getElementById('home');
-        elements.programs = document.getElementById('programs');
-        
-        if (!elements.hero) return false;
-        
-        elements.heroContent = elements.hero.querySelector('.hero-content');
-        elements.videoContainer = elements.hero.querySelector('.video-container');
-        elements.heroLogo = elements.hero.querySelector('.hero-logo');
-        elements.heroActions = elements.hero.querySelector('.hero-actions');
-        elements.heroTextContainer = elements.hero.querySelector('.hero-text-container');
-        elements.scrollIndicator = elements.hero.querySelector('.scroll-indicator');
-        elements.heroOverlay = elements.hero.querySelector('.hero-overlay');
-        
-        return true;
-    }
-    
-    // ===== RESET FUNCTIONS =====
-    function resetHeroToNormal() {
-        if (!elements.hero) return;
-        
-        elements.hero.style.position = 'relative';
-        elements.hero.style.top = '';
-        elements.hero.style.zIndex = '';
-        state.stickyApplied = false;
-        
-        const resetElements = [
-            elements.heroContent,
-            elements.videoContainer,
-            elements.heroLogo,
-            elements.heroActions,
-            elements.heroTextContainer,
-            elements.scrollIndicator,
-            elements.heroOverlay
-        ];
-        
-        resetElements.forEach(element => {
-            if (element) {
-                element.style.opacity = '';
-                element.style.transform = '';
-                element.style.filter = '';
-                element.style.backgroundColor = '';
-                element.style.transition = '';
-            }
-        });
-    }
-    // ===== RESET HERO ELEMENT STYLES (called when at top) =====
-function resetHeroElementStyles() {
-    const resetElements = [
-        elements.heroContent,
-        elements.videoContainer,
-        elements.heroLogo,
-        elements.heroActions,
-        elements.heroTextContainer,
-        elements.scrollIndicator,
-        elements.heroOverlay
-    ];
-    
-    resetElements.forEach(element => {
-        if (element) {
-            element.style.opacity = '';
-            element.style.transform = '';
-            element.style.filter = '';
-            element.style.backgroundColor = '';
-            element.style.transition = '';
-        }
-    });
-}
-    // ===== APPLY PARALLAX EFFECTS - iOS COMPATIBLE =====
-function applyParallaxEffects(scrollY) {
-    const windowHeight = window.innerHeight;
-    
-    if (state.isNavigatingHome) return;
-    
-    // MOBILE FIX: Skip parallax transforms on mobile/iOS
-    if (state.isMobile) {
-        // Only handle opacity changes on mobile, no transforms
-        if (scrollY <= 2) {
-            resetHeroElementStyles();
-        } else if (scrollY > 10) {
-            const startTrigger = windowHeight * 0.1;
-            const endTrigger = windowHeight * 1.2;
-            const progress = Math.max(0, Math.min(1, (scrollY - startTrigger) / (endTrigger - startTrigger)));
-            
-            // Mobile: Only fade elements, no transforms
-            if (elements.heroLogo) {
-                elements.heroLogo.style.opacity = 1 - progress;
-            }
-            if (elements.heroActions) {
-                elements.heroActions.style.opacity = 1 - progress;
-            }
-            if (elements.heroTextContainer) {
-                elements.heroTextContainer.style.opacity = Math.max(0, 1 - (progress * 0.8));
-            }
-            if (elements.scrollIndicator) {
-                elements.scrollIndicator.style.opacity = Math.max(0, 1 - (progress * 1.5));
-            }
-        }
-        return; // Skip desktop parallax logic on mobile
-    }
-    
-    // DESKTOP PARALLAX (unchanged)
-    if (scrollY <= 2 && state.stickyApplied) {
-        elements.hero.style.position = 'relative';
-        elements.hero.style.top = '';
-        state.stickyApplied = false;
-        resetHeroElementStyles();
-        return;
-    }
-    
-    if (scrollY <= 2) {
-        resetHeroElementStyles();
-    }
-    
-    if (scrollY > 2 && !state.stickyApplied) {
-        elements.hero.style.position = 'sticky';
-        elements.hero.style.top = '0';
-        elements.hero.style.zIndex = '1';
-        state.stickyApplied = true;
-    }
-    
-    if (state.stickyApplied && scrollY > 10) {
-        const startTrigger = windowHeight * CONFIG.parallax.startTrigger;
-        const endTrigger = windowHeight * CONFIG.parallax.endTrigger;
-        const progress = Math.max(0, Math.min(1, (scrollY - startTrigger) / (endTrigger - startTrigger)));
-        const easedProgress = easeOutCubic(progress);
-        
-        if (progress > 0) {
-            if (elements.heroContent) {
-                const scale = 1 - (easedProgress * 0.02);
-                elements.heroContent.style.transform = `scale(${scale})`;
-                elements.heroContent.style.transition = 'none';
-            }
-            
-            if (elements.videoContainer) {
-                const scale = 1 + (easedProgress * 0.03);
-                const opacity = 1 - (easedProgress * 0.3);
-                elements.videoContainer.style.transform = `scale(${scale})`;
-                elements.videoContainer.style.opacity = opacity;
-                elements.videoContainer.style.transition = 'none';
-            }
-            
-            if (elements.heroLogo) {
-                const opacity = 1 - easedProgress;
-                const scale = 1 - (easedProgress * 0.03);
-                elements.heroLogo.style.opacity = opacity;
-                elements.heroLogo.style.transform = `scale(${scale})`;
-                elements.heroLogo.style.transition = 'none';
-            }
-            
-            if (elements.heroActions) {
-                const opacity = 1 - easedProgress;
-                const scale = 1 - (easedProgress * 0.02);
-                elements.heroActions.style.opacity = opacity;
-                elements.heroActions.style.transform = `scale(${scale})`;
-                elements.heroActions.style.transition = 'none';
-            }
-            
-            if (elements.heroTextContainer) {
-                const scale = 1 - (easedProgress * 0.02);
-                const opacity = 1 - (easedProgress * 0.8);
-                elements.heroTextContainer.style.transform = `scale(${scale})`;
-                elements.heroTextContainer.style.opacity = Math.max(0, opacity);
-                elements.heroTextContainer.style.transition = 'none';
-            }
-            
-            if (elements.scrollIndicator) {
-                const opacity = 1 - (easedProgress * 1.5);
-                const scale = 1 - (easedProgress * 0.05);
-                elements.scrollIndicator.style.opacity = Math.max(0, opacity);
-                elements.scrollIndicator.style.transform = `translateX(-50%) scale(${scale})`;
-                elements.scrollIndicator.style.transition = 'none';
-            }
-            
-            if (elements.heroOverlay) {
-                const overlayOpacity = 0.5 + (easedProgress * 0.3);
-                elements.heroOverlay.style.backgroundColor = `rgba(0, 0, 0, ${overlayOpacity})`;
-                elements.heroOverlay.style.transition = 'none';
-            }
-        }
-    }
-}
-    
-    // ===== MOBILE: CONTINUOUS RAF LOOP =====
-    // This ensures smooth updates even during scroll inertia on mobile
-    function mobileRAFLoop() {
-        if (!state.isMobile) return;
-        
-        // Get current scroll position
-        state.targetScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
-        
-        // Interpolate for smooth animation (key for mobile inertia scrolling)
-        const smoothing = CONFIG.mobile.smoothing;
-        state.currentScrollY = lerp(state.currentScrollY, state.targetScrollY, smoothing);
-        
-        // Only apply if there's meaningful change
-        if (Math.abs(state.currentScrollY - state.lastScrollY) > 0.1) {
-            applyParallaxEffects(state.currentScrollY);
-            state.lastScrollY = state.currentScrollY;
-        }
-        
-        // Continue the loop
-        state.rafId = requestAnimationFrame(mobileRAFLoop);
-    }
-    
-    // ===== DESKTOP: SCROLL EVENT HANDLER =====
-    function desktopScrollHandler() {
-        if (state.isMobile) return;
-        
-        const scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
-        applyParallaxEffects(scrollY);
-    }
-    
-    // ===== SETUP SCROLL LISTENERS =====
-    function setupScrollListeners() {
-        state.isMobile = isMobileDevice();
-        
-        if (state.isMobile && CONFIG.mobile.useRAFLoop) {
-            // MOBILE: Use continuous RAF loop for smooth updates during inertia
-            console.log('📱 Mobile parallax: Using RAF loop');
-            
-            state.currentScrollY = window.pageYOffset || 0;
-            state.targetScrollY = state.currentScrollY;
-            state.lastScrollY = state.currentScrollY;
-            
-            // Start the RAF loop
-            if (state.rafId) cancelAnimationFrame(state.rafId);
-            state.rafId = requestAnimationFrame(mobileRAFLoop);
-            
-            // Listen for scroll and touch for immediate response
-            window.addEventListener('scroll', () => {
-                state.targetScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
-            }, { passive: true });
-            
-            document.addEventListener('touchmove', () => {
-                state.targetScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
-            }, { passive: true });
-            
-            document.addEventListener('touchend', () => {
-                state.targetScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
-            }, { passive: true });
-            
-        } else {
-            // DESKTOP: Use optimized scroll events (original behavior - working fine)
-            console.log('🖥️ Desktop parallax: Using scroll events');
-            
-            let ticking = false;
-            
-            window.addEventListener('scroll', () => {
-                if (!ticking) {
-                    requestAnimationFrame(() => {
-                        desktopScrollHandler();
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            }, { passive: true });
-        }
-    }
-    
-    // ===== HANDLE RESIZE =====
-    function handleResize() {
-        const wasMobile = state.isMobile;
-        state.isMobile = isMobileDevice();
-        
-        if (wasMobile !== state.isMobile) {
-            console.log('📐 Device type changed, reinitializing parallax');
-            
-            if (state.rafId && !state.isMobile) {
-                cancelAnimationFrame(state.rafId);
-                state.rafId = null;
-            }
-            
-            if (state.isMobile && CONFIG.mobile.useRAFLoop) {
-                state.currentScrollY = window.pageYOffset || 0;
-                state.targetScrollY = state.currentScrollY;
-                state.rafId = requestAnimationFrame(mobileRAFLoop);
-            }
-        }
-    }
-    
-    // ===== SETUP HOME NAVIGATION =====
-    function setupHomeNavigation() {
-        document.addEventListener('click', (e) => {
-            const navLink = e.target.closest('a[href^="#"]');
-            if (navLink) {
-                const targetId = navLink.getAttribute('href');
-                
-                if (targetId === '#home') {
-                    console.log('🏠 Home navigation clicked');
-                    state.isNavigatingHome = true;
-                    
-                    resetHeroToNormal();
-                    e.preventDefault();
-                    
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-                    
-                    setTimeout(() => {
-                        state.isNavigatingHome = false;
-                        console.log('✅ Home navigation complete');
-                        
-                        const scrollY = window.pageYOffset || 0;
-                        if (state.isMobile) {
-                            state.currentScrollY = scrollY;
-                            state.targetScrollY = scrollY;
-                        }
-                        applyParallaxEffects(scrollY);
-                    }, 1000);
-                }
-            }
-        });
-    }
-    
-    // ===== SETUP PROGRAMS SECTION =====
-    function setupProgramsSection() {
-        if (!elements.programs) return;
-        
-        elements.programs.style.position = 'relative';
-        elements.programs.style.zIndex = '10';
-        elements.programs.style.backgroundColor = '#f8f9fa';
-        elements.programs.style.borderRadius = '24px 24px 0 0';
-        elements.programs.style.boxShadow = '0 -20px 40px rgba(0, 0, 0, 0.1)';
-        
-        const sectionsAfterPrograms = ['gallery', 'about', 'testimonials', 'contact'];
-        sectionsAfterPrograms.forEach(sectionId => {
-            const section = document.getElementById(sectionId);
-            if (section) {
-                section.style.position = 'relative';
-                section.style.zIndex = '10';
-            }
-        });
-        
-        const footer = document.querySelector('.footer');
-        if (footer) {
-            footer.style.position = 'relative';
-            footer.style.zIndex = '10';
-        }
-    }
-    
-    // ===== MAIN INITIALIZATION =====
-    function initParallax() {
-        console.log('🚀 Initializing optimized parallax...');
-        
-        if (!cacheElements()) {
-            console.error('❌ Hero section not found');
-            return;
-        }
-        
-        if (!elements.programs) {
-            console.error('❌ Programs section not found');
-            return;
-        }
-        
-        elements.hero.style.position = 'sticky';
-        elements.hero.style.top = '0';
-        elements.hero.style.zIndex = '1';
-        state.stickyApplied = true;
-        
-        setupProgramsSection();
-        setupScrollListeners();
-        setupHomeNavigation();
-        
-        let resizeTimeout;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(handleResize, 250);
-        }, { passive: true });
-        
-        const initialScrollY = window.pageYOffset || 0;
-        if (state.isMobile) {
-            state.currentScrollY = initialScrollY;
-            state.targetScrollY = initialScrollY;
-        }
-        applyParallaxEffects(initialScrollY);
-        
-        console.log('✅ Parallax ready -', state.isMobile ? 'Mobile' : 'Desktop', 'mode');
-    }
-    
-    // ===== WAIT FOR ELEMENTS AND INITIALIZE =====
-    function waitForElementsAndInit() {
-        const hero = document.getElementById('home');
-        const programs = document.getElementById('programs');
-        
-        if (hero && programs) {
-            initParallax();
-        } else {
-            setTimeout(waitForElementsAndInit, 100);
-        }
-    }
-    
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', waitForElementsAndInit);
-    } else {
-        waitForElementsAndInit();
-    }
-    
-    setTimeout(waitForElementsAndInit, 1000);
-    
-    window.addEventListener('beforeunload', () => {
-        if (state.rafId) {
-            cancelAnimationFrame(state.rafId);
-        }
-    });
-    
-    // Debug function
-    window.debugParallax = function() {
-        console.log('===== PARALLAX DEBUG =====');
-        console.log('Is Mobile:', state.isMobile);
-        console.log('Sticky Applied:', state.stickyApplied);
-        console.log('RAF ID:', state.rafId);
-        console.log('Current/Target Scroll:', state.currentScrollY, '/', state.targetScrollY);
-    };
-    
-})();
-</script>
 <!-- Contact Form Script (add this after the parallax script) -->
 <script>
 // Contact Form Functionality - DYNAMIC ROLE-BASED FORMS WITH CHECKBOX SUPPORT
@@ -4153,110 +3670,106 @@ if (typeof showNotification === 'undefined') {
     }
 }
 
-// Professional Active Section Tracking
+// SIMPLE NAVIGATION - JUST WORKS
 (function() {
     'use strict';
     
-    let isInitialized = false;
-    let currentSection = null;
+    let isNavigating = false;
     
-    function initSectionTracking() {
-        if (isInitialized) return;
-        
+    function initNav() {
         const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
         const sections = document.querySelectorAll('section[id]');
         
         if (!navLinks.length || !sections.length) {
-            setTimeout(initSectionTracking, 200);
+            setTimeout(initNav, 200);
             return;
         }
         
-        isInitialized = true;
-        
-        function setActiveSection(sectionId) {
-            if (currentSection === sectionId) return;
-            
-            navLinks.forEach(link => link.classList.remove('active'));
-            
-            const activeLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
-            if (activeLink) {
-                activeLink.classList.add('active');
-                currentSection = sectionId;
-            }
-        }
-        
-        function getCurrentSection() {
-            const scrollPos = window.pageYOffset + 100;
-            
-            if (scrollPos < 200) return 'home';
-            
-            for (let i = sections.length - 1; i >= 0; i--) {
-                const section = sections[i];
-                if (section.offsetTop <= scrollPos) {
-                    return section.id;
+        // Set active nav link
+        function setActive(sectionId) {
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
                 }
-            }
-            return 'home';
+            });
         }
         
-        let scrollTimer;
-        function handleScroll() {
-            if (scrollTimer) clearTimeout(scrollTimer);
-            scrollTimer = setTimeout(() => {
-                const activeSection = getCurrentSection();
-                setActiveSection(activeSection);
-            }, 10);
-        }
+        // Watch sections
+        const observer = new IntersectionObserver((entries) => {
+            if (isNavigating) return; // BLOCK during navigation
+            
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setActive(entry.target.id);
+                }
+            });
+        }, {
+            rootMargin: '-20% 0px -60% 0px',
+            threshold: 0
+        });
         
+        sections.forEach(section => observer.observe(section));
+        
+        // Handle clicks
         navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 const href = this.getAttribute('href');
-                if (!href.startsWith('#')) return;
+                if (!href || !href.startsWith('#')) return;
                 
                 e.preventDefault();
+                
                 const targetId = href.substring(1);
                 const targetSection = document.getElementById(targetId);
+                if (!targetSection) return;
                 
-                if (targetSection) {
-                    setActiveSection(targetId);
-                    
-                    // Close mobile menu
-                    const navMenu = document.getElementById('navMenu');
-                    const navToggle = document.getElementById('navToggle');
-                    if (navMenu && navMenu.classList.contains('active')) {
-                        navMenu.classList.remove('active');
-                        if (navToggle) navToggle.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                    
-                    const header = document.getElementById('header');
-                    const offset = header ? header.offsetHeight + 20 : 80;
-                    const targetTop = targetId === 'home' ? 0 : targetSection.offsetTop - offset;
-                    
-                    window.scrollTo({
-                        top: Math.max(0, targetTop),
-                        behavior: 'smooth'
-                    });
+                // Set active IMMEDIATELY
+                setActive(targetId);
+                
+                // BLOCK observer for 1.5 seconds
+                isNavigating = true;
+                setTimeout(() => { isNavigating = false; }, 1500);
+                
+                // Close mobile menu
+                const navMenu = document.getElementById('navMenu');
+                const navToggle = document.getElementById('navToggle');
+                if (navMenu?.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    navToggle?.classList.remove('active');
+                    document.body.style.overflow = '';
                 }
+                
+                // Scroll
+                const header = document.getElementById('header');
+                const headerHeight = header ? header.offsetHeight : 80;
+                const scrollTo = targetId === 'home' ? 0 : targetSection.offsetTop - headerHeight - 20;
+                
+                window.scrollTo({
+                    top: Math.max(0, scrollTo),
+                    behavior: 'smooth'
+                });
             });
         });
         
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        
-        // Initial setup
+        // Set initial
         setTimeout(() => {
-            const initialSection = getCurrentSection();
-            setActiveSection(initialSection);
-        }, 100);
+            let visible = 'home';
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.5 && rect.bottom > 0) {
+                    visible = section.id;
+                }
+            });
+            setActive(visible);
+        }, 500);
     }
     
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initSectionTracking);
+        document.addEventListener('DOMContentLoaded', initNav);
     } else {
-        initSectionTracking();
+        initNav();
     }
-    
-    setTimeout(initSectionTracking, 500);
 })();
 </script>
 <script>
