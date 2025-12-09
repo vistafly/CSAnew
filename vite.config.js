@@ -20,7 +20,8 @@ export default defineConfig({
     assetsDir: 'assets',
     rollupOptions: {
       input: {
-        main: './index.html'
+        main: './index.html',
+        footerLogo: './footer-logo-entry.jsx'
       },
       output: {
         manualChunks: undefined,

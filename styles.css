@@ -772,7 +772,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     .nav {
         display: flex;
         align-items: center;
-        padding: 25px 1rem;
+        padding: 8px 1rem;
         position: relative;
     }
 }
@@ -1102,7 +1102,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     align-items: center;
     gap: 12px;
     padding: 8px 16px;
-    background: #f8f9fa57;
+    background: #ffffff8f;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
@@ -1210,19 +1210,25 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 .nav-toggle {
     display: none;
     flex-direction: column;
-    background: none;
+    background: transparent;
     border: none;
     cursor: pointer;
     gap: 4px;
+    padding: 12px;
+    align-items: center;
+    justify-content: center;
+    min-width: 48px;
+    min-height: 48px;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .hamburger-line {
-    width: 24px;
-    height: 2px;
+    width: 30px;
+    height: 3px;
     background-color: #333;
     transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     transform-origin: center center;
-    border-radius: 1px;
+    border-radius: 1.5px;
 }
 
 .nav-toggle.active .hamburger-line:nth-child(1) {
@@ -1236,7 +1242,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 }
 
 .nav-toggle.active .hamburger-line:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
+    transform: translateY(-8px) rotate(-45deg);
     background-color: #d32f2f;
 }
 
@@ -2295,8 +2301,8 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 }
 
 .modal-body {
-    padding: 25px 25px;
-    min-height: 380px;
+    padding: 2rem 1.5rem;
+    min-height: fit-content;
 }
 
 .login-form,
@@ -2467,7 +2473,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     align-items: center;
     gap: 8px;
     margin-top: 12px;
-    padding: 10px 14px;
+    padding: 8px 6px;
     background: rgba(0, 0, 0, 0.04);
     border-radius: 8px;
     border: 1px solid rgba(0, 0, 0, 0.08);
@@ -2656,7 +2662,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 }
 @media (max-width: 2000px) {
     .contact {
-        padding: 85px 0 7rem;
+        padding: 8rem 0 8rem;
     }
     }
 @media (max-width: 1200px) {
@@ -2667,7 +2673,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 .contact-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 5rem;
+    gap: 12rem;
     align-items: flex-start;
 }
 
@@ -2845,6 +2851,8 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     -webkit-backdrop-filter: blur(8px);
     position: relative;
     z-index: 5; /* Lower than contact but higher than video */
+    transform-style: preserve-3d; /* ADD THIS */
+    overflow: visible;
 }
 
 /* Keep contact section solid */
@@ -3014,7 +3022,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     display: grid;
     grid-template-columns: auto 1fr 1fr 1fr;
     gap: 8rem;
-    margin-bottom: 40px;
+    margin-bottom: 10px;
     align-items: start;
 }
 /* Responsive Improvements */
@@ -3026,9 +3034,23 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 /* Footer Brand Section (Logo Only) */
 .footer-brand {
     display: flex;
-    justify-content: center;
-    align-items: center;
     width: 100%;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    overflow: visible;
+    min-height: 250px;
+    background: transparent; /* ADD THIS LINE */
+}
+
+#footer-tilted-logo {
+    width: 220px;
+    height: 220px;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    overflow: visible;
+    position: relative;
+    z-index: 10;
+    background: transparent; /* ADD THIS LINE */
 }
 
 .footer .logo {
@@ -3051,7 +3073,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 }
 
 .footer .logo-image:hover {
-    transform: scale(1.2);
+    transform: scale(1.05);
 }
 
 @media (max-width: 1024px) {
@@ -3136,7 +3158,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 /* Footer Bottom */
 .footer-bottom {
     text-align: center;
-    padding-top: 30px;
+    padding-top: 20px;
     border-top: 1px solid #404040;
     color: #999;
     font-size: 14px;
@@ -3359,7 +3381,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     }
     
     .footer {
-        padding: 50px 0 25px;
+        padding: 2rem 0 25px;
     }
     
     .footer-content {
@@ -3374,7 +3396,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
         justify-content: center;
         align-items: center;
         width: 100%;
-        margin-bottom: 20px;
+        margin-bottom: 0rem;
     }
     
     .footer .logo {
@@ -3502,7 +3524,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     }
     
     .modal-body {
-        padding: 10px 12px;
+        padding: 2rem 1.5rem;
     }
     
     .modal-header {
@@ -3539,7 +3561,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
         justify-content: center;
         align-items: center;
         width: 100%;
-        margin-bottom: 0px;
+        margin-bottom: -1rem;
     }
     
     .footer-brand-text {
