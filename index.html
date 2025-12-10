@@ -2135,24 +2135,32 @@
     }
     
     function completeLoadingInstant() {
+    if (isComplete) return;
+    isComplete = true;
+    
     const loader = document.getElementById('loader');
     const loaderHeroLogo = document.getElementById('loaderHeroLogo');
     
     // Simply fade out the loader logo in place
     if (loaderHeroLogo) {
-        loaderHeroLogo.style.transition = 'opacity 0.8s ease-out';
+        loaderHeroLogo.style.transition = 'opacity 0.5s ease-out';
         loaderHeroLogo.style.opacity = '0';
     }
     
-    // Fade out the loader overlay
+    // Fade out the loader overlay and allow scrolling quickly
     setTimeout(() => {
         if (loader) {
             loader.classList.add('fade-out');
-            setTimeout(() => {
-                loader.style.display = 'none';
-            }, 1800); // Match your .loader.fade-out transition duration
         }
-    }, 400);
+        allowScrolling(); // Allow scrolling as soon as fade starts
+    }, 300);
+    
+    // Hide loader after fade completes
+    setTimeout(() => {
+        if (loader) {
+            loader.style.display = 'none';
+        }
+    }, 1000);
 }
     
     function initializeUltraFast() {
