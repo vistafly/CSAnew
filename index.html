@@ -1147,17 +1147,22 @@
 <!-- Career Interest Form Modal -->
 <div class="modal-overlay" id="careerModal">
     <div class="modal">
-        <div class="modal-header">
-            <h3>Career Interest Form</h3>
-            <button class="modal-close" id="careerModalClose">&times;</button>
-        </div>
+       <div class="modal-header">
+    <div class="modal-logo"><img src="./images/logo.png" alt="CSA Logo"></div>
+    <div class="modal-header-content">
+        <h3>Career Application</h3>
+    </div>
+    <button class="modal-close">&times;</button>
+</div>
         <div class="modal-body">
             <form class="career-form" id="careerForm">
                 <div class="form-header">
-                    <p>Join our team of passionate music and arts educators!</p>
+                    <p>Join our team of passionate music, dance, and sports educators! Complete the form below and we'll be in touch.</p>
                 </div>
                 
-                <!-- Personal Information -->
+                <!-- ========================================== -->
+                <!-- SECTION 1: PERSONAL INFORMATION            -->
+                <!-- ========================================== -->
                 <div class="form-section">
                     <h4>Personal Information</h4>
                     
@@ -1180,124 +1185,619 @@
                         <div class="form-group">
                             <label for="careerPhone">Phone Number *</label>
                             <input type="tel" id="careerPhone" name="phone" placeholder="(555) 123-4567" autocomplete="tel" required>
-                            <small style="color: #666; font-size: 12px; display: block; margin-top: 4px;">
-                                Format: (555) 123-4567
-                            </small>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="careerCity">City *</label>
+                            <input type="text" id="careerCity" name="city" autocomplete="address-level2" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="careerState">State *</label>
+                            <select id="careerState" name="state" required>
+                                <option value="">Select state</option>
+                                <option value="CA">California</option>
+                                <option value="AZ">Arizona</option>
+                                <option value="NV">Nevada</option>
+                                <option value="OR">Oregon</option>
+                                <option value="WA">Washington</option>
+                                <option value="other">Other</option>
+                            </select>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Position Information -->
+                <!-- ========================================== -->
+                <!-- SECTION 2: POSITION & AVAILABILITY         -->
+                <!-- ========================================== -->
                 <div class="form-section">
-                    <h4>Position Information</h4>
+                    <h4>Position & Availability</h4>
                     
-                    <div class="form-group">
-                        <label for="positionInterest">Position of Interest *</label>
-                        <select id="positionInterest" name="position" required>
-                            <option value="">Select position</option>
-                            <option value="Music Instructor">Music Instructor</option>
-                            <option value="Sports Coach">Sports Coach</option>
-                            <option value="Dance Instructor">Dance Instructor</option>
-                            <option value="Percussion Instructor">Percussion Instructor</option>
-                            <option value="Choir Director">Choir Director</option>
-                            <option value="Program Coordinator">Program Coordinator</option>
-                            <option value="Administrative Staff">Administrative Staff</option>
-                            <option value="Other">Other</option>
-                        </select>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="positionInterest">Position of Interest *</label>
+                            <select id="positionInterest" name="position" required>
+                                <option value="">Select position</option>
+                                <optgroup label="Music">
+                                    <option value="Music Instructor">Music Instructor (General)</option>
+                                    <option value="Guitar Instructor">Guitar Instructor</option>
+                                    <option value="Keyboard/Piano Instructor">Keyboard/Piano Instructor</option>
+                                    <option value="Percussion Instructor">Percussion/Drums Instructor</option>
+                                    <option value="Vocal/Choir Director">Vocal/Choir Director</option>
+                                    <option value="DJ/Music Production Instructor">DJ/Music Production Instructor</option>
+                                    <option value="Podcasting Instructor">Podcasting Instructor</option>
+                                </optgroup>
+                                <optgroup label="Dance">
+                                    <option value="Dance Instructor">Dance Instructor</option>
+                                </optgroup>
+                                <optgroup label="Sports">
+                                    <option value="Sports Coach">Sports Coach</option>
+                                </optgroup>
+                                <optgroup label="Other">
+                                    <option value="Program Coordinator">Program Coordinator</option>
+                                    <option value="Administrative Staff">Administrative Staff</option>
+                                    <option value="Other">Other</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="experienceWithChildren">Experience Working with Children *</label>
+                            <select id="experienceWithChildren" name="experienceWithChildren" required>
+                                <option value="">Select</option>
+                                <option value="None">No formal experience</option>
+                                <option value="Less than 1 year">Less than 1 year</option>
+                                <option value="1-2 years">1-2 years</option>
+                                <option value="3-5 years">3-5 years</option>
+                                <option value="5+ years">5+ years</option>
+                            </select>
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="availability">Availability *</label>
-                        <select id="availability" name="availability" required>
-                            <option value="">Select availability</option>
-                            <option value="Full-Time">Full-Time</option>
-                            <option value="Part-Time">Part-Time</option>
-                            <option value="Contract/Seasonal">Contract/Seasonal</option>
-                            <option value="Flexible">Flexible</option>
-                        </select>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="startDate">Earliest Start Date *</label>
+                            <input type="date" id="startDate" name="startDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="hasTransportation">Reliable Transportation? *</label>
+                            <select id="hasTransportation" name="hasTransportation" required>
+                                <option value="">Select</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- Qualifications -->
+                <!-- ========================================== -->
+                <!-- SECTION 3: SKILLS & TALENTS (COMBINED)     -->
+                <!-- ========================================== -->
                 <div class="form-section">
-                    <h4>Qualifications</h4>
+                    <h4>Skills & Talents</h4>
+                    <p style="color: #666; font-size: 14px; margin-bottom: 16px;">Select all areas where you have teaching or coaching experience.</p>
                     
                     <div class="form-group">
-                        <label for="experience">Years of Experience *</label>
-                        <select id="experience" name="experience" required>
-                            <option value="">Select experience</option>
-                            <option value="Less than 1 year">Less than 1 year</option>
-                            <option value="1-3 years">1-3 years</option>
-                            <option value="3-5 years">3-5 years</option>
-                            <option value="5-10 years">5-10 years</option>
-                            <option value="10+ years">10+ years</option>
-                        </select>
+                        <div class="checkbox-controls">
+                            <button type="button" class="checkbox-control-btn" onclick="selectAllSkills()">
+                                <span class="control-icon">✓</span> Select All
+                            </button>
+                            <button type="button" class="checkbox-control-btn clear" onclick="clearAllSkills()">
+                                <span class="control-icon">✕</span> Clear All
+                            </button>
+                        </div>
+                        
+                        <div class="checkbox-grid two-columns" id="skillsGrid">
+                            
+                            <!-- ===== MUSIC INSTRUMENTS ===== -->
+                            <div class="checkbox-group-label">🎵 Musical Instruments</div>
+                            
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="guitar-acoustic">
+                                <span class="checkbox-emoji">🎸</span>
+                                <span class="checkbox-text">Acoustic Guitar</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="guitar-electric">
+                                <span class="checkbox-emoji">🎸</span>
+                                <span class="checkbox-text">Electric Guitar</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="bass">
+                                <span class="checkbox-emoji">🎸</span>
+                                <span class="checkbox-text">Bass Guitar</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="ukulele">
+                                <span class="checkbox-emoji">🪕</span>
+                                <span class="checkbox-text">Ukulele</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="piano-keyboard">
+                                <span class="checkbox-emoji">🎹</span>
+                                <span class="checkbox-text">Piano/Keyboard</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="percussion">
+                                <span class="checkbox-emoji">🥁</span>
+                                <span class="checkbox-text">Percussion</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="voice">
+                                <span class="checkbox-emoji">🎤</span>
+                                <span class="checkbox-text">Voice/Vocals</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="dj-production">
+                                <span class="checkbox-emoji">🎧</span>
+                                <span class="checkbox-text">DJ/Production</span>
+                            </label>
+                            
+                            <!-- ===== MUSIC GENRES ===== -->
+                            <div class="checkbox-group-label" style="margin-top: 8px;">🎶 Music Genres <span style="font-weight: 400; font-size: 12px; color: #888;">(if applicable)</span></div>
+
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="musicGenres" value="regional-mexican">
+                                <span class="checkbox-emoji">🇲🇽</span>
+                                <span class="checkbox-text">Regional Mexican</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="musicGenres" value="rock">
+                                <span class="checkbox-emoji">🎸</span>
+                                <span class="checkbox-text">Rock</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="musicGenres" value="pop">
+                                <span class="checkbox-emoji">🎤</span>
+                                <span class="checkbox-text">Pop</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="musicGenres" value="hip-hop-rap">
+                                <span class="checkbox-emoji">🎧</span>
+                                <span class="checkbox-text">Hip Hop / Rap</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="musicGenres" value="r-and-b">
+                                <span class="checkbox-emoji">🎵</span>
+                                <span class="checkbox-text">R&B / Soul</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="musicGenres" value="jazz">
+                                <span class="checkbox-emoji">🎷</span>
+                                <span class="checkbox-text">Jazz</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="musicGenres" value="classical">
+                                <span class="checkbox-emoji">🎻</span>
+                                <span class="checkbox-text">Classical</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="musicGenres" value="country">
+                                <span class="checkbox-emoji">🤠</span>
+                                <span class="checkbox-text">Country</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="musicGenres" value="blues">
+                                <span class="checkbox-emoji">🎸</span>
+                                <span class="checkbox-text">Blues</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="musicGenres" value="heavy-metal">
+                                <span class="checkbox-emoji">🤘</span>
+                                <span class="checkbox-text">Heavy Metal</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="musicGenres" value="electronic-edm">
+                                <span class="checkbox-emoji">💿</span>
+                                <span class="checkbox-text">Electronic / EDM</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="musicGenres" value="gospel">
+                                <span class="checkbox-emoji">🙏</span>
+                                <span class="checkbox-text">Gospel / Christian</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="musicGenres" value="latin">
+                                <span class="checkbox-emoji">💃</span>
+                                <span class="checkbox-text">Latin / Salsa</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="musicGenres" value="reggae">
+                                <span class="checkbox-emoji">🌴</span>
+                                <span class="checkbox-text">Reggae</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="musicGenres" value="folk-acoustic">
+                                <span class="checkbox-emoji">🪕</span>
+                                <span class="checkbox-text">Folk / Acoustic</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="musicGenres" value="world-music">
+                                <span class="checkbox-emoji">🌍</span>
+                                <span class="checkbox-text">World Music</span>
+                            </label>
+                            
+                            <!-- ===== DANCE STYLES ===== -->
+                            <div class="checkbox-group-label">💃 Dance Styles</div>
+                            
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="hip-hop">
+                                <span class="checkbox-emoji">🕺</span>
+                                <span class="checkbox-text">Hip Hop</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="jazz">
+                                <span class="checkbox-emoji">💃</span>
+                                <span class="checkbox-text">Jazz</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="contemporary">
+                                <span class="checkbox-emoji">💃</span>
+                                <span class="checkbox-text">Contemporary/Modern</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="ballet">
+                                <span class="checkbox-emoji">🩰</span>
+                                <span class="checkbox-text">Ballet</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="tap">
+                                <span class="checkbox-emoji">👞</span>
+                                <span class="checkbox-text">Tap</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="breakdance">
+                                <span class="checkbox-emoji">🤸</span>
+                                <span class="checkbox-text">Breakdancing</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="folk-cultural">
+                                <span class="checkbox-emoji">🌍</span>
+                                <span class="checkbox-text">Folk/Cultural</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="choreography">
+                                <span class="checkbox-emoji">📝</span>
+                                <span class="checkbox-text">Choreography</span>
+                            </label>
+                            
+                            <!-- ===== SPORTS & ATHLETICS ===== -->
+                            <div class="checkbox-group-label">⚽ Sports & Athletics</div>
+                            
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="soccer">
+                                <span class="checkbox-emoji">⚽</span>
+                                <span class="checkbox-text">Soccer</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="basketball">
+                                <span class="checkbox-emoji">🏀</span>
+                                <span class="checkbox-text">Basketball</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="baseball">
+                                <span class="checkbox-emoji">⚾</span>
+                                <span class="checkbox-text">Baseball/Softball</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="football">
+                                <span class="checkbox-emoji">🏈</span>
+                                <span class="checkbox-text">Flag Football</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="volleyball">
+                                <span class="checkbox-emoji">🏐</span>
+                                <span class="checkbox-text">Volleyball</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="track-field">
+                                <span class="checkbox-emoji">🏃</span>
+                                <span class="checkbox-text">Track & Field</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="tennis">
+                                <span class="checkbox-emoji">🎾</span>
+                                <span class="checkbox-text">Tennis</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="gymnastics">
+                                <span class="checkbox-emoji">🤸</span>
+                                <span class="checkbox-text">Gymnastics</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="skills" value="general-pe">
+                                <span class="checkbox-emoji">💪</span>
+                                <span class="checkbox-text">General PE/Fitness</span>
+                            </label>
+                            
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="education">Education Level *</label>
-                        <select id="education" name="education" required>
-                            <option value="">Select education level</option>
-                            <option value="High School Diploma">High School Diploma</option>
-                            <option value="Associate Degree">Associate Degree</option>
-                            <option value="Bachelor's Degree">Bachelor's Degree</option>
-                            <option value="Master's Degree">Master's Degree</option>
-                            <option value="Doctorate">Doctorate</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="certifications">Certifications (if any)</label>
-                        <textarea id="certifications" name="certifications" rows="3" placeholder="List any relevant certifications or credentials..."></textarea>
+                    <!-- Other Skills -->
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label for="otherSkills">Other Skills or Specializations</label>
+                        <textarea id="otherSkills" name="otherSkills" rows="2" placeholder="List any additional skills not mentioned above..."></textarea>
                     </div>
                 </div>
                 
-                <!-- Additional Information -->
+                <!-- ========================================== -->
+                <!-- SECTION 4: EDUCATION & CERTIFICATIONS      -->
+                <!-- ========================================== -->
+                <div class="form-section">
+                    <h4>Education & Certifications</h4>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="education">Highest Education Level *</label>
+                            <select id="education" name="education" required>
+                                <option value="">Select level</option>
+                                <option value="High School Diploma">High School Diploma/GED</option>
+                                <option value="Some College">Some College</option>
+                                <option value="Associate Degree">Associate Degree</option>
+                                <option value="Bachelor's Degree">Bachelor's Degree</option>
+                                <option value="Master's Degree">Master's Degree</option>
+                                <option value="Doctorate">Doctorate</option>
+                                <option value="Trade/Vocational">Trade/Vocational Certificate</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="fieldOfStudy">Field of Study</label>
+                            <input type="text" id="fieldOfStudy" name="fieldOfStudy" placeholder="e.g., Music Education, Kinesiology">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="certifications">Certifications & Credentials</label>
+                        <textarea id="certifications" name="certifications" rows="3" placeholder="List relevant certifications (e.g., CPR/First Aid, Teaching Credential, Coaching Certifications, Music Degrees)..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- ========================================== -->
+                <!-- SECTION 5: EMPLOYMENT HISTORY              -->
+                <!-- ========================================== -->
+                <div class="form-section">
+                    <h4>Employment History</h4>
+                    <p style="color: #666; font-size: 14px; margin-bottom: 20px;">Please provide your most recent relevant work experience.</p>
+                    
+                    <!-- Job 1 - Most Recent -->
+                    <div class="employment-entry" style="background: #f9f9f9; padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #e0e0e0;">
+                        <h5 style="font-size: 15px; font-weight: 600; color: #333; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                            <span style="background: #0C78B9; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px;">1</span>
+                            Most Recent Position
+                        </h5>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="job1Employer">Employer/Company *</label>
+                                <input type="text" id="job1Employer" name="job1Employer" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="job1Title">Job Title *</label>
+                                <input type="text" id="job1Title" name="job1Title" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="job1StartDate">Start Date *</label>
+                                <input type="month" id="job1StartDate" name="job1StartDate" required onchange="validateEmploymentDates(1)">
+                            </div>
+                            <div class="form-group">
+                                <div class="end-date-label-row">
+                                    <label for="job1EndDate">End Date</label>
+                                    <button type="button" id="job1CurrentBtn" class="current-job-btn" onclick="toggleCurrentJob(1)">
+                                        <span class="current-job-icon">○</span> Current
+                                    </button>
+                                </div>
+                                <input type="month" id="job1EndDate" name="job1EndDate" onchange="validateEmploymentDates(1)">
+                                <small id="job1DateError" style="color: #d32f2f; font-size: 11px; display: none;">End date must be after start date</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="job1Duties">Key Responsibilities</label>
+                            <textarea id="job1Duties" name="job1Duties" rows="2" placeholder="Briefly describe your main duties and accomplishments..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="job1Reason">Reason for Leaving</label>
+                            <input type="text" id="job1Reason" name="job1Reason" placeholder="e.g., Career growth, Relocation, Contract ended">
+                        </div>
+                    </div>
+                    
+                    <!-- Job 2 - Previous (Initially Hidden) -->
+                    <div id="job2Container" class="employment-entry" style="background: #fafafa; padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #e8e8e8; display: none;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <h5 style="font-size: 15px; font-weight: 600; color: #333; display: flex; align-items: center; gap: 8px; margin: 0;">
+                                <span style="background: #666; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px;">2</span>
+                                Previous Position
+                            </h5>
+                            <button type="button" onclick="removeJob2()" style="background: none; border: none; color: #999; cursor: pointer; font-size: 20px; padding: 4px 8px; border-radius: 4px; transition: all 0.2s;" onmouseover="this.style.background='#fee'; this.style.color='#d32f2f';" onmouseout="this.style.background='none'; this.style.color='#999';">✕</button>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="job2Employer">Employer/Company</label>
+                                <input type="text" id="job2Employer" name="job2Employer">
+                            </div>
+                            <div class="form-group">
+                                <label for="job2Title">Job Title</label>
+                                <input type="text" id="job2Title" name="job2Title">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="job2StartDate">Start Date</label>
+                                <input type="month" id="job2StartDate" name="job2StartDate" onchange="validateEmploymentDates(2)">
+                            </div>
+                            <div class="form-group">
+                                <div class="end-date-label-row">
+                                    <label for="job2EndDate">End Date</label>
+                                    <button type="button" id="job2CurrentBtn" class="current-job-btn" onclick="toggleCurrentJob(2)">
+                                        <span class="current-job-icon">○</span> Current
+                                    </button>
+                                </div>
+                                <input type="month" id="job2EndDate" name="job2EndDate" onchange="validateEmploymentDates(2)">
+                                <small id="job2DateError" style="color: #d32f2f; font-size: 11px; display: none;">End date must be after start date</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="job2Duties">Key Responsibilities</label>
+                            <textarea id="job2Duties" name="job2Duties" rows="2" placeholder="Briefly describe your main duties and accomplishments..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Add Another Position Button -->
+                    <button type="button" id="addJob2Btn" onclick="showJob2()" style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; background: #f5f5f5; border: 2px dashed #ccc; border-radius: 10px; color: #666; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#0C78B9'; this.style.color='#0C78B9'; this.style.background='#f0f7ff';" onmouseout="this.style.borderColor='#ccc'; this.style.color='#666'; this.style.background='#f5f5f5';">
+                        <span style="font-size: 20px; font-weight: 300;">+</span> Add Another Position
+                    </button>
+                </div>
+                
+                <!-- ========================================== -->
+                <!-- SECTION 6: ADDITIONAL INFORMATION          -->
+                <!-- ========================================== -->
                 <div class="form-section">
                     <h4>Additional Information</h4>
                     
                     <div class="form-group">
-                        <label for="coverLetter">Why do you want to join CSA? *</label>
-                        <textarea id="coverLetter" name="coverLetter" rows="5" placeholder="Tell us about your passion for music/sports education and why you'd be a great fit for our team..." required></textarea>
+                        <label for="coverLetter">Why do you want to join CSA Entertainment? *</label>
+                        <textarea id="coverLetter" name="coverLetter" rows="4" placeholder="Tell us about your passion for education and why you'd be a great fit for our team..." required></textarea>
                     </div>
                     
-                    <!-- Resume Upload (OPTIONAL) -->
-<div class="form-group">
-    <label for="resumeFile">Resume Upload <span style="color: #999; font-weight: 400;">(Optional)</span></label>
-    <div class="file-upload-container">
-        <input 
-            type="file" 
-            id="resumeFile" 
-            name="resumeFile"
-            accept=".pdf,.doc,.docx"
-            style="display: none;">
-        
-        <label for="resumeFile" class="file-upload-label">
-            <div class="file-upload-icon">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="17 8 12 3 7 8"></polyline>
-                    <line x1="12" y1="3" x2="12" y2="15"></line>
-                </svg>
-            </div>
-            <div class="file-upload-text">
-                <p style="font-weight: 600; margin: 0 0 5px;">Click to upload or drag and drop</p>
-                <p style="font-size: 13px; color: #999; margin: 0;">PDF, DOC, or DOCX (max 5MB) - Optional</p>
-            </div>
-        </label>
-        
-        <p id="fileName" class="file-name">No file selected</p>
-    </div>
-    
-    <!-- Progress Bar -->
-    <div id="uploadProgress" class="upload-progress hidden">
-        <div class="progress-bar">
-            <div id="progressFill" class="progress-fill"></div>
-        </div>
-        <p id="progressText" class="progress-text">0%</p>
-    </div>
-</div>
+                    <div class="form-group">
+                        <label for="referralSource">How did you hear about us?</label>
+                        <select id="referralSource" name="referralSource">
+                            <option value="">Select</option>
+                            <option value="Indeed">Indeed</option>
+                            <option value="LinkedIn">LinkedIn</option>
+                            <option value="Google Search">Google Search</option>
+                            <option value="School Referral">School/District Referral</option>
+                            <option value="Employee Referral">Current Employee</option>
+                            <option value="Social Media">Social Media</option>
+                            <option value="Job Fair">Job Fair/Event</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Resume Upload -->
+                    <div class="form-group">
+                        <label for="resumeFile">Resume Upload <span style="color: #999; font-weight: 400;">(Optional)</span></label>
+                        <div class="file-upload-container">
+                            <input type="file" id="resumeFile" name="resumeFile" accept=".pdf,.doc,.docx" style="display: none;">
+                            
+                            <label for="resumeFile" class="file-upload-label">
+                                <div class="file-upload-icon">
+                                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="17 8 12 3 7 8"></polyline>
+                                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                                    </svg>
+                                </div>
+                                <div class="file-upload-text">
+                                    <p style="font-weight: 600; margin: 0 0 4px; color: #333;">Click to upload or drag and drop</p>
+                                    <p style="font-size: 13px; color: #888; margin: 0;">PDF, DOC, or DOCX (max 5MB)</p>
+                                </div>
+                            </label>
+                            
+                            <p id="fileName" class="file-name" style="text-align: center; margin-top: 10px; color: #666;">No file selected</p>
+                        </div>
+                        
+                        <div id="uploadProgress" class="upload-progress hidden">
+                            <div class="progress-bar">
+                                <div id="progressFill" class="progress-fill"></div>
+                            </div>
+                            <p id="progressText" class="progress-text">0%</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ========================================== -->
+                <!-- SECTION 7: LEGAL ACKNOWLEDGMENTS           -->
+                <!-- ========================================== -->
+                <div class="form-section">
+                    <h4>Legal Acknowledgments</h4>
+                    
+                    <div class="form-group">
+                        <h3>Required Acknowledgments <span style="color: #d32f2f;">*</span></h3>
+                        <p style="color: #666; font-size: 13px; margin-bottom: 12px;">Please read and check each box to continue.</p>
+                        
+                        <div class="checkbox-grid" id="legalGrid" style="max-height: none; gap: 5px;">
+                            
+                            <label class="checkbox-item full-width" style="align-items: flex-start; padding: 14px;">
+                                <input type="checkbox" name="legal" value="age-verification" required style="margin-top: 3px;">
+                                <span class="checkbox-text">I am at least 18 years of age.</span>
+                            </label>
+                            
+                            <label class="checkbox-item full-width" style="align-items: flex-start; padding: 14px;">
+                                <input type="checkbox" name="legal" value="work-authorization" required style="margin-top: 3px;">
+                                <span class="checkbox-text">I am legally authorized to work in the United States.</span>
+                            </label>
+                            
+                            <label class="checkbox-item full-width" style="align-items: flex-start; padding: 14px;">
+                                <input type="checkbox" name="legal" value="background-check" required style="margin-top: 3px;">
+                                <span class="checkbox-text">I understand that employment is contingent upon successful completion of a background check, and I consent to such check if offered employment.</span>
+                            </label>
+                            
+                            <label class="checkbox-item full-width" style="align-items: flex-start; padding: 14px;">
+                                <input type="checkbox" name="legal" value="reference-check" required style="margin-top: 3px;">
+                                <span class="checkbox-text">I authorize CSA Entertainment to contact my previous employers and references.</span>
+                            </label>
+                            
+                            <label class="checkbox-item full-width" style="align-items: flex-start; padding: 14px;">
+                                <input type="checkbox" name="legal" value="at-will" required style="margin-top: 3px;">
+                                <span class="checkbox-text">I understand that employment is "at-will," meaning either party may terminate the relationship at any time.</span>
+                            </label>
+                            
+                            <label class="checkbox-item full-width" style="align-items: flex-start; padding: 14px;">
+                                <input type="checkbox" name="legal" value="truthfulness" required style="margin-top: 3px;">
+                                <span class="checkbox-text">I certify that all information in this application is true and complete. I understand that false statements may result in rejection or termination.</span>
+                            </label>
+                            
+                        </div>
+                        <p class="field-error" id="legalError" style="display: none;">Please acknowledge all required items to continue</p>
+                    </div>
+                    
+                    <!-- EEO Notice -->
+                    <div style="background: linear-gradient(135deg, #f0f7ff 0%, #f8fbff 100%); padding: 16px 18px; border-radius: 8px; margin-top: 16px; border-left: 4px solid #0C78B9;">
+                        <p style="font-size: 12px; color: #555; margin: 0; line-height: 1.6;">
+                            <strong>Equal Employment Opportunity:</strong> CSA Entertainment is an equal opportunity employer. We do not discriminate based on race, color, religion, sex, national origin, age, disability, veteran status, sexual orientation, gender identity, or any other protected characteristic.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- ========================================== -->
+                <!-- SECTION 8: ELECTRONIC SIGNATURE            -->
+                <!-- ========================================== -->
+                <div class="form-section" style="border-bottom: none; margin-bottom: 0; padding-bottom: 10px;">
+                    <h4>Electronic Signature</h4>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="electronicSignature">Full Legal Name *</label>
+                            <input type="text" id="electronicSignature" name="electronicSignature" placeholder="Type your full legal name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signatureDate">Today's Date *</label>
+                            <input type="date" id="signatureDate" name="signatureDate" required>
+                            <script>
+                                // Set today's date immediately and whenever modal becomes visible
+                                (function() {
+                                    const setToday = () => {
+                                        const el = document.getElementById('signatureDate');
+                                        if (el && !el.value) el.value = new Date().toISOString().split('T')[0];
+                                    };
+                                    setToday();
+                                    setInterval(setToday, 500); // Keep checking until it's set
+                                })();
+                            </script>
+                        </div>
+                    </div>
+                    
+                    <p style="font-size: 12px; color: #666; line-height: 1.5; margin-top: 8px; padding: 12px; background: #f5f5f5; border-radius: 6px;">
+                        By typing my name above, I acknowledge this constitutes my electronic signature with the same legal effect as a handwritten signature.
+                    </p>
                 </div>
                 
                 <button type="submit" class="btn btn-primary btn-full">Submit Application</button>
@@ -1305,6 +1805,249 @@
         </div>
     </div>
 </div>
+
+<!-- ========================================== -->
+<!-- CSS FOR END DATE LABEL ROW & BUTTON        -->
+<!-- ========================================== -->
+<style>
+/* End Date Label Row - Label and Button Inline */
+.end-date-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.end-date-label-row label {
+    margin-bottom: 0 !important;
+}
+
+/* Currently Work Here Button - Compact */
+.current-job-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    color: #666;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.current-job-btn:hover {
+    background: #e8f4fc;
+    border-color: #0C78B9;
+    color: #0C78B9;
+}
+
+.current-job-btn.active {
+    background: #0C78B9;
+    border-color: #0C78B9;
+    color: white;
+}
+
+.current-job-icon {
+    font-size: 10px;
+    line-height: 1;
+}
+
+/* Fix date input overflow */
+.form-group input[type="month"],
+.form-group input[type="date"] {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+/* Ensure form-row doesn't overflow */
+.employment-entry .form-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.employment-entry .form-row .form-group {
+    flex: 1 1 200px;
+    min-width: 0;
+}
+
+/* Responsive adjustments for small screens */
+@media (max-width: 500px) {
+    .end-date-label-row {
+        flex-wrap: wrap;
+    }
+    
+    .current-job-btn {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+}
+</style>
+
+<!-- ========================================== -->
+<!-- JAVASCRIPT FOR FORM FUNCTIONALITY          -->
+<!-- ========================================== -->
+<script>
+// ===== SKILLS SELECT ALL / CLEAR ALL =====
+function selectAllSkills() {
+    const checkboxes = document.querySelectorAll('#skillsGrid input[type="checkbox"]');
+    checkboxes.forEach(cb => cb.checked = true);
+}
+
+function clearAllSkills() {
+    const checkboxes = document.querySelectorAll('#skillsGrid input[type="checkbox"]');
+    checkboxes.forEach(cb => cb.checked = false);
+}
+
+// ===== TOGGLE "CURRENTLY WORK HERE" BUTTON =====
+function toggleCurrentJob(jobNum) {
+    const btn = document.getElementById(`job${jobNum}CurrentBtn`);
+    const endDateInput = document.getElementById(`job${jobNum}EndDate`);
+    const icon = btn.querySelector('.current-job-icon');
+    
+    if (btn.classList.contains('active')) {
+        // Deactivate - allow end date entry
+        btn.classList.remove('active');
+        icon.textContent = '○';
+        endDateInput.disabled = false;
+        endDateInput.style.opacity = '1';
+        endDateInput.value = '';
+    } else {
+        // Activate - clear and disable end date
+        btn.classList.add('active');
+        icon.textContent = '✓';
+        endDateInput.value = '';
+        endDateInput.disabled = true;
+        endDateInput.style.opacity = '0.5';
+        
+        // Clear any date error
+        const errorEl = document.getElementById(`job${jobNum}DateError`);
+        if (errorEl) errorEl.style.display = 'none';
+        endDateInput.style.borderColor = '#e0e0e0';
+    }
+}
+
+// ===== EMPLOYMENT DATE VALIDATION (end must be after start) =====
+function validateEmploymentDates(jobNum) {
+    const startDate = document.getElementById(`job${jobNum}StartDate`).value;
+    const endDate = document.getElementById(`job${jobNum}EndDate`).value;
+    const errorEl = document.getElementById(`job${jobNum}DateError`);
+    const endDateInput = document.getElementById(`job${jobNum}EndDate`);
+    
+    if (startDate && endDate) {
+        if (endDate < startDate) {
+            errorEl.style.display = 'block';
+            endDateInput.style.borderColor = '#d32f2f';
+            return false;
+        } else {
+            errorEl.style.display = 'none';
+            endDateInput.style.borderColor = '#e0e0e0';
+            return true;
+        }
+    } else {
+        errorEl.style.display = 'none';
+        if (endDateInput) endDateInput.style.borderColor = '#e0e0e0';
+        return true;
+    }
+}
+
+// ===== VALIDATE EMPLOYMENT START DATE (Cannot be in future) =====
+function validateEmploymentStartDate(jobNum) {
+    const startDateInput = document.getElementById(`job${jobNum}StartDate`);
+    if (!startDateInput) return true;
+    
+    const startDate = startDateInput.value;
+    const currentMonth = new Date().toISOString().slice(0, 7);
+    
+    if (startDate && startDate > currentMonth) {
+        startDateInput.style.borderColor = '#d32f2f';
+        if (typeof showNotification === 'function') {
+            showNotification('Employment start date cannot be in the future', 'error');
+        }
+        return false;
+    } else {
+        startDateInput.style.borderColor = '#e0e0e0';
+        return true;
+    }
+}
+
+// ===== SHOW/HIDE JOB 2 =====
+function showJob2() {
+    document.getElementById('job2Container').style.display = 'block';
+    document.getElementById('addJob2Btn').style.display = 'none';
+}
+
+function removeJob2() {
+    document.getElementById('job2Container').style.display = 'none';
+    document.getElementById('addJob2Btn').style.display = 'flex';
+    
+    // Clear all Job 2 fields
+    document.getElementById('job2Employer').value = '';
+    document.getElementById('job2Title').value = '';
+    document.getElementById('job2StartDate').value = '';
+    document.getElementById('job2EndDate').value = '';
+    document.getElementById('job2Duties').value = '';
+    
+    // Reset "Currently Work Here" button for Job 2
+    const btn = document.getElementById('job2CurrentBtn');
+    const endDateInput = document.getElementById('job2EndDate');
+    if (btn) {
+        btn.classList.remove('active');
+        const icon = btn.querySelector('.current-job-icon');
+        if (icon) icon.textContent = '○';
+    }
+    if (endDateInput) {
+        endDateInput.disabled = false;
+        endDateInput.style.opacity = '1';
+    }
+}
+
+// ===== INITIALIZE DATE CONSTRAINTS =====
+function initializeDateFields() {
+    const today = new Date().toISOString().split('T')[0];
+    const currentMonth = new Date().toISOString().slice(0, 7);
+    
+    // Set signature date to today (only if empty)
+    const signatureDate = document.getElementById('signatureDate');
+    if (signatureDate && !signatureDate.value) {
+        signatureDate.value = today;
+    }
+    
+    // Earliest Start Date: Cannot be before today (future dates only)
+    const earliestStartDate = document.getElementById('startDate');
+    if (earliestStartDate) earliestStartDate.setAttribute('min', today);
+    
+    // Employment History Dates: Cannot be in future (past/present only)
+    const job1StartDate = document.getElementById('job1StartDate');
+    const job2StartDate = document.getElementById('job2StartDate');
+    const job1EndDate = document.getElementById('job1EndDate');
+    const job2EndDate = document.getElementById('job2EndDate');
+    
+    if (job1StartDate) job1StartDate.setAttribute('max', currentMonth);
+    if (job2StartDate) job2StartDate.setAttribute('max', currentMonth);
+    if (job1EndDate) job1EndDate.setAttribute('max', currentMonth);
+    if (job2EndDate) job2EndDate.setAttribute('max', currentMonth);
+}
+
+// Run on page load
+document.addEventListener('DOMContentLoaded', initializeDateFields);
+
+// Fallback: Also run after short delay in case modal loads late
+setTimeout(initializeDateFields, 100);
+
+// Run when career modal opens (call this from your modal open function)
+function onCareerModalOpen() {
+    initializeDateFields();
+}
+</script>
 <!-- Success Modal -->
 <div id="successModal" class="modal-overlay">
     <div class="modal-container success-modal-container">
@@ -3173,6 +3916,46 @@ document.addEventListener('DOMContentLoaded', () => {
         careerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            // ===== DATE VALIDATION =====
+            const today = new Date().toISOString().split('T')[0];
+            const currentMonth = new Date().toISOString().slice(0, 7);
+            
+            // Validate earliest start date (must be today or future)
+            const earliestStartDate = document.getElementById('startDate');
+            if (earliestStartDate && earliestStartDate.value < today) {
+                earliestStartDate.style.borderColor = '#d32f2f';
+                showNotification('Earliest start date cannot be in the past', 'error');
+                return;
+            }
+            
+            // Validate Job 1 employment dates
+            const job1Start = document.getElementById('job1StartDate');
+            if (job1Start && job1Start.value && job1Start.value > currentMonth) {
+                job1Start.style.borderColor = '#d32f2f';
+                showNotification('Employment start date cannot be in the future', 'error');
+                return;
+            }
+            
+            if (!validateEmploymentDates(1)) {
+                showNotification('Please fix the employment date errors before submitting', 'error');
+                return;
+            }
+            
+            // Validate Job 2 if visible
+            if (document.getElementById('job2Container').style.display !== 'none') {
+                const job2Start = document.getElementById('job2StartDate');
+                if (job2Start && job2Start.value && job2Start.value > currentMonth) {
+                    job2Start.style.borderColor = '#d32f2f';
+                    showNotification('Employment start date cannot be in the future', 'error');
+                    return;
+                }
+                
+                if (!validateEmploymentDates(2)) {
+                    showNotification('Please fix the employment date errors before submitting', 'error');
+                    return;
+                }
+            }
+            
             // Validate form
             if (!validateCareerForm()) {
                 return;
@@ -3182,7 +3965,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData(careerForm);
             const data = Object.fromEntries(formData.entries());
             
-            // ✅ Get resume file OR null (OPTIONAL - no error if missing)
+            // Get resume file OR null (OPTIONAL)
             const resumeFile = document.getElementById('resumeFile').files[0] || null;
             
             // Remove file from data object (handled separately)
@@ -3192,7 +3975,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const submitBtn = careerForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.textContent;
             
-            // Different loading message based on file presence
             submitBtn.textContent = resumeFile ? 'Uploading Resume...' : 'Submitting Application...';
             submitBtn.disabled = true;
             
@@ -3226,24 +4008,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (uploadProgress) {
                     uploadProgress.classList.add('hidden');
                     const progressFill = document.getElementById('progressFill');
-                    if (progressFill) {
-                        progressFill.style.width = '0%';
-                    }
+                    if (progressFill) progressFill.style.width = '0%';
                 }
                 
-                if (fileUploadLabel) {
-                    fileUploadLabel.classList.remove('success');
-                }
+                if (fileUploadLabel) fileUploadLabel.classList.remove('success');
                 
                 // Clear all error styling
-                formFields.forEach(field => {
-                    field.style.borderColor = '#e0e0e0';
-                });
+                formFields.forEach(field => field.style.borderColor = '#e0e0e0');
                 
             } catch (error) {
                 console.error('Error submitting application:', error);
                 
-                // Show detailed error message
+                // Show detailed error message using notification system
                 let errorMessage = 'Error submitting application. Please try again.';
                 
                 if (error.code === 'storage/unauthorized') {
@@ -3252,6 +4028,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     errorMessage = 'Upload was canceled. Please try again.';
                 } else if (error.code === 'storage/unknown') {
                     errorMessage = 'Unknown error occurred. Please check your connection and try again.';
+                } else if (error.code === 'permission-denied' || (error.message && error.message.includes('permissions'))) {
+                    errorMessage = 'Database permission denied. Please contact the administrator.';
                 }
                 
                 showNotification(errorMessage, 'error');
