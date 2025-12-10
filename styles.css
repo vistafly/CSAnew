@@ -2213,7 +2213,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     bottom: 0;
     background: rgba(0, 0, 0, 0.75);
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* Changed from center */
     justify-content: center;
     z-index: 10000;
     opacity: 0;
@@ -2222,6 +2222,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     backdrop-filter: blur(8px);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    padding: 40px 20px; /* Add breathing room */
 }
 
 .modal-overlay.active {
@@ -2235,8 +2236,8 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     border-radius: 16px;
     width: 90%;
     max-width: 520px;
-    max-height: 85vh;
-    overflow-y: auto;
+    max-height: calc(100vh - 80px); /* Fits in viewport with padding */
+    overflow-y: auto; /* KEEP this - allows internal scrolling */
     transform: scale(0.9) translateY(30px);
     transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     box-shadow: 
@@ -2244,11 +2245,10 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
         0 12px 24px rgba(0, 0, 0, 0.15),
         0 6px 12px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(0, 0, 0, 0.05);
-    margin: 20px auto;
+    margin: 0 auto; /* Horizontal center only */
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     pointer-events: auto;
 }
 
@@ -2500,7 +2500,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 
 @media (max-width: 2000px) {
 .about {
-    padding: 60px 0 7rem;
+    padding: 4.5rem 0 12rem;
 }
 }
 .about-content {
@@ -3460,7 +3460,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 
 @media (max-width: 2000px) {
 .gallery {
-        padding: 50px 0px 100px;
+        padding: 4.5rem 0px 11rem;
     }
      }
 
@@ -7447,7 +7447,7 @@ select option {
 /* ============================================ */
 @media (max-width: 2000px) {
     .testimonials {
-        padding: 60px 0 6.5rem;
+        padding: 4.5rem 0 10rem;
     }
     }
 
@@ -7818,6 +7818,12 @@ select option {
         background-position: 200% center;
     }
 }
+
+@media (max-width: 2000px) {
+    .section-header{
+        margin-bottom: 5rem;
+    }
+    }
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
