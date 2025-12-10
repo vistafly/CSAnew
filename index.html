@@ -2135,46 +2135,25 @@
     }
     
     function completeLoadingInstant() {
-        if (isComplete) return;
-        isComplete = true;
-        
-        const loader = document.getElementById('loader');
-        const loaderHeroLogo = document.getElementById('loaderHeroLogo');
-        const currentSize = getCurrentLogoSize();
-        
-        if (loaderHeroLogo) {
-            const heroPos = getHeroPosition();
-            
-            // Move loader logo to exact hero position
-            loaderHeroLogo.style.top = heroPos.top + 'px';
-            loaderHeroLogo.style.left = heroPos.left + 'px';
-            loaderHeroLogo.style.transform = 'translate(-50%, -50%) scale(1)';
-            loaderHeroLogo.style.width = currentSize.size + 'px';
-            loaderHeroLogo.style.height = currentSize.size + 'px';
-            loaderHeroLogo.style.transition = 'all 400ms cubic-bezier(0.23, 1, 0.32, 1)';
-            loaderHeroLogo.classList.add('move-to-position');
-            
-            const logoContainer = loaderHeroLogo.querySelector('.logo-container');
-            if (logoContainer) {
-                logoContainer.style.width = currentSize.size + 'px';
-                logoContainer.style.height = currentSize.size + 'px';
-                logoContainer.style.borderWidth = currentSize.border + 'px';
-            }
-        }
-        
-        // Fade out loader - hero is already visible underneath
-        setTimeout(() => {
-            if (loader) {
-                loader.style.transition = 'opacity 600ms ease';
-                loader.classList.add('fade-out');
-                
-                setTimeout(() => {
-                    if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
-                    allowScrolling();
-                }, 600);
-            }
-        }, 300);
+    const loader = document.getElementById('loader');
+    const loaderHeroLogo = document.getElementById('loaderHeroLogo');
+    
+    // Simply fade out the loader logo in place
+    if (loaderHeroLogo) {
+        loaderHeroLogo.style.transition = 'opacity 0.8s ease-out';
+        loaderHeroLogo.style.opacity = '0';
     }
+    
+    // Fade out the loader overlay
+    setTimeout(() => {
+        if (loader) {
+            loader.classList.add('fade-out');
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 1800); // Match your .loader.fade-out transition duration
+        }
+    }, 400);
+}
     
     function initializeUltraFast() {
         preventScrolling();
