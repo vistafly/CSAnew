@@ -2563,7 +2563,6 @@ function updatePlayerTriggerOnScroll() {
         playerTrigger.classList.remove('scrolled');
     }
 }
-
 // Listen for scroll events
 window.addEventListener('scroll', updatePlayerTriggerOnScroll, { passive: true });
 
