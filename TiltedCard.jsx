@@ -59,7 +59,7 @@ export default function TiltedCard({
       const rotationY = (offsetX / (rect.width / 2)) * rotateAmplitude;
       
       // Clamp rotation values to prevent extreme angles
-      const maxRotation = 25; // Maximum tilt angle in degrees
+      const maxRotation = 35; // Maximum tilt angle in degrees
       const clampedRotationX = clamp(rotationX, -maxRotation, maxRotation);
       const clampedRotationY = clamp(rotationY, -maxRotation, maxRotation);
       
