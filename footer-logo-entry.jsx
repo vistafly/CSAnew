@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import TiltedCard from './TiltedCard.jsx';  // ← FIXED: Uppercase 'C'
+import TiltedCard from './Tiltedcard.jsx';  // ← FIXED: Uppercase 'C'
 
 // Wait for DOM to be ready
 document.addEventListener('DOMContentLoaded', () => {
