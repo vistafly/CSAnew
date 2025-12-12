@@ -7690,7 +7690,8 @@ select option {
 /* Mobile Adjustments */
 @media (max-width: 480px) {
     .testimonials-carousel-wrapper {
-        padding: 0 10px;
+        padding: 0 30px;
+        margin-top: 0px;
     }
     
     .testimonial-card {
@@ -7906,6 +7907,12 @@ select option {
         margin-bottom: 5rem;
     }
     }
+
+@media (max-width: 768px) {
+    .section-header{
+        margin-bottom: 1rem;
+}
+}
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
