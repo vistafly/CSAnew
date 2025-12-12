@@ -135,10 +135,14 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }) {
   );
   const [dragged, drag] = useState(false);
   const [hovered, hover] = useState(false);
-  
+
   const pointerPos = useRef({ x: 0, y: 0 });
   const isDraggingRef = useRef(false);
   const releaseTimeoutRef = useRef(null);
+
+  // Track initialization to prevent first-load glitches
+  const [isStabilized, setIsStabilized] = useState(false);
+  const stabilizationTimer = useRef(null);
 
   useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
@@ -185,6 +189,19 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }) {
     };
   }, [gl]);
 
+  // Stabilization effect - allow physics to settle before enabling full interaction
+  useEffect(() => {
+    stabilizationTimer.current = setTimeout(() => {
+      setIsStabilized(true);
+    }, 600); // Wait for physics to settle
+
+    return () => {
+      if (stabilizationTimer.current) {
+        clearTimeout(stabilizationTimer.current);
+      }
+    };
+  }, []);
+
   // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
@@ -204,12 +221,15 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }) {
       card.current?.setNextKinematicTranslation({ x: vec.x - dragged.x, y: vec.y - dragged.y, z: vec.z - dragged.z });
     }
     if (fixed.current) {
+      // Apply extra damping during initial stabilization period
+      const dampingMultiplier = isStabilized ? 1 : 0.3;
+
       [j1, j2].forEach(ref => {
         if (!ref.current.lerped) ref.current.lerped = new THREE.Vector3().copy(ref.current.translation());
         const clampedDistance = Math.max(0.1, Math.min(1, ref.current.lerped.distanceTo(ref.current.translation())));
         ref.current.lerped.lerp(
           ref.current.translation(),
-          delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed))
+          delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed)) * dampingMultiplier
         );
       });
       curve.points[0].copy(j3.current.translation());

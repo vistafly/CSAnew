@@ -8039,6 +8039,7 @@ select option {
   height: 100%;
   z-index: 10;
   pointer-events: auto;
+  opacity: 0; /* Start hidden, will fade in via JS after physics stabilizes */
 }
 
 .lanyard-mount .lanyard-wrapper {
