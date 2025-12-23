@@ -2365,8 +2365,8 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 /* Mobile responsive for modal header */
 @media (max-width: 480px) {
     .modal-logo {
-        width: 40px;
-        height: 40px;
+        width: 80px;
+        height: 80px;
     }
     
     .modal-header-content h3 {
@@ -4102,7 +4102,6 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 @media (max-width: 1350px) {
 .filter-section {
     margin: 0px 0px 10px 0px;
-    margin-top: 15px;
 }
 }
 
@@ -4316,14 +4315,14 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     }
     
     .filter-section {
-        margin-bottom: 10px;
+        margin-bottom: 1rem;
+        margin-bottom: 1rem;
     }
     
     .category-tabs {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 26px;
     }
     
     .category-tab {
@@ -4351,7 +4350,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     }
     
     .category-tab {
-        padding: 6px 18px;
+        padding: 8px 23px;
         font-size: 14px;
     }
     
@@ -4522,7 +4521,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 @media (max-width: 480px) {
     .programs-grid.horizontal-scroll {
         gap: 12px;
-        padding: 5px 30px 15px 30px !important;
+        padding: 5px 30px 20px 30px !important;
         margin-left: 0 !important;
         justify-content: flex-start !important; /* ✅ CHANGED: from center to flex-start */
         scroll-padding-left: 30px !important; /* ✅ ADDED */
@@ -4906,7 +4905,7 @@ background: linear-gradient(90deg, #9a8e8f, #998f8c, #938e9a, #9d9a8d, #8e989d, 
     .filter-results {
         flex-direction: column !important;
         gap: 10px !important;
-        padding: 16px 20px;
+        padding-top: 8px;
         margin: 0 -20px;
         padding-left: 20px;
         padding-right: 20px;
@@ -5114,6 +5113,7 @@ background: linear-gradient(90deg, #9a8e8f, #998f8c, #938e9a, #9d9a8d, #8e989d, 
     #careerModal .modal {
         max-height: 85vh;
         width: 95%;
+        border-radius: 0;
     }
 }
 
@@ -5122,13 +5122,14 @@ background: linear-gradient(90deg, #9a8e8f, #998f8c, #938e9a, #9d9a8d, #8e989d, 
         grid-template-columns: 1fr  1fr!important;
         gap: 5% !important;
     }
-    
+
     .career-form .form-group {
         margin-bottom: 0px;
     }
-    
+
     #careerModal .modal {
         width: 100%;
+        border-radius: 0;
     }
     
     #careerModal .modal-body {
@@ -5136,9 +5137,47 @@ background: linear-gradient(90deg, #9a8e8f, #998f8c, #938e9a, #9d9a8d, #8e989d, 
     }
     
     #careerModal .modal-header {
-        padding: 20px 15px 15px;
+        padding: 0px 20px 0px 0px;
     }
 }
+
+/* Career Modal Header - Bigger logo, centered content */
+#careerModal .modal-logo {
+    width: 130px;
+    height: 130px;
+    margin: -15px 0 -15px -15px;
+}
+
+#careerModal .modal-header-content {
+    flex: 1;
+    text-align: center;
+    margin-right: 40px;
+}
+
+@media (max-width: 768px) {
+    #careerModal .modal-logo {
+        width: 100px;
+        height: 100px;
+        margin: -10px 0 -10px 0;
+    }
+
+    #careerModal .modal-header-content {
+        margin-right: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    #careerModal .modal-logo {
+        width: 80px;
+        height: 80px;
+        margin: -5px 0 -5px 0;
+    }
+
+    #careerModal .modal-header-content {
+        margin-right: 15px;
+    }
+}
+
 /* ==================== CAREER FORM STYLES ==================== */
 
 .career-form .form-section {
@@ -5240,6 +5279,15 @@ background: linear-gradient(90deg, #9a8e8f, #998f8c, #938e9a, #9d9a8d, #8e989d, 
 #careerModal .modal {
     max-width: 45%;
     max-height: 90vh;
+    border-radius: 0;
+}
+
+/* Fix career form input overflow */
+.career-form input,
+.career-form select,
+.career-form textarea {
+    box-sizing: border-box;
+    max-width: 100%;
 }
 
 
@@ -5252,16 +5300,18 @@ background: linear-gradient(90deg, #9a8e8f, #998f8c, #938e9a, #9d9a8d, #8e989d, 
 
 @media (max-width: 2000px) {
     #careerModal .modal {
-    max-width: 60%;
-    max-height: 90vh;
-}
+        max-width: 60%;
+        max-height: 90vh;
+        border-radius: 0;
+    }
 }
 
 @media (max-width: 1100px) {
     #careerModal .modal {
-    max-width: 100%;
-    max-height: 100%;
-}
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+    }
 }
 
 @media (max-width: 480px) {
@@ -7927,7 +7977,7 @@ select option {
 
 @media (max-width: 768px) {
     .section-header{
-        margin-bottom: 1rem;
+        margin-bottom: -1.5rem;
 }
 }
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSA - Community Sports & Arts | Elementary School Programs</title>
+    <title>CSA - Community Sports & Arts | K-12 School Programs</title>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://cdnjs.cloudflare.com https://apis.google.com https://accounts.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' blob: https:; connect-src 'self' blob: https://www.gstatic.com https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firebasestorage.googleapis.com https://apis.google.com; frame-src 'self' https://accounts.google.com; worker-src 'self' blob:;">
         <meta name="description" content="Professional sports and music programs for elementary schools. Expert instruction in athletics, dance, choir, and percussion.">
     
@@ -4485,67 +4485,132 @@ if (typeof showNotification === 'undefined') {
     }
 }
 
-// SIMPLE NAVIGATION - JUST WORKS
+// ROBUST NAVIGATION - CLOSEST TO CENTER DETECTION
 (function() {
     'use strict';
-    
+
     let isNavigating = false;
-    
+    let ticking = false;
+    let currentActiveId = null;
+
     function initNav() {
         const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
         const sections = document.querySelectorAll('section[id]');
-        
+
         if (!navLinks.length || !sections.length) {
             setTimeout(initNav, 200);
             return;
         }
-        
-        // Set active nav link
+
+        // Convert to array and filter to only sections with nav links
+        const navSectionIds = new Set(
+            Array.from(navLinks).map(link => link.getAttribute('href')?.substring(1)).filter(Boolean)
+        );
+        const trackedSections = Array.from(sections).filter(s => navSectionIds.has(s.id));
+
+        // Set active nav link with transition prevention
         function setActive(sectionId) {
+            if (currentActiveId === sectionId) return;
+            currentActiveId = sectionId;
+
             navLinks.forEach(link => {
-                if (link.getAttribute('href') === `#${sectionId}`) {
+                const linkTarget = link.getAttribute('href')?.substring(1);
+                if (linkTarget === sectionId) {
                     link.classList.add('active');
                 } else {
                     link.classList.remove('active');
                 }
             });
         }
-        
-        // Watch sections
-        const observer = new IntersectionObserver((entries) => {
-            if (isNavigating) return; // BLOCK during navigation
-            
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    setActive(entry.target.id);
+
+        // Find section closest to viewport center
+        function findClosestSection() {
+            const viewportHeight = window.innerHeight;
+            const viewportCenter = viewportHeight / 2;
+            const scrollY = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight;
+
+            // Edge case: at very top of page
+            if (scrollY < 100) {
+                return 'home';
+            }
+
+            // Edge case: at very bottom of page - activate last nav section
+            if (scrollY + viewportHeight >= docHeight - 50) {
+                const lastSection = trackedSections[trackedSections.length - 1];
+                if (lastSection) return lastSection.id;
+            }
+
+            let closestSection = null;
+            let closestDistance = Infinity;
+
+            trackedSections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+
+                // Skip sections completely out of view
+                if (rect.bottom < 0 || rect.top > viewportHeight) return;
+
+                // Calculate section's center relative to viewport
+                const sectionCenter = rect.top + (rect.height / 2);
+                const distance = Math.abs(sectionCenter - viewportCenter);
+
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestSection = section;
                 }
             });
-        }, {
-            rootMargin: '-20% 0px -60% 0px',
-            threshold: 0
-        });
-        
-        sections.forEach(section => observer.observe(section));
-        
+
+            // Fallback: find any section that's at least partially visible
+            if (!closestSection) {
+                for (const section of trackedSections) {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top < viewportHeight && rect.bottom > 0) {
+                        closestSection = section;
+                        break;
+                    }
+                }
+            }
+
+            return closestSection ? closestSection.id : currentActiveId;
+        }
+
+        // Scroll handler with RAF throttling
+        function onScroll() {
+            if (isNavigating) return;
+
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const activeSection = findClosestSection();
+                    if (activeSection) {
+                        setActive(activeSection);
+                    }
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+
+        // Listen to scroll events
+        window.addEventListener('scroll', onScroll, { passive: true });
+
         // Handle clicks
         navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 const href = this.getAttribute('href');
                 if (!href || !href.startsWith('#')) return;
-                
+
                 e.preventDefault();
-                
+
                 const targetId = href.substring(1);
                 const targetSection = document.getElementById(targetId);
                 if (!targetSection) return;
-                
+
                 // Set active IMMEDIATELY
                 setActive(targetId);
-                
-                // BLOCK observer for 1.5 seconds
+
+                // Block scroll detection during smooth scroll
                 isNavigating = true;
-                setTimeout(() => { isNavigating = false; }, 1500);
-                
+
                 // Close mobile menu
                 const navMenu = document.getElementById('navMenu');
                 const navToggle = document.getElementById('navToggle');
@@ -4554,32 +4619,31 @@ if (typeof showNotification === 'undefined') {
                     navToggle?.classList.remove('active');
                     document.body.style.overflow = '';
                 }
-                
+
                 // Scroll
                 const header = document.getElementById('header');
                 const headerHeight = header ? header.offsetHeight : 80;
                 const scrollTo = targetId === 'home' ? 0 : targetSection.offsetTop - headerHeight - 20;
-                
+
                 window.scrollTo({
                     top: Math.max(0, scrollTo),
                     behavior: 'smooth'
                 });
+
+                // Re-enable scroll detection after scroll completes
+                setTimeout(() => { isNavigating = false; }, 800);
             });
         });
-        
-        // Set initial
-        setTimeout(() => {
-            let visible = 'home';
-            sections.forEach(section => {
-                const rect = section.getBoundingClientRect();
-                if (rect.top < window.innerHeight * 0.5 && rect.bottom > 0) {
-                    visible = section.id;
-                }
-            });
-            setActive(visible);
-        }, 500);
+
+        // Set initial state
+        requestAnimationFrame(() => {
+            const activeSection = findClosestSection();
+            if (activeSection) {
+                setActive(activeSection);
+            }
+        });
     }
-    
+
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initNav);
     } else {
