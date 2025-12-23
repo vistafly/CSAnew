@@ -390,7 +390,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }) {
           </group>
         </RigidBody>
       </group>
-      <mesh ref={band}>
+      <mesh ref={band} visible={isStabilized}>
         <meshLineGeometry />
         <meshLineMaterial
           color="white"
