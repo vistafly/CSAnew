@@ -5290,6 +5290,11 @@ background: linear-gradient(90deg, #9a8e8f, #998f8c, #938e9a, #9d9a8d, #8e989d, 
     max-width: 100%;
 }
 
+.career-form input[type="date"],
+.career-form input[type="month"] {
+    min-width: 0;
+}
+
 
 .career-form input.error,
 .career-form select.error,
@@ -5334,8 +5339,8 @@ background: linear-gradient(90deg, #9a8e8f, #998f8c, #938e9a, #9d9a8d, #8e989d, 
     .career-form .btn-full {
         padding: 14px 24px;
         font-size: 15px;
-        margin-bottom: 20px;
-        margin-top: -25px;
+        margin-top: 20px;
+        margin-top: 0px;
     }
 }
 
