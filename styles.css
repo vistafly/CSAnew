@@ -5293,6 +5293,18 @@ background: linear-gradient(90deg, #9a8e8f, #998f8c, #938e9a, #9d9a8d, #8e989d, 
 .career-form input[type="date"],
 .career-form input[type="month"] {
     min-width: 0;
+    max-width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.career-form .form-row {
+    overflow: hidden;
+}
+
+.career-form .form-group {
+    overflow: hidden;
+    min-width: 0;
 }
 
 
