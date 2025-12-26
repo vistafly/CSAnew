@@ -1950,7 +1950,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 .auth-card {
     background: white;
     border-radius: 16px;
-    padding: 60px 40px 130px;
+    padding: 5rem 3rem 5rem;
     max-width: 800px;
     margin: 0 auto;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
@@ -1965,7 +1965,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 
 .auth-card h3 {
     font-size: 28px;
-    margin-bottom: 40px;
+    margin-bottom: 5rem;
     color: #1a1a1a;
 }
 
@@ -2005,7 +2005,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 /* Responsive adjustments for all screen sizes */
 @media (max-width: 768px) {
     .auth-card {
-        padding: 80px 20px 100px;
+        padding: 3rem 3rem 4rem;
     }
     
     .auth-notification {
@@ -2022,7 +2022,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 
 @media (max-width: 430px) {
     .auth-card {
-        padding: 90px 20px 100px;
+    padding: 5rem 3rem 4rem;
     }
     
     .auth-notification {
@@ -2036,7 +2036,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 
 @media (max-width: 360px) {
     .auth-card {
-        padding: 85px 15px 90px;
+        padding: 3rem 3rem 5rem;
     }
     
     .auth-notification {
@@ -3338,7 +3338,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
     width: 20px;
     height: 20px;
     border: 2px solid #e0e0e0;
-    border-top: 2px solid #d32f2f;
+    border-top: 2px solid #4e4e4e;
     border-radius: 50%;
     transform: translate(-50%, -50%);
     animation: spin 1s linear infinite;
@@ -6795,6 +6795,7 @@ select option {
     font-size: 15px;
     color: var(--text-secondary-player);
     font-weight: 500;
+    margin-bottom: .5rem;
 }
 
 .audio-player-sidebar .track-artist a {
