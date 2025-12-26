@@ -1828,16 +1828,18 @@ loadSingleTrackDuration(track, index) {
     }
     
     open() {
+        const scrollPosition = window.scrollY;
+
         this.state.isOpen = true;
         this.sidebar?.classList.add('active');
         this.overlay?.classList.add('active');
         this.trigger?.classList.add('active');
-        
+
         document.body.classList.add('player-open');
         document.body.style.overflow = 'hidden';
         document.body.style.position = 'fixed';
         document.body.style.width = '100%';
-        document.body.style.top = `-${window.scrollY}px`;
+        document.body.style.top = `-${scrollPosition}px`;
         
         if (this.sidebar) {
             this.sidebar.style.overflowY = 'auto';
@@ -1850,14 +1852,14 @@ loadSingleTrackDuration(track, index) {
         this.sidebar?.classList.remove('active');
         this.overlay?.classList.remove('active');
         this.trigger?.classList.remove('active');
-        
-        const scrollY = document.body.style.top;
+
+        const scrollY = parseInt(document.body.style.top || '0') * -1;
         document.body.classList.remove('player-open');
         document.body.style.overflow = '';
         document.body.style.position = '';
         document.body.style.width = '';
         document.body.style.top = '';
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        window.scrollTo({ top: scrollY, left: 0, behavior: 'instant' });
     }
     
     // ==================== VOLUME CONTROLS ====================

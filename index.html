@@ -3286,21 +3286,30 @@ document.addEventListener('DOMContentLoaded', () => {
 function showModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
+        const scrollPosition = window.scrollY;
+
         modal.classList.add('active');
         document.body.classList.add('modal-open');
         document.body.style.overflow = 'hidden';
-        document.body.style.height = '100vh';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
+        document.body.style.top = `-${scrollPosition}px`;
     }
 }
 
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
+        const scrollY = parseInt(document.body.style.top || '0') * -1;
+
         modal.classList.remove('active');
         document.body.classList.remove('modal-open');
         document.body.style.overflow = '';
-        document.body.style.height = '';
-        
+        document.body.style.position = '';
+        document.body.style.width = '';
+        document.body.style.top = '';
+        window.scrollTo({ top: scrollY, left: 0, behavior: 'instant' });
+
         // Reset forms and styling
         modal.querySelectorAll('form').forEach(form => form.reset());
         modal.querySelectorAll('input').forEach(input => {
@@ -3313,24 +3322,29 @@ function closeModal(modalId) {
 function showSuccessModal(applicationId) {
     const successModal = document.getElementById('successModal');
     const applicationIdDisplay = document.getElementById('applicationIdDisplay');
-    
+
     if (!successModal) {
         console.error('Success modal not found');
         showNotification('Application submitted successfully! Your Application ID: ' + applicationId);
         return;
     }
-    
+
+    const scrollPosition = window.scrollY;
+
     // Set the Application ID
     if (applicationIdDisplay) {
         applicationIdDisplay.textContent = applicationId;
     }
-    
+
     // Show the modal
     successModal.classList.add('active');
-    
-    // Prevent body scroll
+
+    // Prevent body scroll while preserving position
     document.body.style.overflow = 'hidden';
-    
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+    document.body.style.top = `-${scrollPosition}px`;
+
     // Add animation class for entry
     const modalContent = successModal.querySelector('.success-modal-content');
     if (modalContent) {
@@ -3340,22 +3354,28 @@ function showSuccessModal(applicationId) {
 
 function closeSuccessModal() {
     const successModal = document.getElementById('successModal');
-    
+
     if (!successModal) return;
-    
+
+    const scrollY = parseInt(document.body.style.top || '0') * -1;
+
     // Add exit animation
     const modalContent = successModal.querySelector('.success-modal-content');
     if (modalContent) {
         modalContent.style.animation = 'successModalSlideOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards';
     }
-    
+
     // Remove modal after animation
     setTimeout(() => {
         successModal.classList.remove('active');
-        
-        // Restore body scroll
+
+        // Restore body scroll and position
         document.body.style.overflow = '';
-        
+        document.body.style.position = '';
+        document.body.style.width = '';
+        document.body.style.top = '';
+        window.scrollTo({ top: scrollY, left: 0, behavior: 'instant' });
+
         // Reset animation
         if (modalContent) {
             modalContent.style.animation = '';
@@ -3365,8 +3385,11 @@ function closeSuccessModal() {
 
 // ==================== ERROR HANDLING ====================
 
+let loginCooldown = false;
+
 function handleAuthError(error) {
     const errorMessages = {
+        'auth/invalid-credential': 'Invalid email or password',
         'auth/user-not-found': 'No account found with this email',
         'auth/wrong-password': 'Incorrect password',
         'auth/invalid-email': 'Invalid email address',
@@ -3374,9 +3397,35 @@ function handleAuthError(error) {
         'auth/too-many-requests': 'Too many failed attempts. Please try again later.',
         'auth/user-disabled': 'This account has been disabled'
     };
-    
+
     const message = errorMessages[error.code] || error.message || 'Authentication error occurred';
-    showNotification(message, 'error');
+
+    if (error.code === 'auth/too-many-requests') {
+        const submitBtn = document.getElementById('loginSubmit');
+        let remainingTime = 30;
+
+        loginCooldown = true;
+        showNotification('Too many failed attempts', 'error');
+
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = `Try again in ${remainingTime}s`;
+
+            const countdownInterval = setInterval(() => {
+                remainingTime--;
+                if (remainingTime > 0) {
+                    submitBtn.textContent = `Try again in ${remainingTime}s`;
+                } else {
+                    clearInterval(countdownInterval);
+                    loginCooldown = false;
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Sign In';
+                }
+            }, 1000);
+        }
+    } else {
+        showNotification(message, 'error');
+    }
 }
 
 // ==================== NOTIFICATION SYSTEM ====================
@@ -3723,28 +3772,30 @@ document.addEventListener('DOMContentLoaded', () => {
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
             const submitBtn = document.getElementById('loginSubmit');
-            
+
             if (!email || !password) {
                 showNotification('Please fill in all fields', 'error');
                 return;
             }
-            
+
             const originalText = submitBtn.textContent;
             submitBtn.textContent = 'Signing In...';
             submitBtn.disabled = true;
-            
+
             try {
                 await signInWithEmail(email, password);
                 showNotification('Successfully signed in!');
             } catch (error) {
                 handleAuthError(error);
             } finally {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
+                if (!loginCooldown) {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }
             }
         });
     }

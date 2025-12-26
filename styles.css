@@ -2279,7 +2279,7 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 
 /* Modal Header - Three Column Layout */
 .modal-header {
-    padding: 0px 15px;
+    padding: 1rem ;
     display: flex;
     align-items: center;
     justify-content: space-between;
