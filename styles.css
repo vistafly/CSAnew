@@ -6338,7 +6338,9 @@ select option {
 .player-trigger {
     position: fixed;
     bottom: 30px;
+    bottom: calc(30px + env(safe-area-inset-bottom, 0px));
     left: 30px;
+    left: calc(30px + env(safe-area-inset-left, 0px));
     width: 64px;
     height: 64px;
     border-radius: 50%;
@@ -6358,10 +6360,13 @@ select option {
     justify-content: center;
     transition: transform 0.4s var(--transition-elastic), background 0.3s ease, border 0.3s ease, backdrop-filter 0.3s ease;
     animation: buttonGlowMorph 12s linear infinite;
-    will-change: box-shadow;
-    transform: translateZ(0);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* iOS Safari fixed position stability */
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 /* Subtle depth when scrolled - still glass-like */
@@ -7326,7 +7331,9 @@ select option {
 
     .player-trigger {
         bottom: 20px;
+        bottom: calc(20px + env(safe-area-inset-bottom, 0px));
         left: 20px;
+        left: calc(20px + env(safe-area-inset-left, 0px));
         width: 56px;
         height: 56px;
     }
