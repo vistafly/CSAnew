@@ -24,9 +24,9 @@
     "vite": "^7.3.0"
   },
   "dependencies": {
-    "@react-three/drei": "^9.88.0",
-    "@react-three/fiber": "^8.15.0",
-    "@react-three/rapier": "^1.2.0",
+    "@react-three/drei": "9.88.0",
+    "@react-three/fiber": "8.15.0",
+    "@react-three/rapier": "1.4.0",
     "firebase": "^12.4.0",
     "framer-motion": "^12.23.25",
     "meshline": "^3.1.6",
