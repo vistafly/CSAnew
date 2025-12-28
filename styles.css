@@ -4871,9 +4871,9 @@ ALL LOADER AND HERO SIZES MATCH PERFECTLY! ✅
 
 .scroll-progress-bar {
     height: 100%;
-background: linear-gradient(90deg, #9a8e8f, #998f8c, #938e9a, #9d9a8d, #8e989d, #8e9a91);
+    background: linear-gradient(90deg, #9a8e8f, #998f8c, #938e9a, #9d9a8d, #8e989d, #8e9a91);
     border-radius: 3px;
-    transition: width 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: width 0.05s linear;
     width: 0%;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }

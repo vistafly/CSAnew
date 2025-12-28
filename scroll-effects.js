@@ -50,11 +50,12 @@
                 window.requestAnimationFrame(() => {
                     const scrollY = window.scrollY;
                     
-                    // Update header
+                    // Update header with hysteresis to prevent flickering
                     if (header) {
-                        if (scrollY > 50) {
+                        const isScrolled = header.classList.contains('scrolled');
+                        if (!isScrolled && scrollY > 50) {
                             header.classList.add('scrolled');
-                        } else {
+                        } else if (isScrolled && scrollY < 30) {
                             header.classList.remove('scrolled');
                         }
                         
@@ -150,7 +151,5 @@
     } else {
         init();
     }
-    
-    setTimeout(init, 500);
-    
+
 })();

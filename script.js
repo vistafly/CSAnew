@@ -678,42 +678,64 @@ class FixedHorizontalScrollManager {
     
     scrollLeft() {
         if (!this.isScrollMode || !this.programsGrid) return;
-        
+
         const scrollAmount = this.getScrollAmount();
-        
+
         this.programsGrid.scrollBy({
             left: -scrollAmount,
             behavior: 'smooth'
         });
-        
+
+        this.trackSmoothScroll();
         console.log('⬅️ Scrolling left by', scrollAmount, 'px');
     }
-    
+
     scrollRight() {
         if (!this.isScrollMode || !this.programsGrid) return;
-        
+
         const scrollAmount = this.getScrollAmount();
-        
+
         this.programsGrid.scrollBy({
             left: scrollAmount,
             behavior: 'smooth'
         });
-        
+
+        this.trackSmoothScroll();
         console.log('➡️ Scrolling right by', scrollAmount, 'px');
     }
-    
-    handleScroll() {
-        if (!this.isScrollMode) return;
-        
-        // Throttle scroll events for performance
-        if (this.scrollTimeout) {
-            clearTimeout(this.scrollTimeout);
-        }
-        
-        this.scrollTimeout = setTimeout(() => {
+
+    trackSmoothScroll() {
+        if (!this.programsGrid) return;
+
+        let lastScrollLeft = this.programsGrid.scrollLeft;
+
+        const track = () => {
+            const currentScrollLeft = this.programsGrid.scrollLeft;
+
             this.updateScrollButtons();
             this.updateScrollProgress();
-        }, 16); // ~60fps
+
+            // Continue tracking if still scrolling
+            if (currentScrollLeft !== lastScrollLeft) {
+                lastScrollLeft = currentScrollLeft;
+                requestAnimationFrame(track);
+            }
+        };
+
+        requestAnimationFrame(track);
+    }
+
+    handleScroll() {
+        if (!this.isScrollMode) return;
+
+        // Use requestAnimationFrame for smooth real-time updates
+        if (!this.scrollRAF) {
+            this.scrollRAF = requestAnimationFrame(() => {
+                this.updateScrollButtons();
+                this.updateScrollProgress();
+                this.scrollRAF = null;
+            });
+        }
     }
     
     updateScrollButtons() {
